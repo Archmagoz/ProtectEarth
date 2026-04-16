@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bfx0d8wfnkv0a"]
+
+[ext_resource type="Script" uid="uid://c15vryxwktsgn" path="res://Debug/Debug.cs" id="1_an2v1"]
+[ext_resource type="PackedScene" uid="uid://x87glh7ayopp" path="res://Planet/Planet.tscn" id="1_lcwkr"]
+
+[node name="Debug" type="Node2D" unique_id=154008839]
+script = ExtResource("1_an2v1")
+
+[node name="Planet" parent="." unique_id=1252755180 instance=ExtResource("1_lcwkr")]
+
+[node name="Camera" type="Camera2D" parent="." unique_id=1505110390]
+zoom = Vector2(2, 2)
