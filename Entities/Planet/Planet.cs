@@ -1,9 +1,8 @@
 using Godot;
+using ProtectEarth.Components;
 
 namespace ProtectEarth.Entities
 {
-	using ProtectEarth.Components;
-
 	public partial class Planet : Node2D
 	{
 		[Export]
