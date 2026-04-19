@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cd3edxcjxs00g" path="res://Entities/Planet/Planet.png" id="1_sotaw"]
 [ext_resource type="Script" uid="uid://b86qbc7v846qf" path="res://Entities/Planet/Planet.cs" id="1_vqrwm"]
-[ext_resource type="PackedScene" uid="uid://bbcvqhg7h623c" path="res://Components/HealthComponent/HealthComponent.tscn" id="3_wwqbi"]
+[ext_resource type="Script" uid="uid://clgva43afx5kk" path="res://Components/HealthComponent.cs" id="3_spxru"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vqrwm"]
 atlas = ExtResource("1_sotaw")
@@ -568,5 +568,6 @@ autoplay = "default"
 shape = SubResource("CircleShape2D_sotaw")
 debug_color = Color(2.7915835e-06, 0.64673054, 0.23743263, 0.41960785)
 
-[node name="HealthComponent" parent="." unique_id=527244863 instance=ExtResource("3_wwqbi")]
-MaxHealth = 10
+[node name="HealthComponent" type="Node" parent="." unique_id=2076969682]
+script = ExtResource("3_spxru")
+metadata/_custom_type_script = "uid://clgva43afx5kk"

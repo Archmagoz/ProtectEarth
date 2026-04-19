@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dguuymw41wnjp"]
+
+[ext_resource type="Script" uid="uid://clm28aswedb33" path="res://Components/SpeedComponent.cs" id="1_msjej"]
+
+[node name="SpeedComponent" type="Node" unique_id=1843988401]
+script = ExtResource("1_msjej")

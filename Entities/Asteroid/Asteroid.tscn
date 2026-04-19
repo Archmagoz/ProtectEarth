@@ -3,7 +3,8 @@
 [ext_resource type="Texture2D" uid="uid://dgqomfy0u4cbf" path="res://Entities/Asteroid/AsteroidBase.png" id="1_0yndq"]
 [ext_resource type="Script" uid="uid://ci6wxxp412ueu" path="res://Entities/Asteroid/Asteroid.cs" id="1_mna7d"]
 [ext_resource type="Texture2D" uid="uid://nthshw23qq8s" path="res://Entities/Asteroid/AsteroidExplode.png" id="2_k3kuu"]
-[ext_resource type="PackedScene" uid="uid://bbcvqhg7h623c" path="res://Components/HealthComponent/HealthComponent.tscn" id="3_36etw"]
+[ext_resource type="Script" uid="uid://clgva43afx5kk" path="res://Components/HealthComponent.cs" id="4_m11kh"]
+[ext_resource type="Script" uid="uid://clm28aswedb33" path="res://Components/SpeedComponent.cs" id="5_tuyl4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_36etw"]
 atlas = ExtResource("2_k3kuu")
@@ -62,9 +63,10 @@ animations = [{
 "speed": 14.0
 }]
 
-[node name="Asteroid" type="RigidBody2D" unique_id=375783533 node_paths=PackedStringArray("Health")]
+[node name="Asteroid" type="RigidBody2D" unique_id=375783533 node_paths=PackedStringArray("Health", "Speed")]
 script = ExtResource("1_mna7d")
 Health = NodePath("HealthComponent")
+Speed = NodePath("SpeedComponent")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1867766852]
 sprite_frames = SubResource("SpriteFrames_0yndq")
@@ -77,5 +79,12 @@ texture = ExtResource("1_0yndq")
 position = Vector2(-29, 1)
 polygon = PackedVector2Array(11, -6, 14, -12, 21, -16, 31, -16, 38, -10, 44, -6, 47, 1, 44, 9, 40, 13, 35, 15, 24, 15, 18, 13, 12, 8, 11, 4)
 
-[node name="HealthComponent" parent="." unique_id=527244863 instance=ExtResource("3_36etw")]
+[node name="HealthComponent" type="Node" parent="." unique_id=783308517]
+script = ExtResource("4_m11kh")
 MaxHealth = 50
+metadata/_custom_type_script = "uid://clgva43afx5kk"
+
+[node name="SpeedComponent" type="Node" parent="." unique_id=173428464]
+script = ExtResource("5_tuyl4")
+MaxSpeed = 30.0
+metadata/_custom_type_script = "uid://clm28aswedb33"
