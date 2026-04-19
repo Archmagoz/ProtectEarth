@@ -14,6 +14,7 @@ namespace ProtectEarth.Entities
 		public SpeedComponent Speed;
 
 		private Vector2 _center;
+		private float _rotationSpeed;
 
 
 		// Called when the node enters the scene tree for the first time.
@@ -21,7 +22,9 @@ namespace ProtectEarth.Entities
 		{
 			Health ??= GetNodeOrNull<HealthComponent>("HealthComponent");
 			Speed ??= GetNodeOrNull<SpeedComponent>("SpeedComponent");
+
 			_center = ScreenUtils.GetScreenCenter(this);
+			_rotationSpeed = (float)GD.RandRange(-0.01f, 0.01f);
 		}
 
 		// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -41,6 +44,7 @@ namespace ProtectEarth.Entities
 			Vector2 direction = (_center - GlobalPosition).Normalized();
 
 			LinearVelocity = direction * Speed.CurrentSpeed;
+			Rotation += _rotationSpeed;
 		}
 	}
 }
