@@ -6,11 +6,13 @@ namespace ProtectEarth.Levels
 {
 	public partial class Debug : Node2D
 	{
-		private PackedScene _asteroidScene =
-			GD.Load<PackedScene>("res://Entities/Asteroid/Asteroid.tscn");
+		[Export]
+		private PackedScene _asteroidScene;
 
 		public override void _Ready()
 		{
+			_asteroidScene ??=
+				GD.Load<PackedScene>("res://Entities/Asteroid/Asteroid.tscn");
 		}
 
 		private Vector2 GetSpawnPosition(float margin = 50f)
