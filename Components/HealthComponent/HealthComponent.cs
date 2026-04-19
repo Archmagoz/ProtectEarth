@@ -15,11 +15,13 @@ namespace ProtectEarth.Components
 		[Signal] public delegate void HealthChangedEventHandler(int current, int max);
 		[Signal] public delegate void DeathEventHandler();
 
+		// Called when the node enters the scene tree for the first time.
 		public override void _Ready()
 		{
 			_currentHealth = MaxHealth;
 		}
 
+		// Updates health and emits signals if there are changes.
 		private void UpdateHealth(int value)
 		{
 			int oldHealth = _currentHealth;
@@ -35,6 +37,7 @@ namespace ProtectEarth.Components
 			}
 		}
 
+		// Public methods to manipulate health.
 		public void Reset()
 		{
 			_isDead = false;
@@ -47,12 +50,10 @@ namespace ProtectEarth.Components
 			UpdateHealth(_currentHealth - damage);
 		}
 
-
 		public void Heal(int amount)
 		{
 			if (IsDead) return;
 			UpdateHealth(_currentHealth + amount);
 		}
 	}
-
 }

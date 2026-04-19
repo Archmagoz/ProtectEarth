@@ -554,8 +554,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_sotaw"]
 radius = 29.068884
 
-[node name="Planet" type="Node2D" unique_id=1252755180]
+[node name="Planet" type="Node2D" unique_id=1252755180 node_paths=PackedStringArray("Health")]
 script = ExtResource("1_vqrwm")
+Health = NodePath("HealthComponent")
 
 [node name="StaticBody" type="StaticBody2D" parent="." unique_id=57603628]
 
