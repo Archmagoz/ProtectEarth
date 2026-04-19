@@ -13,12 +13,15 @@ namespace ProtectEarth.Entities
 		[Export]
 		public SpeedComponent Speed;
 
+		private Vector2 _center;
+
 
 		// Called when the node enters the scene tree for the first time.
 		public override void _Ready()
 		{
 			Health ??= GetNodeOrNull<HealthComponent>("HealthComponent");
 			Speed ??= GetNodeOrNull<SpeedComponent>("SpeedComponent");
+			_center = ScreenUtils.GetScreenCenter(this);
 		}
 
 		// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -35,8 +38,7 @@ namespace ProtectEarth.Entities
 		// Moves the asteroid towards the center of the screen.
 		private void MoveTowardsCenter()
 		{
-			Vector2 center = ScreenUtils.GetScreenCenter(this);
-			Vector2 direction = (center - GlobalPosition).Normalized();
+			Vector2 direction = (_center - GlobalPosition).Normalized();
 
 			LinearVelocity = direction * Speed.CurrentSpeed;
 		}

@@ -86,5 +86,5 @@ metadata/_custom_type_script = "uid://clgva43afx5kk"
 
 [node name="SpeedComponent" type="Node" parent="." unique_id=173428464]
 script = ExtResource("5_tuyl4")
-MaxSpeed = 30.0
+MaxSpeed = 50.0
 metadata/_custom_type_script = "uid://clm28aswedb33"
