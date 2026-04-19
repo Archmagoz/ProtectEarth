@@ -1,4 +1,5 @@
 using Godot;
+using ProtectEarth.Utils;
 
 namespace ProtectEarth.Components
 {
@@ -17,7 +18,8 @@ namespace ProtectEarth.Components
 		// Called when the node enters the scene tree for the first time.
 		public override void _Ready()
 		{
-			_currentSpeed = MaxSpeed / 2;
+			int speed = Rng.Range(50, (int)MaxSpeed);
+			_currentSpeed = speed;
 		}
 
 		// Internal method to update speed safely.

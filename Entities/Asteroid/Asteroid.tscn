@@ -82,7 +82,6 @@ Speed = NodePath("SpeedComponent")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." unique_id=1867766852]
 sprite_frames = SubResource("SpriteFrames_0yndq")
-animation = &"explode"
 autoplay = "default"
 
 [node name="CollisionPolygon" type="CollisionPolygon2D" parent="." unique_id=1789278653]

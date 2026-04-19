@@ -36,16 +36,16 @@ namespace ProtectEarth.Levels
 
 			return side switch
 			{
-				// topo
+				// Upper
 				0 => new Vector2(Rng.Range(left, right), top - margin),
 
-				// baixo
+				// Bottom
 				1 => new Vector2(Rng.Range(left, right), bottom + margin),
 
-				// esquerda
+				// Left
 				2 => new Vector2(left - margin, Rng.Range(top, bottom)),
 
-				// direita
+				// Right
 				3 => new Vector2(right + margin, Rng.Range(top, bottom)),
 
 				_ => new Vector2(left - margin, top - margin)
