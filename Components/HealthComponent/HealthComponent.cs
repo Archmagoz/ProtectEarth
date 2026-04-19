@@ -2,6 +2,7 @@ using Godot;
 
 namespace ProtectEarth.Components
 {
+	[GlobalClass]
 	public partial class HealthComponent : Node
 	{
 		[Export] public int MaxHealth { get; set; }

@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://dqtc0ug4pbdxk"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mj7l7"]
+load_path = "res://.godot/imported/BackgroundLayer 01.png-739caca8d80af4b455ada1d50b84167d.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kaj0c"]
+load_path = "res://.godot/imported/BackgroundLayer 02.png.png-5e170f4217b309481fc02624cd76921a.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_s06lt"]
+load_path = "res://.godot/imported/BackgroundLayer 03.png-c748669b8a5fc63a02b5ede06aef1c87.ctex"
+
+[node name="Background" type="Node2D" unique_id=1894191346]
+
+[node name="ParallaxLayer01" type="Parallax2D" parent="." unique_id=1073640690]
+repeat_size = Vector2(5760, 0)
+autoscroll = Vector2(20, 0)
+
+[node name="Sprite" type="Sprite2D" parent="ParallaxLayer01" unique_id=5034441]
+texture = SubResource("CompressedTexture2D_mj7l7")
+
+[node name="ParallaxLayer02" type="Parallax2D" parent="." unique_id=1002364490]
+repeat_size = Vector2(5760, 0)
+autoscroll = Vector2(50, 0)
+
+[node name="Sprite" type="Sprite2D" parent="ParallaxLayer02" unique_id=1484402855]
+texture = SubResource("CompressedTexture2D_kaj0c")
+
+[node name="ParallaxLayer03" type="Parallax2D" parent="." unique_id=681466779]
+repeat_size = Vector2(5760, 0)
+autoscroll = Vector2(100, 0)
+
+[node name="Sprite" type="Sprite2D" parent="ParallaxLayer03" unique_id=992928694]
+texture = SubResource("CompressedTexture2D_s06lt")

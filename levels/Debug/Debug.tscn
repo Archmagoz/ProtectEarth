@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bfx0d8wfnkv0a"]
+
+[ext_resource type="Script" uid="uid://c15vryxwktsgn" path="res://levels/Debug/Debug.cs" id="1_c8vmt"]
+[ext_resource type="PackedScene" uid="uid://dqtc0ug4pbdxk" path="res://levels/Debug/Background/Background.tscn" id="2_ijj4v"]
+[ext_resource type="PackedScene" uid="uid://x87glh7ayopp" path="res://Entities/Planet/Planet.tscn" id="2_u07oc"]
+
+[node name="Debug" type="Node2D" unique_id=154008839]
+script = ExtResource("1_c8vmt")
+
+[node name="Background" parent="." unique_id=1894191346 instance=ExtResource("2_ijj4v")]
+
+[node name="Planet" parent="." unique_id=1252755180 instance=ExtResource("2_u07oc")]
+
+[node name="Camera" type="Camera2D" parent="." unique_id=76599704]
+zoom = Vector2(2, 2)
