@@ -6,7 +6,7 @@ namespace ProtectEarth.Entities
 {
 	public partial class Asteroid : RigidBody2D
 	{
-		// References (set via editor or fallback in _Ready)
+		// References (set via editor or fallback in _Ready).
 		[Export] public AnimatedSprite2D AnimatedSprite;
 		[Export] public CollisionPolygon2D Collision;
 		[Export] public HealthComponent Health;
@@ -20,14 +20,17 @@ namespace ProtectEarth.Entities
 
 		public override void _Ready()
 		{
+			// Fallback to find nodes if not set via editor.
 			AnimatedSprite ??= GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite");
 			Collision ??= GetNodeOrNull<CollisionPolygon2D>("Collision");
 			Health ??= GetNodeOrNull<HealthComponent>("HealthComponent");
 			Speed ??= GetNodeOrNull<SpeedComponent>("SpeedComponent");
 
+			// Cache screen center and randomize rotation speed for variation.
 			_center = ScreenUtils.GetScreenCenter(this);
 			_rotationSpeed = RNG.Range(-0.01f, 0.01f);
 
+			// Connect signals.
 			Health.Death += OnDeath;
 		}
 
@@ -40,11 +43,13 @@ namespace ProtectEarth.Entities
 			AnimatedSprite?.Play("explode");
 		}
 
-		// Called when the explosion animation finishes to free the asteroid.
+		// Called via AnimatedSprite animation_finished signal to remove the asteroid.
 		public void OnAnimationFinished()
 		{
 			QueueFree();
 		}
+
+		// ----------------------------- Main loop -----------------------------
 
 		private void MoveTowardsCenter()
 		{

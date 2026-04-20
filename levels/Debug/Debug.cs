@@ -6,10 +6,12 @@ namespace ProtectEarth.Levels
 {
 	public partial class Debug : Node2D
 	{
+		// References (set via editor or fallback in _Ready).
 		[Export] private PackedScene _asteroidScene;
 
 		public override void _Ready()
 		{
+			// Fallback to find nodes if not set via editor.
 			_asteroidScene ??= GD.Load<PackedScene>("res://Entities/Asteroid/Asteroid.tscn");
 		}
 
