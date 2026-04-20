@@ -6,7 +6,7 @@ namespace ProtectEarth.Levels
 {
 	public partial class Debug : Node2D
 	{
-		// References (set via editor or fallback in _Ready).
+		// Node references (assigned via editor or auto-resolved in _Ready).
 		[Export] private PackedScene _asteroidScene;
 
 		public override void _Ready()

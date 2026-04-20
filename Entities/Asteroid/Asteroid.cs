@@ -6,7 +6,7 @@ namespace ProtectEarth.Entities
 {
 	public partial class Asteroid : RigidBody2D
 	{
-		// Node references (assigned via editor or auto-resolved in _Ready)
+		// Node references (assigned via editor or auto-resolved in _Ready).
 		[Export] public AnimatedSprite2D AnimatedSprite;
 		[Export] public CollisionPolygon2D Collision;
 		[Export] public HealthComponent Health;
@@ -33,16 +33,10 @@ namespace ProtectEarth.Entities
 
 			// Connect signals.
 			AnimatedSprite.AnimationFinished += OnAnimationFinished;
-			Health.HealthChanged += OnHit;
 			Health.Death += OnDeath;
 		}
 
 		// ------------------------------ Signal handlers ----------------------------------
-
-		// Handles hits: play hit animation.
-		private void OnHit(int current, int max)
-		{
-		}
 
 		// Handles death: stop movement and play explosion animation.
 		private void OnDeath()
