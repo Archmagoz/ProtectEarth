@@ -6,7 +6,7 @@ namespace ProtectEarth.Entities
 {
 	public partial class Asteroid : RigidBody2D
 	{
-		// References (set via editor or fallback in _Ready).
+		// Node references (assigned via editor or auto-resolved in _Ready)
 		[Export] public AnimatedSprite2D AnimatedSprite;
 		[Export] public CollisionPolygon2D Collision;
 		[Export] public HealthComponent Health;
@@ -51,6 +51,7 @@ namespace ProtectEarth.Entities
 
 		// ----------------------------- Main loop -----------------------------
 
+		// Moves the asteroid toward the screen center while applying rotation.
 		private void MoveTowardsCenter()
 		{
 			Vector2 direction = (_center - GlobalPosition).Normalized();
