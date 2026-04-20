@@ -5,20 +5,16 @@ namespace ProtectEarth.Components
 	[GlobalClass]
 	public partial class HealthComponent : Node
 	{
-		[Export]
-		public int MaxHealth { get; set; } = 100;
+		[Export] public int MaxHealth { get; set; } = 100;
+
+		[Signal] public delegate void HealthChangedEventHandler(int current, int max);
+		[Signal] public delegate void DeathEventHandler();
 
 		private int _currentHealth;
 		public int CurrentHealth => _currentHealth;
 
 		private bool _isDead = false;
 		public bool IsDead => _isDead;
-
-		[Signal]
-		public delegate void HealthChangedEventHandler(int current, int max);
-
-		[Signal]
-		public delegate void DeathEventHandler();
 
 		// Called when the node enters the scene tree for the first time.
 		public override void _Ready()

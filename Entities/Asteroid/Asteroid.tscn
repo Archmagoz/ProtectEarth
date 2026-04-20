@@ -75,12 +75,12 @@ animations = [{
 "speed": 14.0
 }]
 
-[node name="Asteroid" type="RigidBody2D" unique_id=375783533 node_paths=PackedStringArray("Health", "Speed", "AnimatedSprite")]
+[node name="Asteroid" type="RigidBody2D" unique_id=375783533 node_paths=PackedStringArray("AnimatedSprite", "Health", "Speed")]
 mass = 500.0
 script = ExtResource("1_mna7d")
+AnimatedSprite = NodePath("AnimatedSprite")
 Health = NodePath("HealthComponent")
 Speed = NodePath("SpeedComponent")
-AnimatedSprite = NodePath("AnimatedSprite")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." unique_id=1867766852]
 sprite_frames = SubResource("SpriteFrames_0yndq")

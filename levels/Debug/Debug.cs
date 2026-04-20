@@ -6,29 +6,24 @@ namespace ProtectEarth.Levels
 {
 	public partial class Debug : Node2D
 	{
-		[Export]
-		private PackedScene _asteroidScene;
+		[Export] private PackedScene _asteroidScene;
 
 		public override void _Ready()
 		{
-			_asteroidScene ??=
-				GD.Load<PackedScene>("res://Entities/Asteroid/Asteroid.tscn");
+			_asteroidScene ??= GD.Load<PackedScene>("res://Entities/Asteroid/Asteroid.tscn");
 		}
 
 		private Vector2 GetSpawnPosition(float margin = 50f)
 		{
 			var camera = GetViewport().GetCamera2D();
+
 			if (camera == null)
 				return Vector2.Zero;
 
 			var screenSize = GetViewport().GetVisibleRect().Size;
-
 			var zoom = camera.Zoom;
-
 			var halfSize = screenSize * 0.5f / zoom;
-
 			var center = camera.GlobalPosition;
-
 			var left = center.X - halfSize.X;
 			var right = center.X + halfSize.X;
 			var top = center.Y - halfSize.Y;

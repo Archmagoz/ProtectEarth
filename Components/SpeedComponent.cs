@@ -6,14 +6,12 @@ namespace ProtectEarth.Components
 	[GlobalClass]
 	public partial class SpeedComponent : Node
 	{
-		[Export]
-		public float MaxSpeed { get; set; } = 100f;
+		[Export] public float MaxSpeed { get; set; } = 100f;
+
+		[Signal] public delegate void SpeedChangedEventHandler(float current, float max);
 
 		private float _currentSpeed;
 		public float CurrentSpeed => _currentSpeed;
-
-		[Signal]
-		public delegate void SpeedChangedEventHandler(float current, float max);
 
 		// Called when the node enters the scene tree for the first time.
 		public override void _Ready()

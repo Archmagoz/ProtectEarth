@@ -6,18 +6,12 @@ namespace ProtectEarth.Entities
 {
 	public partial class Asteroid : RigidBody2D
 	{
-		[Export]
-		public HealthComponent Health;
+		[Export] public AnimatedSprite2D AnimatedSprite;
+		[Export] public HealthComponent Health;
+		[Export] public SpeedComponent Speed;
 
-		[Export]
-		public SpeedComponent Speed;
-
-		[Export]
-		public AnimatedSprite2D AnimatedSprite;
-
-		private Vector2 _center;
 		private float _rotationSpeed;
-
+		private Vector2 _center;
 
 		// Called when the node enters the scene tree for the first time.
 		public override void _Ready()
@@ -30,16 +24,6 @@ namespace ProtectEarth.Entities
 			_rotationSpeed = RNG.Range(-0.01f, 0.01f);
 		}
 
-		// Called every frame. 'delta' is the elapsed time since the previous frame.
-		public override void _Process(double delta)
-		{
-		}
-
-		// Called during the physics processing.
-		public override void _PhysicsProcess(double delta)
-		{
-			MoveTowardsCenter();
-		}
 
 		// Moves the asteroid towards the center of the screen.
 		private void MoveTowardsCenter()
@@ -50,14 +34,22 @@ namespace ProtectEarth.Entities
 			Rotation += _rotationSpeed;
 		}
 
+		// Plays the explosion animation.
 		public void Die()
 		{
 			AnimatedSprite?.Play("explode");
 		}
 
+		// Called when the explosion animation finishes.
 		public void OnAnimationFinished()
 		{
 			QueueFree();
+		}
+
+		// Called during the physics processing.
+		public override void _PhysicsProcess(double delta)
+		{
+			MoveTowardsCenter();
 		}
 	}
 }
