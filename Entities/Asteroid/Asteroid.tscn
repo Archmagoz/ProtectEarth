@@ -44,7 +44,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_etoru")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
 "speed": 0.0
 }, {
@@ -75,10 +75,12 @@ animations = [{
 "speed": 14.0
 }]
 
-[node name="Asteroid" type="RigidBody2D" unique_id=375783533 node_paths=PackedStringArray("Health", "Speed")]
+[node name="Asteroid" type="RigidBody2D" unique_id=375783533 node_paths=PackedStringArray("Health", "Speed", "AnimatedSprite")]
+mass = 500.0
 script = ExtResource("1_mna7d")
 Health = NodePath("HealthComponent")
 Speed = NodePath("SpeedComponent")
+AnimatedSprite = NodePath("AnimatedSprite")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." unique_id=1867766852]
 sprite_frames = SubResource("SpriteFrames_0yndq")
@@ -86,7 +88,7 @@ autoplay = "default"
 
 [node name="CollisionPolygon" type="CollisionPolygon2D" parent="." unique_id=1789278653]
 position = Vector2(-29, 1)
-polygon = PackedVector2Array(11, -6, 14, -12, 21, -16, 31, -16, 38, -10, 44, -6, 47, 1, 44, 9, 40, 13, 35, 15, 24, 15, 18, 13, 12, 8, 11, 4)
+polygon = PackedVector2Array(11, -6, 14, -12, 21, -16, 30, -16, 39, -10, 44, -6, 47, -2, 47, 1, 44, 9, 40, 13, 35, 15, 24, 15, 18, 13, 12, 8, 11, 4)
 
 [node name="HealthComponent" type="Node" parent="." unique_id=783308517]
 script = ExtResource("4_m11kh")

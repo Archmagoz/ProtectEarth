@@ -12,10 +12,11 @@ namespace ProtectEarth.Entities
 		[Export]
 		public SpeedComponent Speed;
 
+		[Export]
+		public AnimatedSprite2D AnimatedSprite;
+
 		private Vector2 _center;
 		private float _rotationSpeed;
-
-		public AnimatedSprite2D AnimatedSprite;
 
 
 		// Called when the node enters the scene tree for the first time.
@@ -26,7 +27,7 @@ namespace ProtectEarth.Entities
 			AnimatedSprite ??= GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite");
 
 			_center = ScreenUtils.GetScreenCenter(this);
-			_rotationSpeed = (float)GD.RandRange(-0.01f, 0.01f);
+			_rotationSpeed = RNG.Range(-0.01f, 0.01f);
 		}
 
 		// Called every frame. 'delta' is the elapsed time since the previous frame.

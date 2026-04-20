@@ -2,11 +2,11 @@ using Godot;
 
 namespace ProtectEarth.Utils
 {
-    public static class Rng
+    public static class RNG
     {
         private static readonly RandomNumberGenerator _rng = new();
 
-        static Rng()
+        static RNG()
         {
             _rng.Randomize();
         }

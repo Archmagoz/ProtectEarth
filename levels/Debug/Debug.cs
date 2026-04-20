@@ -34,21 +34,21 @@ namespace ProtectEarth.Levels
 			var top = center.Y - halfSize.Y;
 			var bottom = center.Y + halfSize.Y;
 
-			int side = Rng.Range(0, 4);
+			int side = RNG.Range(0, 4);
 
 			return side switch
 			{
 				// Upper
-				0 => new Vector2(Rng.Range(left, right), top - margin),
+				0 => new Vector2(RNG.Range(left, right), top - margin),
 
 				// Bottom
-				1 => new Vector2(Rng.Range(left, right), bottom + margin),
+				1 => new Vector2(RNG.Range(left, right), bottom + margin),
 
 				// Left
-				2 => new Vector2(left - margin, Rng.Range(top, bottom)),
+				2 => new Vector2(left - margin, RNG.Range(top, bottom)),
 
 				// Right
-				3 => new Vector2(right + margin, Rng.Range(top, bottom)),
+				3 => new Vector2(right + margin, RNG.Range(top, bottom)),
 
 				_ => new Vector2(left - margin, top - margin)
 			};

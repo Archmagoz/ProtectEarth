@@ -18,7 +18,7 @@ namespace ProtectEarth.Components
 		// Called when the node enters the scene tree for the first time.
 		public override void _Ready()
 		{
-			int speed = Rng.Range(50, (int)MaxSpeed);
+			int speed = RNG.Range(50, (int)MaxSpeed);
 			_currentSpeed = speed;
 		}
 
