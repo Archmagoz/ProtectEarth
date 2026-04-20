@@ -1,6 +1,6 @@
 using Godot;
-using ProtectEarth.Components;
 using ProtectEarth.Utils;
+using ProtectEarth.Components;
 
 namespace ProtectEarth.Entities
 {
@@ -16,14 +16,13 @@ namespace ProtectEarth.Entities
 		// Called when the node enters the scene tree for the first time.
 		public override void _Ready()
 		{
+			AnimatedSprite ??= GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite");
 			Health ??= GetNodeOrNull<HealthComponent>("HealthComponent");
 			Speed ??= GetNodeOrNull<SpeedComponent>("SpeedComponent");
-			AnimatedSprite ??= GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite");
 
 			_center = ScreenUtils.GetScreenCenter(this);
 			_rotationSpeed = RNG.Range(-0.01f, 0.01f);
 		}
-
 
 		// Moves the asteroid towards the center of the screen.
 		private void MoveTowardsCenter()
