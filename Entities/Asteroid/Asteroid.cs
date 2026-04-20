@@ -13,6 +13,9 @@ namespace ProtectEarth.Entities
 		private float _rotationSpeed;
 		private Vector2 _center;
 
+		private bool _isDead = false;
+		public bool IsDead => _isDead;
+
 		// Called when the node enters the scene tree for the first time.
 		public override void _Ready()
 		{
@@ -33,9 +36,17 @@ namespace ProtectEarth.Entities
 			Rotation += _rotationSpeed;
 		}
 
+		// Called when the HealthComponent emits the Death signal.
+		private void OnDeath()
+		{
+			Die();
+		}
+
 		// Plays the explosion animation.
 		public void Die()
 		{
+			_isDead = true;
+			LinearVelocity = Vector2.Zero;
 			AnimatedSprite?.Play("explode");
 		}
 
@@ -48,6 +59,7 @@ namespace ProtectEarth.Entities
 		// Called during the physics processing.
 		public override void _PhysicsProcess(double delta)
 		{
+			if (IsDead) return;
 			MoveTowardsCenter();
 		}
 	}

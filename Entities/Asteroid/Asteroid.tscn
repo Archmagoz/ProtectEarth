@@ -77,6 +77,7 @@ animations = [{
 
 [node name="Asteroid" type="RigidBody2D" unique_id=375783533 node_paths=PackedStringArray("AnimatedSprite", "Health", "Speed")]
 mass = 500.0
+gravity_scale = 0.0
 script = ExtResource("1_mna7d")
 AnimatedSprite = NodePath("AnimatedSprite")
 Health = NodePath("HealthComponent")
