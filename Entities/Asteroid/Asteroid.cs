@@ -12,9 +12,10 @@ namespace ProtectEarth.Entities
 		[Export] public HealthComponent Health;
 		[Export] public SpeedComponent Speed;
 
-		private float _rotationSpeed;
-		private Vector2 _center;
 		private bool _isDead = false;
+		private float _rotationSpeed;
+		private Vector2 _direction;
+		private Vector2 _center;
 
 		public bool IsDead => _isDead;
 
@@ -54,9 +55,8 @@ namespace ProtectEarth.Entities
 		// Moves the asteroid toward the screen center while applying rotation.
 		private void MoveTowardsCenter()
 		{
-			Vector2 direction = (_center - GlobalPosition).Normalized();
-
-			LinearVelocity = direction * Speed.CurrentSpeed;
+			_direction = (_center - GlobalPosition).Normalized();
+			LinearVelocity = _direction * Speed.CurrentSpeed;
 			Rotation += _rotationSpeed;
 		}
 
