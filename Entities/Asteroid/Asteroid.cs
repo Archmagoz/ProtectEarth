@@ -32,7 +32,16 @@ namespace ProtectEarth.Entities
 			_rotationSpeed = RNG.Range(-0.01f, 0.01f);
 
 			// Connect signals.
+			AnimatedSprite.AnimationFinished += OnAnimationFinished;
+			Health.HealthChanged += OnHit;
 			Health.Death += OnDeath;
+		}
+
+		// ------------------------------ Signal handlers ----------------------------------
+
+		// Handles hits: play hit animation.
+		private void OnHit(int current, int max)
+		{
 		}
 
 		// Handles death: stop movement and play explosion animation.
@@ -50,7 +59,7 @@ namespace ProtectEarth.Entities
 			QueueFree();
 		}
 
-		// ----------------------------- Main loop -----------------------------
+		// ------------------------------ Movement logic ----------------------------------
 
 		// Moves the asteroid toward the screen center while applying rotation.
 		private void MoveTowardsCenter()
