@@ -16,7 +16,6 @@ namespace ProtectEarth.Components
 		private bool _isDead = false;
 		public bool IsDead => _isDead;
 
-		// Called when the node enters the scene tree for the first time.
 		public override void _Ready()
 		{
 			_currentHealth = MaxHealth;

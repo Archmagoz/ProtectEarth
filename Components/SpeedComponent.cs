@@ -13,7 +13,6 @@ namespace ProtectEarth.Components
 		private float _currentSpeed;
 		public float CurrentSpeed => _currentSpeed;
 
-		// Called when the node enters the scene tree for the first time.
 		public override void _Ready()
 		{
 			int speed = RNG.Range(50, (int)MaxSpeed);
