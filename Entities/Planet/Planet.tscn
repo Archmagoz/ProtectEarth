@@ -554,21 +554,19 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_sotaw"]
 radius = 29.068884
 
-[node name="Planet" type="Node2D" unique_id=1252755180 node_paths=PackedStringArray("Health", "Collision")]
+[node name="Planet" type="StaticBody2D" unique_id=726908285 node_paths=PackedStringArray("Health", "Collision")]
 script = ExtResource("1_vqrwm")
 Health = NodePath("HealthComponent")
-Collision = NodePath("StaticBody/Collision")
-
-[node name="StaticBody" type="StaticBody2D" parent="." unique_id=57603628]
-
-[node name="AnimatedSprite" type="AnimatedSprite2D" parent="StaticBody" unique_id=1496320711]
-sprite_frames = SubResource("SpriteFrames_w53q4")
-autoplay = "default"
-
-[node name="Collision" type="CollisionShape2D" parent="StaticBody" unique_id=1921189061]
-shape = SubResource("CircleShape2D_sotaw")
-debug_color = Color(2.7915835e-06, 0.64673054, 0.23743263, 0.41960785)
+Collision = NodePath("Collision")
 
 [node name="HealthComponent" type="Node" parent="." unique_id=2076969682]
 script = ExtResource("3_spxru")
 metadata/_custom_type_script = "uid://clgva43afx5kk"
+
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="." unique_id=1496320711]
+sprite_frames = SubResource("SpriteFrames_w53q4")
+autoplay = "default"
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=1921189061]
+shape = SubResource("CircleShape2D_sotaw")
+debug_color = Color(2.7915835e-06, 0.64673054, 0.23743263, 0.41960785)

@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://chqvp6xh5nxn8"]
+
+[ext_resource type="Texture2D" uid="uid://bd27bfeyxjsjm" path="res://Entities/Projectile/NormalBullet.png" id="1_5tdpk"]
+[ext_resource type="Script" uid="uid://dmxcg47di5iim" path="res://Entities/Projectile/Projectile.cs" id="1_w7mae"]
+[ext_resource type="PackedScene" uid="uid://dguuymw41wnjp" path="res://Components/SpeedComponent.tscn" id="3_7y7gd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w7mae"]
+atlas = ExtResource("1_5tdpk")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n66yl"]
+atlas = ExtResource("1_5tdpk")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ttmag"]
+atlas = ExtResource("1_5tdpk")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6o1jo"]
+atlas = ExtResource("1_5tdpk")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2fjyo"]
+atlas = ExtResource("1_5tdpk")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fxv2w"]
+atlas = ExtResource("1_5tdpk")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jt2jn"]
+atlas = ExtResource("1_5tdpk")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hmlfe"]
+atlas = ExtResource("1_5tdpk")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yxxru"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w7mae")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n66yl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ttmag")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6o1jo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2fjyo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fxv2w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jt2jn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hmlfe")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5tdpk"]
+size = Vector2(6, 32)
+
+[node name="Projectile" type="Area2D" unique_id=1845231924 node_paths=PackedStringArray("AnimatedSprite", "Collision", "Speed")]
+rotation = 1.5707964
+scale = Vector2(0.48000002, 0.48000002)
+script = ExtResource("1_w7mae")
+AnimatedSprite = NodePath("AnimatedSprite")
+Collision = NodePath("Collision")
+Speed = NodePath("SpeedComponent")
+
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="." unique_id=1537548018]
+sprite_frames = SubResource("SpriteFrames_yxxru")
+autoplay = "default"
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=1728050538]
+shape = SubResource("RectangleShape2D_5tdpk")
+
+[node name="SpeedComponent" parent="." unique_id=1843988401 instance=ExtResource("3_7y7gd")]
+MaxSpeed = 500.0

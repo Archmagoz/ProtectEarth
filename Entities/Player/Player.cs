@@ -2,7 +2,7 @@ using Godot;
 
 namespace ProtectEarth.Entities
 {
-	public partial class Player : Node2D
+	public partial class Player : CharacterBody2D
 	{
 		// Node references (assigned via editor or auto-resolved in _Ready).
 		[Export] public Components.HealthComponent Health { get; private set; }
@@ -10,6 +10,9 @@ namespace ProtectEarth.Entities
 		[Export] public CollisionPolygon2D Collision { get; private set; }
 
 		private Vector2 _velocity;
+		private bool _isDead = false;
+
+		public bool IsDead => _isDead;
 
 		public override void _Ready()
 		{
@@ -17,17 +20,29 @@ namespace ProtectEarth.Entities
 			Health ??= GetNodeOrNull<Components.HealthComponent>("HealthComponent");
 			Speed ??= GetNodeOrNull<Components.SpeedComponent>("SpeedComponent");
 			Collision ??= GetNodeOrNull<CollisionPolygon2D>("Collision");
+
+			// Connect signals.
+			Health.Death += OnDeath;
 		}
 
-		public override void _Process(double delta)
+		public override void _PhysicsProcess(double delta)
 		{
-			HandleMovement(delta);
+			if (_isDead) return;
+			HandleMovement();
 			HandleRotation();
+		}
+
+		// ------------------------------ Signal handlers ----------------------------------
+
+		private void OnDeath()
+		{
+			_isDead = true;
+			return; // Placeholder for death logic.
 		}
 
 		// ------------------------------ Movement logic ----------------------------------
 
-		private void HandleMovement(double delta)
+		private void HandleMovement()
 		{
 			Vector2 input = Vector2.Zero;
 
@@ -38,9 +53,9 @@ namespace ProtectEarth.Entities
 
 			input = input.Normalized();
 
-			_velocity = input * Speed.CurrentSpeed;
+			Velocity = input * Speed.CurrentSpeed;
 
-			Position += _velocity * (float)delta;
+			MoveAndSlide();
 		}
 
 		private void HandleRotation()

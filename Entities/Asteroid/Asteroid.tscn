@@ -99,12 +99,5 @@ metadata/_custom_type_script = "uid://clgva43afx5kk"
 
 [node name="SpeedComponent" type="Node" parent="." unique_id=173428464]
 script = ExtResource("5_tuyl4")
-MaxSpeed = 110.0
+MaxSpeed = 80.0
 metadata/_custom_type_script = "uid://clm28aswedb33"
-
-[node name="Lifetime" type="Timer" parent="." unique_id=2040571133]
-wait_time = 2.0
-one_shot = true
-autostart = true
-
-[connection signal="timeout" from="Lifetime" to="." method="OnDeath"]
