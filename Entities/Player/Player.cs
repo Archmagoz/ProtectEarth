@@ -1,3 +1,5 @@
+using ProtectEarth.Entities.Projectile;
+
 using Godot;
 
 namespace ProtectEarth.Entities
@@ -8,6 +10,8 @@ namespace ProtectEarth.Entities
 		[Export] public Components.HealthComponent Health { get; private set; }
 		[Export] public Components.SpeedComponent Speed { get; private set; }
 		[Export] public CollisionPolygon2D Collision { get; private set; }
+		[Export] public PackedScene ProjectileScene { get; private set; }
+		[Export] public Marker2D Muzzle { get; private set; }
 
 		private Vector2 _velocity;
 
@@ -17,6 +21,7 @@ namespace ProtectEarth.Entities
 			Health ??= GetNodeOrNull<Components.HealthComponent>("HealthComponent");
 			Speed ??= GetNodeOrNull<Components.SpeedComponent>("SpeedComponent");
 			Collision ??= GetNodeOrNull<CollisionPolygon2D>("Collision");
+			Muzzle ??= GetNode<Marker2D>("Muzzle");
 
 			// Connect signals.
 			Health.Death += OnDeath;
@@ -27,6 +32,29 @@ namespace ProtectEarth.Entities
 			if (Health.IsDead) return; // early exit if dead
 			HandleMovement();
 			HandleRotation();
+		}
+
+		public override void _Process(double delta)
+		{
+			if (Input.IsActionJustPressed("shoot"))
+			{
+				Shoot();
+			}
+		}
+
+		// ------------------------------ Player actions -----------------------------------
+
+		private void Shoot()
+		{
+			var projectile = ProjectileScene.Instantiate<PlayerProjectile>();
+			var direction = (GetGlobalMousePosition() - GlobalPosition).Normalized();
+
+			projectile.GlobalPosition = Muzzle.GlobalPosition;
+			projectile.Rotation = Rotation + Mathf.Pi / 2f;
+			projectile.Direction = direction;
+			projectile.Source = this;
+
+			GetTree().CurrentScene.AddChild(projectile);
 		}
 
 		// ------------------------------ Signal handlers ----------------------------------

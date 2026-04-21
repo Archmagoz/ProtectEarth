@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://chqvp6xh5nxn8"]
 
-[ext_resource type="Script" uid="uid://dmxcg47di5iim" path="res://Entities/Projectile/PlayerProjectile/Projectile.cs" id="1_xnvm1"]
+[ext_resource type="Script" uid="uid://dmxcg47di5iim" path="res://Entities/Projectile/PlayerProjectile/PlayerProjectile.cs" id="1_xnvm1"]
 [ext_resource type="Texture2D" uid="uid://bd27bfeyxjsjm" path="res://Entities/Projectile/PlayerProjectile/NormalBullet.png" id="2_bhtoi"]
 [ext_resource type="PackedScene" uid="uid://dguuymw41wnjp" path="res://Components/SpeedComponent.tscn" id="3_0oruw"]
 
@@ -72,7 +72,7 @@ animations = [{
 size = Vector2(6, 32)
 
 [node name="PlayerProjectile" type="Area2D" unique_id=1845231924 node_paths=PackedStringArray("AnimatedSprite", "Collision", "Speed")]
-rotation = 1.5707964
+rotation = -1.5707964
 scale = Vector2(0.48000002, 0.48000002)
 script = ExtResource("1_xnvm1")
 AnimatedSprite = NodePath("AnimatedSprite")
@@ -88,3 +88,10 @@ shape = SubResource("RectangleShape2D_5tdpk")
 
 [node name="SpeedComponent" parent="." unique_id=1843988401 instance=ExtResource("3_0oruw")]
 MaxSpeed = 500.0
+
+[node name="Lifetime" type="Timer" parent="." unique_id=61208143]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Lifetime" to="." method="OnLifetimeTimeout"]

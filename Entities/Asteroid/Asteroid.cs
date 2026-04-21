@@ -60,8 +60,8 @@ namespace ProtectEarth.Entities
 		// Handles death: stop movement and play explosion animation.
 		private void OnDeath()
 		{
-			Collision.Disabled = true;
 			LinearVelocity = Vector2.Zero;
+			Collision.SetDeferred("disabled", true);
 			AnimatedSprite.Play("explode");
 		}
 
@@ -77,7 +77,7 @@ namespace ProtectEarth.Entities
 		// Moves the asteroid toward the screen center while applying rotation.
 		private void MoveTowardsCenter()
 		{
-			Vector2 direction = (_center - GlobalPosition).Normalized();
+			var direction = (_center - GlobalPosition).Normalized();
 			LinearVelocity = direction * Speed.CurrentSpeed;
 			Rotation += _rotationSpeed;
 		}
