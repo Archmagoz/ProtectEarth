@@ -1,10 +1,10 @@
 using Godot;
 using ProtectEarth.Components;
 
-namespace ProtectEarth.Entities
+namespace ProtectEarth.Entities.Projectile
 {
 	[GlobalClass]
-	public partial class Projectile : Area2D
+	public partial class PlayerProjectile : Area2D
 	{
 		// Node references (assigned via editor or auto-resolved in _Ready).
 		[Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
@@ -21,6 +21,7 @@ namespace ProtectEarth.Entities
 
 		public override void _PhysicsProcess(double delta)
 		{
+			return; // Placeholder for projectile movement logic.
 		}
 	}
 }
