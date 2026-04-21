@@ -48,7 +48,7 @@ namespace ProtectEarth.Entities
 		}
 
 		// Once the explosion animation finishes, remove the asteroid from the scene.
-		public void OnAnimationFinished()
+		private void OnAnimationFinished()
 		{
 			if (AnimatedSprite.Animation != "explode") return;
 			QueueFree();
