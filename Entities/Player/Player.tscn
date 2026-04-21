@@ -22,11 +22,11 @@ texture = ExtResource("1_e5kic")
 rotation = 1.5707964
 polygon = PackedVector2Array(15, 11, 14, 6, 0, -12, -14, 6, -15, 11)
 
+[node name="Muzzle" type="Marker2D" parent="." unique_id=1782029242]
+position = Vector2(16, 0)
+
 [node name="HealthComponent" parent="." unique_id=1829535144 instance=ExtResource("3_1des2")]
 MaxHealth = 500
 
 [node name="SpeedComponent" parent="." unique_id=1843988401 instance=ExtResource("4_an6q6")]
 MaxSpeed = 200.0
-
-[node name="Muzzle" type="Marker2D" parent="." unique_id=1782029242]
-position = Vector2(16, 0)
