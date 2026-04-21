@@ -38,7 +38,7 @@ namespace ProtectEarth.Entities
 			Health.Death += OnDeath;
 		}
 
-		// Objetec main loop: handle movement and rotation.
+		// Object main loop: handle movement and rotation.
 		public override void _PhysicsProcess(double delta)
 		{
 			if (Health.IsDead) return; // early exit if dead
