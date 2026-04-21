@@ -44,12 +44,13 @@ namespace ProtectEarth.Entities
 			_isDead = true;
 			Collision.Disabled = true;
 			LinearVelocity = Vector2.Zero;
-			AnimatedSprite?.Play("explode");
+			AnimatedSprite.Play("explode");
 		}
 
-		// Called via AnimatedSprite animation_finished signal to remove the asteroid.
+		// Once the explosion animation finishes, remove the asteroid from the scene.
 		public void OnAnimationFinished()
 		{
+			if (AnimatedSprite.Animation != "explode") return;
 			QueueFree();
 		}
 
