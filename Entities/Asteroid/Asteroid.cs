@@ -7,10 +7,10 @@ namespace ProtectEarth.Entities
 	public partial class Asteroid : RigidBody2D
 	{
 		// Node references (assigned via editor or auto-resolved in _Ready).
-		[Export] public AnimatedSprite2D AnimatedSprite;
-		[Export] public CollisionPolygon2D Collision;
-		[Export] public HealthComponent Health;
-		[Export] public SpeedComponent Speed;
+		[Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
+		[Export] public CollisionPolygon2D Collision { get; private set; }
+		[Export] public HealthComponent Health { get; private set; }
+		[Export] public SpeedComponent Speed { get; private set; }
 
 		private bool _isDead = false;
 		private float _rotationSpeed;

@@ -10,11 +10,11 @@ namespace ProtectEarth.Components
 		[Signal] public delegate void HealthChangedEventHandler(int current, int max);
 		[Signal] public delegate void DeathEventHandler();
 
-		private int _currentHealth;
-		public int CurrentHealth => _currentHealth;
-
 		private bool _isDead = false;
 		public bool IsDead => _isDead;
+
+		private int _currentHealth;
+		public int CurrentHealth => _currentHealth;
 
 		public override void _Ready()
 		{
