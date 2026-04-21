@@ -36,6 +36,12 @@ namespace ProtectEarth.Entities
 			Health.Death += OnDeath;
 		}
 
+		public override void _PhysicsProcess(double delta)
+		{
+			if (_isDead) return;
+			MoveTowardsCenter();
+		}
+
 		// ------------------------------ Signal handlers ----------------------------------
 
 		// Handles death: stop movement and play explosion animation.
@@ -62,12 +68,6 @@ namespace ProtectEarth.Entities
 			_direction = (_center - GlobalPosition).Normalized();
 			LinearVelocity = _direction * Speed.CurrentSpeed;
 			Rotation += _rotationSpeed;
-		}
-
-		public override void _PhysicsProcess(double delta)
-		{
-			if (_isDead) return;
-			MoveTowardsCenter();
 		}
 	}
 }

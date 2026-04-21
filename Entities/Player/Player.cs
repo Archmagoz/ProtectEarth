@@ -25,6 +25,8 @@ namespace ProtectEarth.Entities
 			HandleRotation();
 		}
 
+		// ------------------------------ Movement logic ----------------------------------
+
 		private void HandleMovement(double delta)
 		{
 			Vector2 input = Vector2.Zero;
