@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://bfx0d8wfnkv0a"]
+
+[ext_resource type="Script" uid="uid://c15vryxwktsgn" path="res://Levels/DebugLevel/DebugLevel.cs" id="1_vbe3p"]
+[ext_resource type="PackedScene" uid="uid://wckpu25srpss" path="res://Entities/Asteroid/Asteroid.tscn" id="2_vel0m"]
+[ext_resource type="PackedScene" uid="uid://dqtc0ug4pbdxk" path="res://Levels/DebugLevel/Background/Background.tscn" id="3_pslde"]
+[ext_resource type="PackedScene" uid="uid://x87glh7ayopp" path="res://Entities/Planet/Planet.tscn" id="4_f70p5"]
+
+[node name="Debug" type="Node2D" unique_id=154008839]
+script = ExtResource("1_vbe3p")
+_asteroidScene = ExtResource("2_vel0m")
+
+[node name="Background" parent="." unique_id=1894191346 instance=ExtResource("3_pslde")]
+
+[node name="Planet" parent="." unique_id=1252755180 instance=ExtResource("4_f70p5")]
+
+[node name="Camera" type="Camera2D" parent="." unique_id=76599704]
+zoom = Vector2(2, 2)
+
+[node name="AsteroidSpawner" type="Timer" parent="." unique_id=905032918]
+autostart = true
+
+[connection signal="timeout" from="AsteroidSpawner" to="." method="OnAsteroidSpawnerTimeout"]

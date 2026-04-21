@@ -4,7 +4,7 @@ using ProtectEarth.Utils;
 
 namespace ProtectEarth.Levels
 {
-	public partial class Debug : Node2D
+	public partial class DebugLevel : Node2D
 	{
 		// Node references (assigned via editor or auto-resolved in _Ready).
 		[Export] private PackedScene _asteroidScene;
