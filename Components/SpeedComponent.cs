@@ -1,5 +1,4 @@
 using Godot;
-using ProtectEarth.Utils;
 
 namespace ProtectEarth.Components
 {

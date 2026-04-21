@@ -1,5 +1,6 @@
-using Godot;
 using ProtectEarth.Components;
+
+using Godot;
 
 namespace ProtectEarth.Entities.Projectile
 {

@@ -1,6 +1,6 @@
 using Godot;
 
-namespace ProtectEarth.Utils
+namespace ProtectEarth.Core.Utils
 {
     public static class ScreenUtils
     {

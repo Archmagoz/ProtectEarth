@@ -10,9 +10,6 @@ namespace ProtectEarth.Entities
 		[Export] public CollisionPolygon2D Collision { get; private set; }
 
 		private Vector2 _velocity;
-		private bool _isDead = false;
-
-		public bool IsDead => _isDead;
 
 		public override void _Ready()
 		{
@@ -27,7 +24,7 @@ namespace ProtectEarth.Entities
 
 		public override void _PhysicsProcess(double delta)
 		{
-			if (_isDead) return;
+			if (Health.IsDead) return; // early exit if dead
 			HandleMovement();
 			HandleRotation();
 		}
@@ -36,7 +33,6 @@ namespace ProtectEarth.Entities
 
 		private void OnDeath()
 		{
-			_isDead = true;
 			return; // Placeholder for death logic.
 		}
 

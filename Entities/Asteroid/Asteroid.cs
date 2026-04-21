@@ -1,10 +1,12 @@
-using Godot;
-using ProtectEarth.Utils;
+using ProtectEarth.Core.Interfaces;
+using ProtectEarth.Core.Utils;
 using ProtectEarth.Components;
+
+using Godot;
 
 namespace ProtectEarth.Entities
 {
-	public partial class Asteroid : RigidBody2D
+	public partial class Asteroid : RigidBody2D, IDamageable
 	{
 		// Node references (assigned via editor or auto-resolved in _Ready).
 		[Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
@@ -12,12 +14,12 @@ namespace ProtectEarth.Entities
 		[Export] public HealthComponent Health { get; private set; }
 		[Export] public SpeedComponent Speed { get; private set; }
 
-		private bool _isDead = false;
+		// Internal state for rotation and screen center caching.
 		private float _rotationSpeed;
-		private Vector2 _direction;
 		private Vector2 _center;
 
-		public bool IsDead => _isDead;
+		// IDamageable delegate to HealthComponent.
+		public void ApplyDamage(int damage) => Health.ApplyDamage(damage);
 
 		public override void _Ready()
 		{
@@ -36,10 +38,21 @@ namespace ProtectEarth.Entities
 			Health.Death += OnDeath;
 		}
 
+		// Objetec main loop: handle movement and rotation.
 		public override void _PhysicsProcess(double delta)
 		{
-			if (_isDead) return;
+			if (Health.IsDead) return; // early exit if dead
 			MoveTowardsCenter();
+		}
+
+		// Clean up signal connections after the node ExitTree to prevent potential issues.
+		public override void _ExitTree()
+		{
+			if (Health != null)
+				Health.Death -= OnDeath;
+
+			if (AnimatedSprite != null)
+				AnimatedSprite.AnimationFinished -= OnAnimationFinished;
 		}
 
 		// ------------------------------ Signal handlers ----------------------------------
@@ -47,7 +60,6 @@ namespace ProtectEarth.Entities
 		// Handles death: stop movement and play explosion animation.
 		private void OnDeath()
 		{
-			_isDead = true;
 			Collision.Disabled = true;
 			LinearVelocity = Vector2.Zero;
 			AnimatedSprite.Play("explode");
@@ -65,8 +77,8 @@ namespace ProtectEarth.Entities
 		// Moves the asteroid toward the screen center while applying rotation.
 		private void MoveTowardsCenter()
 		{
-			_direction = (_center - GlobalPosition).Normalized();
-			LinearVelocity = _direction * Speed.CurrentSpeed;
+			Vector2 direction = (_center - GlobalPosition).Normalized();
+			LinearVelocity = direction * Speed.CurrentSpeed;
 			Rotation += _rotationSpeed;
 		}
 	}

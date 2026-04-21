@@ -1,6 +1,7 @@
-using Godot;
+using ProtectEarth.Core.Utils;
 using ProtectEarth.Entities;
-using ProtectEarth.Utils;
+
+using Godot;
 
 namespace ProtectEarth.Levels
 {
