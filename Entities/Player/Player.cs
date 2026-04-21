@@ -42,6 +42,13 @@ namespace ProtectEarth.Entities
 			}
 		}
 
+		// ------------------------------ Signal handlers ----------------------------------
+
+		private void OnDeath()
+		{
+			return; // Placeholder for death logic.
+		}
+
 		// ------------------------------ Player actions -----------------------------------
 
 		private void Shoot()
@@ -55,13 +62,6 @@ namespace ProtectEarth.Entities
 			projectile.Source = this;
 
 			GetTree().CurrentScene.AddChild(projectile);
-		}
-
-		// ------------------------------ Signal handlers ----------------------------------
-
-		private void OnDeath()
-		{
-			return; // Placeholder for death logic.
 		}
 
 		// ------------------------------ Movement logic ----------------------------------

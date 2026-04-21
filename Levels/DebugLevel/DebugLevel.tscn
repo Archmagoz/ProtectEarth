@@ -17,10 +17,10 @@ _asteroidScene = ExtResource("2_vel0m")
 [node name="Camera" type="Camera2D" parent="." unique_id=76599704]
 zoom = Vector2(2, 2)
 
-[node name="AsteroidSpawner" type="Timer" parent="." unique_id=905032918]
-autostart = true
-
 [node name="Player" parent="." unique_id=1835500830 instance=ExtResource("5_vel0m")]
 position = Vector2(0, 86)
+
+[node name="AsteroidSpawner" type="Timer" parent="." unique_id=905032918]
+autostart = true
 
 [connection signal="timeout" from="AsteroidSpawner" to="." method="OnAsteroidSpawnerTimeout"]

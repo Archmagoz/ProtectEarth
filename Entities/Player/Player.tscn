@@ -6,12 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://dv4bi7ckkhxak" path="res://Components/HealthComponent.tscn" id="3_1des2"]
 [ext_resource type="PackedScene" uid="uid://dguuymw41wnjp" path="res://Components/SpeedComponent.tscn" id="4_an6q6"]
 
-[node name="Player" type="CharacterBody2D" unique_id=1835500830 node_paths=PackedStringArray("Health", "Speed", "Collision")]
+[node name="Player" type="CharacterBody2D" unique_id=1835500830 node_paths=PackedStringArray("Health", "Speed", "Collision", "Muzzle")]
 script = ExtResource("1_ww0jn")
 Health = NodePath("HealthComponent")
 Speed = NodePath("SpeedComponent")
 Collision = NodePath("CollisionPolygon")
 ProjectileScene = ExtResource("2_an6q6")
+Muzzle = NodePath("Muzzle")
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=2070086595]
 rotation = 1.5707964
