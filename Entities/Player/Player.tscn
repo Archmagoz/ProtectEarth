@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://dlm5wkqefo240"]
+
+[ext_resource type="Texture2D" uid="uid://bv1pbr67iwiye" path="res://Entities/Player/MainShipBase.png" id="1_e5kic"]
+[ext_resource type="Script" uid="uid://clxl80iecfgrb" path="res://Entities/Player/Player.cs" id="1_ww0jn"]
+[ext_resource type="PackedScene" uid="uid://dv4bi7ckkhxak" path="res://Components/HealthComponent.tscn" id="3_1des2"]
+[ext_resource type="PackedScene" uid="uid://dguuymw41wnjp" path="res://Components/SpeedComponent.tscn" id="4_an6q6"]
+
+[node name="Player" type="CharacterBody2D" unique_id=1835500830 node_paths=PackedStringArray("Health", "Speed", "Collision")]
+script = ExtResource("1_ww0jn")
+Health = NodePath("HealthComponent")
+Speed = NodePath("SpeedComponent")
+Collision = NodePath("CollisionPolygon")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=2070086595]
+rotation = 1.5707964
+texture = ExtResource("1_e5kic")
+
+[node name="CollisionPolygon" type="CollisionPolygon2D" parent="." unique_id=1709290710]
+rotation = 1.5707964
+polygon = PackedVector2Array(15, 11, 14, 6, 0, -12, -14, 6, -15, 11)
+
+[node name="HealthComponent" parent="." unique_id=1829535144 instance=ExtResource("3_1des2")]
+MaxHealth = 500
+
+[node name="SpeedComponent" parent="." unique_id=1843988401 instance=ExtResource("4_an6q6")]
+MaxSpeed = 300.0

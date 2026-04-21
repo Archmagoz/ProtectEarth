@@ -15,7 +15,7 @@ namespace ProtectEarth.Components
 
 		public override void _Ready()
 		{
-			int speed = RNG.Range(50, (int)MaxSpeed);
+			float speed = MaxSpeed;
 			_currentSpeed = speed;
 		}
 

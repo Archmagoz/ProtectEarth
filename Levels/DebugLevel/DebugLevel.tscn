@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://wckpu25srpss" path="res://Entities/Asteroid/Asteroid.tscn" id="2_vel0m"]
 [ext_resource type="PackedScene" uid="uid://dqtc0ug4pbdxk" path="res://Levels/DebugLevel/Background/Background.tscn" id="3_pslde"]
 [ext_resource type="PackedScene" uid="uid://x87glh7ayopp" path="res://Entities/Planet/Planet.tscn" id="4_f70p5"]
+[ext_resource type="PackedScene" uid="uid://dlm5wkqefo240" path="res://Entities/Player/Player.tscn" id="5_vel0m"]
 
 [node name="Debug" type="Node2D" unique_id=154008839]
 script = ExtResource("1_vbe3p")
@@ -18,5 +19,8 @@ zoom = Vector2(2, 2)
 
 [node name="AsteroidSpawner" type="Timer" parent="." unique_id=905032918]
 autostart = true
+
+[node name="Player" parent="." unique_id=1835500830 instance=ExtResource("5_vel0m")]
+position = Vector2(137, 30)
 
 [connection signal="timeout" from="AsteroidSpawner" to="." method="OnAsteroidSpawnerTimeout"]
