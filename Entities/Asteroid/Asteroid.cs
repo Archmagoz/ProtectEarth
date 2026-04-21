@@ -45,16 +45,6 @@ namespace ProtectEarth.Entities
 			MoveTowardsCenter();
 		}
 
-		// Clean up signal connections after the node ExitTree to prevent potential issues.
-		public override void _ExitTree()
-		{
-			if (Health != null)
-				Health.Death -= OnDeath;
-
-			if (AnimatedSprite != null)
-				AnimatedSprite.AnimationFinished -= OnAnimationFinished;
-		}
-
 		// ------------------------------ Signal handlers ----------------------------------
 
 		// Handles death: stop movement and play explosion animation.
