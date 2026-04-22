@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://x87glh7ayopp"]
 
-[ext_resource type="Texture2D" uid="uid://cd3edxcjxs00g" path="res://Entities/Planet/Planet.png" id="1_sotaw"]
+[ext_resource type="Texture2D" uid="uid://cd3edxcjxs00g" path="res://Entities/Planet/Assets/Planet.png" id="1_sotaw"]
 [ext_resource type="Script" uid="uid://b86qbc7v846qf" path="res://Entities/Planet/Planet.cs" id="1_vqrwm"]
 [ext_resource type="Script" uid="uid://clgva43afx5kk" path="res://Components/HealthComponent.cs" id="3_spxru"]
 

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://chqvp6xh5nxn8"]
 
 [ext_resource type="Script" uid="uid://dmxcg47di5iim" path="res://Entities/Projectile/PlayerProjectile/PlayerProjectile.cs" id="1_xnvm1"]
-[ext_resource type="Texture2D" uid="uid://bd27bfeyxjsjm" path="res://Entities/Projectile/PlayerProjectile/NormalBullet.png" id="2_bhtoi"]
+[ext_resource type="Texture2D" uid="uid://bd27bfeyxjsjm" path="res://Entities/Projectile/PlayerProjectile/Assets/NormalBullet.png" id="2_bhtoi"]
 [ext_resource type="PackedScene" uid="uid://dguuymw41wnjp" path="res://Components/SpeedComponent.tscn" id="3_0oruw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_w7mae"]
