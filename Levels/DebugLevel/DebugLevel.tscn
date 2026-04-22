@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://x87glh7ayopp" path="res://Entities/Planet/Planet.tscn" id="4_f70p5"]
 [ext_resource type="PackedScene" uid="uid://dlm5wkqefo240" path="res://Entities/Player/Player.tscn" id="5_vel0m"]
 
-[node name="Debug" type="Node2D" unique_id=154008839]
+[node name="DebugLevel" type="Node2D" unique_id=154008839]
 script = ExtResource("1_vbe3p")
 _asteroidScene = ExtResource("2_vel0m")
 
