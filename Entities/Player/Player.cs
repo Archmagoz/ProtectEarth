@@ -13,8 +13,6 @@ namespace ProtectEarth.Entities
 		[Export] public PackedScene ProjectileScene { get; private set; }
 		[Export] public Marker2D Muzzle { get; private set; }
 
-		private Vector2 _velocity;
-
 		public override void _Ready()
 		{
 			// Fallback to find nodes if not set via editor.
