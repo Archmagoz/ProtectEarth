@@ -13,8 +13,13 @@ namespace ProtectEarth.Entities.Projectile
 		[Export] public CollisionShape2D Collision { get; private set; }
 		[Export] public SpeedComponent Speed { get; private set; }
 
+		// Damage value for the projectile, can be set via editor or code.
+		[Export] public int Damage { get; set; } = 100;
+
 		// Source reference to avoid self-collision.
 		public Node Source { get; set; }
+
+		// Direction vector for movement, set by the player when shooting.
 		public Vector2 Direction { get; set; }
 
 		public override void _Ready()
@@ -37,10 +42,11 @@ namespace ProtectEarth.Entities.Projectile
 		private void OnBodyEntered(Node body)
 		{
 			if (body == Source) return; // Ignore collisions with the source (player)
+			if (body is Planet) return; // Ignore planet collision.
 
 			if (body is IDamageable damageable)
 			{
-				damageable.ApplyDamage(100);
+				damageable.ApplyDamage(Damage);
 				QueueFree();
 			}
 		}

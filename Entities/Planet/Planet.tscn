@@ -561,6 +561,7 @@ Collision = NodePath("Collision")
 
 [node name="HealthComponent" type="Node" parent="." unique_id=2076969682]
 script = ExtResource("3_spxru")
+MaxHealth = 1000
 metadata/_custom_type_script = "uid://clgva43afx5kk"
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." unique_id=1496320711]

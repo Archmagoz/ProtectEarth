@@ -1,17 +1,27 @@
+using ProtectEarth.Core.Interfaces;
 using ProtectEarth.Entities.Projectile;
 
 using Godot;
 
 namespace ProtectEarth.Entities
 {
-	public partial class Player : CharacterBody2D
+	public partial class Player : CharacterBody2D, IDamageable
 	{
 		// Node references (assigned via editor or auto-resolved in _Ready).
 		[Export] public Components.HealthComponent Health { get; private set; }
 		[Export] public Components.SpeedComponent Speed { get; private set; }
 		[Export] public CollisionPolygon2D Collision { get; private set; }
 		[Export] public PackedScene ProjectileScene { get; private set; }
-		[Export] public Marker2D Muzzle { get; private set; }
+		[Export] public Marker2D Marker { get; private set; }
+
+		// Player firing control.
+		[Export] public float ShootBufferTime = 0.15f;
+		[Export] public float FireRate = 0.3f;
+		private float _shootCooldown = 0f;
+		private float _shootBuffer = 0f;
+
+		// IDamageable delegate to HealthComponent.
+		public void ApplyDamage(int damage) => Health.ApplyDamage(damage);
 
 		public override void _Ready()
 		{
@@ -19,7 +29,7 @@ namespace ProtectEarth.Entities
 			Health ??= GetNodeOrNull<Components.HealthComponent>("HealthComponent");
 			Speed ??= GetNodeOrNull<Components.SpeedComponent>("SpeedComponent");
 			Collision ??= GetNodeOrNull<CollisionPolygon2D>("Collision");
-			Muzzle ??= GetNode<Marker2D>("Muzzle");
+			Marker ??= GetNode<Marker2D>("Marker");
 
 			// Connect signals.
 			Health.Death += OnDeath;
@@ -34,10 +44,8 @@ namespace ProtectEarth.Entities
 
 		public override void _Process(double delta)
 		{
-			if (Input.IsActionJustPressed("shoot"))
-			{
-				Shoot();
-			}
+			if (Health.IsDead) return; // early exit if dead
+			HandleShooting(delta);
 		}
 
 		// ------------------------------ Signal handlers ----------------------------------
@@ -49,12 +57,39 @@ namespace ProtectEarth.Entities
 
 		// ------------------------------ Player actions -----------------------------------
 
+		// Handles shooting input, manages cooldowns and buffers, and calls Shoot() when appropriate.
+		private void HandleShooting(double delta)
+		{
+			float d = (float)delta;
+
+			// Update cooldowns and buffers.
+			_shootCooldown -= d;
+			_shootBuffer -= d;
+
+			// Check for shoot input and manage shooting logic.
+			if (Input.IsActionJustPressed("shoot"))
+			{
+				_shootBuffer = ShootBufferTime;
+			}
+
+			if (_shootCooldown > 0f) return;
+
+			if (_shootBuffer <= 0f && !Input.IsActionPressed("shoot")) return;
+
+			Shoot();
+
+			// Reset cooldown and buffer after shooting.
+			_shootCooldown = FireRate;
+			_shootBuffer = 0f;
+		}
+
+		// Instantiates a projectile, sets its direction and source, and adds it to the scene.
 		private void Shoot()
 		{
 			var projectile = ProjectileScene.Instantiate<PlayerProjectile>();
 			var direction = (GetGlobalMousePosition() - GlobalPosition).Normalized();
 
-			projectile.GlobalPosition = Muzzle.GlobalPosition;
+			projectile.GlobalPosition = Marker.GlobalPosition;
 			projectile.Rotation = Rotation + Mathf.Pi / 2f;
 			projectile.Direction = direction;
 			projectile.Source = this;
@@ -82,7 +117,7 @@ namespace ProtectEarth.Entities
 
 		private void HandleRotation()
 		{
-			Vector2 mousePos = GetGlobalMousePosition();
+			var mousePos = GetGlobalMousePosition();
 			LookAt(mousePos);
 		}
 	}
