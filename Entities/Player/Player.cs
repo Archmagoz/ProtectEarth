@@ -99,6 +99,7 @@ namespace ProtectEarth.Entities
 
 		// ------------------------------ Movement logic ----------------------------------
 
+		// Handles player movement based on input, normalizes it for consistent speed in all directions.
 		private void HandleMovement()
 		{
 			Vector2 input = Vector2.Zero;
@@ -115,6 +116,7 @@ namespace ProtectEarth.Entities
 			MoveAndSlide();
 		}
 
+		// Handles player rotation to always face the mouse cursor.
 		private void HandleRotation()
 		{
 			var mousePos = GetGlobalMousePosition();
