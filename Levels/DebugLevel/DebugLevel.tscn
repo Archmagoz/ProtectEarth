@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bfx0d8wfnkv0a"]
 
-[ext_resource type="Script" uid="uid://c15vryxwktsgn" path="res://Levels/DebugLevel/DebugLevel.cs" id="1_vbe3p"]
+[ext_resource type="Script" uid="uid://daxod3xbg6uf2" path="res://Levels/DebugLevel/DebugLevel.cs" id="1_vbe3p"]
 [ext_resource type="PackedScene" uid="uid://wckpu25srpss" path="res://Entities/Asteroid/Asteroid.tscn" id="2_vel0m"]
 [ext_resource type="PackedScene" uid="uid://dqtc0ug4pbdxk" path="res://Levels/DebugLevel/Background/Background.tscn" id="3_pslde"]
 [ext_resource type="PackedScene" uid="uid://x87glh7ayopp" path="res://Entities/Planet/Planet.tscn" id="4_f70p5"]

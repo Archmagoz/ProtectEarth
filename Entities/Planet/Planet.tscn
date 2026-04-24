@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://x87glh7ayopp"]
 
-[ext_resource type="Texture2D" uid="uid://cd3edxcjxs00g" path="res://Entities/Planet/Assets/Planet.png" id="1_sotaw"]
-[ext_resource type="Script" uid="uid://b86qbc7v846qf" path="res://Entities/Planet/Planet.cs" id="1_vqrwm"]
-[ext_resource type="Script" uid="uid://clgva43afx5kk" path="res://Components/HealthComponent.cs" id="3_spxru"]
+[ext_resource type="Texture2D" uid="uid://tnn6rejrhyxd" path="res://Entities/Planet/Assets/Planet.png" id="1_sotaw"]
+[ext_resource type="Script" uid="uid://dckexuervubc3" path="res://Entities/Planet/Planet.cs" id="1_vqrwm"]
+[ext_resource type="Script" uid="uid://duoyv5qwnxi3b" path="res://Components/HealthComponent.cs" id="3_spxru"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vqrwm"]
 atlas = ExtResource("1_sotaw")
@@ -562,7 +562,6 @@ Collision = NodePath("Collision")
 [node name="HealthComponent" type="Node" parent="." unique_id=2076969682]
 script = ExtResource("3_spxru")
 MaxHealth = 1000
-metadata/_custom_type_script = "uid://clgva43afx5kk"
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." unique_id=1496320711]
 sprite_frames = SubResource("SpriteFrames_w53q4")

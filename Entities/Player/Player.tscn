@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dlm5wkqefo240"]
 
-[ext_resource type="Texture2D" uid="uid://bv1pbr67iwiye" path="res://Entities/Player/Assets/MainShipBase.png" id="1_e5kic"]
-[ext_resource type="Script" uid="uid://clxl80iecfgrb" path="res://Entities/Player/Player.cs" id="1_ww0jn"]
+[ext_resource type="Texture2D" uid="uid://csikyfuamash7" path="res://Entities/Player/Assets/MainShipBase.png" id="1_e5kic"]
+[ext_resource type="Script" uid="uid://5yxvmr68k4w7" path="res://Entities/Player/Player.cs" id="1_ww0jn"]
 [ext_resource type="PackedScene" uid="uid://chqvp6xh5nxn8" path="res://Entities/Projectile/PlayerProjectile/PlayerProjectile.tscn" id="2_an6q6"]
 [ext_resource type="PackedScene" uid="uid://dv4bi7ckkhxak" path="res://Components/HealthComponent.tscn" id="3_1des2"]
 [ext_resource type="PackedScene" uid="uid://dguuymw41wnjp" path="res://Components/SpeedComponent.tscn" id="4_an6q6"]
