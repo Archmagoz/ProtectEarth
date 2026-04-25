@@ -75,7 +75,7 @@ namespace ProtectEarth.Entities
 
 			// Reset cooldown and buffer after shooting.
 			_shootCooldown = FireRate;
-			_shootBuffer = Mathf.Max(_shootBuffer - d, -1f);
+			_shootBuffer = 0f;
 		}
 
 		// Instantiates a projectile, sets its direction and source, and adds it to the scene.
