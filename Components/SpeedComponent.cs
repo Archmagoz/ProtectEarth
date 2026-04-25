@@ -9,23 +9,22 @@ namespace ProtectEarth.Components
 
 		[Signal] public delegate void SpeedChangedEventHandler(float current, float max);
 
-		private float _currentSpeed;
-		public float CurrentSpeed => _currentSpeed;
+		public float CurrentSpeed { get; private set; }
 
 		public override void _Ready()
 		{
 			float speed = MaxSpeed;
-			_currentSpeed = speed;
+			CurrentSpeed = speed;
 		}
 
 		// Internal method to update speed safely.
 		private void UpdateSpeed(float value)
 		{
-			float oldSpeed = _currentSpeed;
-			_currentSpeed = Mathf.Clamp(value, 0, MaxSpeed);
+			float oldSpeed = CurrentSpeed;
+			CurrentSpeed = Mathf.Clamp(value, 0, MaxSpeed);
 
-			if (!Mathf.IsEqualApprox(_currentSpeed, oldSpeed))
-				EmitSignal(SignalName.SpeedChanged, _currentSpeed, MaxSpeed);
+			if (!Mathf.IsEqualApprox(CurrentSpeed, oldSpeed))
+				EmitSignal(SignalName.SpeedChanged, CurrentSpeed, MaxSpeed);
 		}
 
 		// Public API
@@ -41,12 +40,12 @@ namespace ProtectEarth.Components
 
 		public void AddSpeed(float amount)
 		{
-			UpdateSpeed(_currentSpeed + amount);
+			UpdateSpeed(CurrentSpeed + amount);
 		}
 
 		public void ReduceSpeed(float amount)
 		{
-			UpdateSpeed(_currentSpeed - amount);
+			UpdateSpeed(CurrentSpeed - amount);
 		}
 	}
 }
