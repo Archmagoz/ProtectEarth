@@ -72,7 +72,7 @@ animations = [{
 size = Vector2(6, 32)
 
 [node name="PlayerProjectile" type="Area2D" unique_id=1845231924 node_paths=PackedStringArray("AnimatedSprite", "Collision", "Speed")]
-rotation = -1.5707964
+rotation = 1.5707964
 scale = Vector2(0.48000002, 0.48000002)
 script = ExtResource("1_xnvm1")
 AnimatedSprite = NodePath("AnimatedSprite")

@@ -75,7 +75,7 @@ namespace ProtectEarth.Entities
 
 			// Reset cooldown and buffer after shooting.
 			_shootCooldown = FireRate;
-			_shootBuffer = 0f;
+			_shootBuffer = Mathf.Max(_shootBuffer - d, -1f);
 		}
 
 		// Instantiates a projectile, sets its direction and source, and adds it to the scene.
@@ -84,8 +84,8 @@ namespace ProtectEarth.Entities
 			var projectile = ProjectileScene.Instantiate<PlayerProjectile>();
 			var direction = (GetGlobalMousePosition() - GlobalPosition).Normalized();
 
+			projectile.Rotation = direction.Angle() + Mathf.Pi / 2f;
 			projectile.GlobalPosition = Marker.GlobalPosition;
-			projectile.Rotation = Rotation + Mathf.Pi / 2f;
 			projectile.Direction = direction;
 			projectile.Source = this;
 
