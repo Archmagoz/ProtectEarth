@@ -10,29 +10,26 @@ namespace ProtectEarth.Components
 		[Signal] public delegate void HealthChangedEventHandler(int current, int max);
 		[Signal] public delegate void DeathEventHandler();
 
-		private bool _isDead = false;
-		public bool IsDead => _isDead;
-
-		private int _currentHealth;
-		public int CurrentHealth => _currentHealth;
+		public bool IsDead { get; private set; }
+		public int CurrentHealth { get; private set; }
 
 		public override void _Ready()
 		{
-			_currentHealth = MaxHealth;
+			CurrentHealth = MaxHealth;
 		}
 
 		// Internal method to update health safely.
 		private void UpdateHealth(int value)
 		{
-			int oldHealth = _currentHealth;
-			_currentHealth = Mathf.Clamp(value, 0, MaxHealth);
+			int oldHealth = CurrentHealth;
+			CurrentHealth = Mathf.Clamp(value, 0, MaxHealth);
 
-			if (_currentHealth != oldHealth)
-				EmitSignal(SignalName.HealthChanged, _currentHealth, MaxHealth);
+			if (CurrentHealth != oldHealth)
+				EmitSignal(SignalName.HealthChanged, CurrentHealth, MaxHealth);
 
-			if (_currentHealth == 0 && !_isDead)
+			if (CurrentHealth == 0 && !IsDead)
 			{
-				_isDead = true;
+				IsDead = true;
 				EmitSignal(SignalName.Death);
 			}
 		}
@@ -40,7 +37,7 @@ namespace ProtectEarth.Components
 		// Public API
 		public void Reset()
 		{
-			_isDead = false;
+			IsDead = false;
 			UpdateHealth(MaxHealth);
 		}
 
@@ -52,13 +49,13 @@ namespace ProtectEarth.Components
 		public void ApplyDamage(int damage)
 		{
 			if (IsDead) return;
-			UpdateHealth(_currentHealth - damage);
+			UpdateHealth(CurrentHealth - damage);
 		}
 
 		public void Heal(int amount)
 		{
 			if (IsDead) return;
-			UpdateHealth(_currentHealth + amount);
+			UpdateHealth(CurrentHealth + amount);
 		}
 	}
 }
