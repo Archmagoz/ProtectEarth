@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bckk6y7586ej3"]
+
+[ext_resource type="Script" uid="uid://ibko6ngrctyf" path="res://Gameplay/Score/Score.cs" id="1_vm1fr"]
+
+[node name="Score" type="Node2D" unique_id=1953775316]
+script = ExtResource("1_vm1fr")

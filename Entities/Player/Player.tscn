@@ -13,7 +13,7 @@ Speed = NodePath("SpeedComponent")
 Collision = NodePath("CollisionPolygon")
 ProjectileScene = ExtResource("2_an6q6")
 Marker = NodePath("Marker")
-FireRate = 0.25
+FireRate = 0.15
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=2070086595]
 rotation = 1.5707964

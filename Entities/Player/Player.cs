@@ -39,12 +39,12 @@ namespace ProtectEarth.Entities
 		{
 			if (Health.IsDead) return; // early exit if dead
 			HandleMovement();
-			HandleRotation();
 		}
 
 		public override void _Process(double delta)
 		{
 			if (Health.IsDead) return; // early exit if dead
+			HandleRotation();
 			HandleShooting(delta);
 		}
 
@@ -60,20 +60,15 @@ namespace ProtectEarth.Entities
 		// Handles shooting input, manages cooldowns and buffers, and calls Shoot() when appropriate.
 		private void HandleShooting(double delta)
 		{
-			float d = (float)delta;
-
 			// Update cooldowns and buffers.
+			var d = (float)delta;
+
 			_shootCooldown -= d;
 			_shootBuffer -= d;
 
 			// Check for shoot input and manage shooting logic.
-			if (Input.IsActionJustPressed("shoot"))
-			{
-				_shootBuffer = ShootBufferTime;
-			}
-
+			if (Input.IsActionJustPressed("shoot")) _shootBuffer = ShootBufferTime;
 			if (_shootCooldown > 0f) return;
-
 			if (_shootBuffer <= 0f && !Input.IsActionPressed("shoot")) return;
 
 			Shoot();
@@ -94,7 +89,7 @@ namespace ProtectEarth.Entities
 			projectile.Direction = direction;
 			projectile.Source = this;
 
-			GetTree().CurrentScene.AddChild(projectile);
+			GetParent().AddChild(projectile);
 		}
 
 		// ------------------------------ Movement logic ----------------------------------
@@ -102,7 +97,7 @@ namespace ProtectEarth.Entities
 		// Handles player movement based on input, normalizes it for consistent speed in all directions.
 		private void HandleMovement()
 		{
-			Vector2 input = Vector2.Zero;
+			var input = Vector2.Zero;
 
 			if (Input.IsActionPressed("up")) input.Y -= 1;
 			if (Input.IsActionPressed("down")) input.Y += 1;
