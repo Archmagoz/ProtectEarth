@@ -1,6 +1,6 @@
 using Godot;
 
-namespace ProtectEarth.Gameplay.Score
+namespace ProtectEarth.Gameplay
 {
 	[GlobalClass]
 	public partial class Score : Node2D

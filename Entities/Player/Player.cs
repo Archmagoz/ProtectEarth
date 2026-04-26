@@ -1,5 +1,6 @@
 using ProtectEarth.Core.Interfaces;
 using ProtectEarth.Entities.Projectile;
+using ProtectEarth.Components;
 
 using Godot;
 
@@ -8,8 +9,8 @@ namespace ProtectEarth.Entities
 	public partial class Player : CharacterBody2D, IDamageable
 	{
 		// Node references (assigned via editor or auto-resolved in _Ready).
-		[Export] public Components.HealthComponent Health { get; private set; }
-		[Export] public Components.SpeedComponent Speed { get; private set; }
+		[Export] public HealthComponent Health { get; private set; }
+		[Export] public SpeedComponent Speed { get; private set; }
 		[Export] public CollisionPolygon2D Collision { get; private set; }
 		[Export] public PackedScene ProjectileScene { get; private set; }
 		[Export] public Marker2D Marker { get; private set; }
@@ -26,8 +27,8 @@ namespace ProtectEarth.Entities
 		public override void _Ready()
 		{
 			// Fallback to find nodes if not set via editor.
-			Health ??= GetNodeOrNull<Components.HealthComponent>("HealthComponent");
-			Speed ??= GetNodeOrNull<Components.SpeedComponent>("SpeedComponent");
+			Health ??= GetNodeOrNull<HealthComponent>("HealthComponent");
+			Speed ??= GetNodeOrNull<SpeedComponent>("SpeedComponent");
 			Collision ??= GetNodeOrNull<CollisionPolygon2D>("Collision");
 			Marker ??= GetNode<Marker2D>("Marker");
 

@@ -1,4 +1,4 @@
-using ProtectEarth.Gameplay.Score;
+using ProtectEarth.Gameplay;
 using ProtectEarth.Entities;
 
 using Godot;
