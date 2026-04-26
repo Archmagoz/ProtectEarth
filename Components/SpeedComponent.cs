@@ -6,7 +6,7 @@ namespace ProtectEarth.Components
 	public partial class SpeedComponent : Node
 	{
 		[Export] public float CurrentSpeed { get; private set; } = 10f;
-		[Export] public float MaxSpeed { get; set; } = 100f;
+		[Export] public float MaxSpeed { get; private set; } = 100f;
 
 		[Signal] public delegate void SpeedChangedEventHandler(float current, float max);
 

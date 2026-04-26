@@ -20,7 +20,7 @@ namespace ProtectEarth.Entities
 		// Gameplay parameters for scoring and player damage, can be set via editor or code.
 		[Export] public int ScoreBaseValue { get; private set; } = 300;
 		[Export] public int DamageToPlayer { get; private set; } = 20;
-		[Export] public int DificultyLevel { get; private set; } = 1;
+		[Export] public int DifficultyLevel { get; private set; } = 1;
 
 		// Internal state for rotation and screen center caching.
 		private float _rotationSpeed;
@@ -68,7 +68,7 @@ namespace ProtectEarth.Entities
 			AnimatedSprite.Play("explode");
 
 			// Emit score value to be added to the player's score, factoring in difficulty level.
-			EmitSignal(SignalName.AsteroidDestroyed, ScoreBaseValue * DificultyLevel);
+			EmitSignal(SignalName.AsteroidDestroyed, ScoreBaseValue * DifficultyLevel);
 		}
 
 		// Once the explosion animation finishes, remove the asteroid from the scene.
