@@ -20,7 +20,6 @@ namespace ProtectEarth.Entities
 		// Gameplay parameters for scoring and player damage, can be set via editor or code.
 		[Export] public int ScoreBaseValue { get; private set; } = 300;
 		[Export] public int DamageToPlayer { get; private set; } = 20;
-		[Export] public int DifficultyLevel { get; private set; } = 1;
 
 		// Internal state for rotation and screen center caching.
 		private float _rotationSpeed;
@@ -44,11 +43,7 @@ namespace ProtectEarth.Entities
 			_center = ScreenUtils.GetScreenCenter(this);
 			_rotationSpeed = RNG.Range(-0.01f, 0.01f);
 
-			// Connect signals.
-			AnimatedSprite.AnimationFinished += OnAnimationFinished;
-			Health.Death += OnDeath;
-
-			AddToGroup("asteroids");
+			ConnectSignals();
 		}
 
 		// Object main loop: handle movement and rotation.
@@ -56,6 +51,23 @@ namespace ProtectEarth.Entities
 		{
 			if (Health.IsDead) return; // early exit if dead
 			MoveTowardsCenter();
+		}
+
+		// Cleaning signal handlers.
+		public override void _ExitTree() => DisconnectSignals();
+
+		// ------------------------------ Signal management ----------------------------------
+
+		private void ConnectSignals()
+		{
+			AnimatedSprite.AnimationFinished += OnAnimationFinished;
+			Health.Death += OnDeath;
+		}
+
+		private void DisconnectSignals()
+		{
+			AnimatedSprite.AnimationFinished -= OnAnimationFinished;
+			Health.Death -= OnDeath;
 		}
 
 		// ------------------------------ Signal handlers ----------------------------------
@@ -68,7 +80,7 @@ namespace ProtectEarth.Entities
 			AnimatedSprite.Play("explode");
 
 			// Emit score value to be added to the player's score, factoring in difficulty level.
-			EmitSignal(SignalName.AsteroidDestroyed, ScoreBaseValue * DifficultyLevel);
+			EmitSignal(SignalName.AsteroidDestroyed, ScoreBaseValue);
 		}
 
 		// Once the explosion animation finishes, remove the asteroid from the scene.

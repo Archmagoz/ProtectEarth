@@ -35,14 +35,48 @@ namespace ProtectEarth.Entities.Projectile
 			// Play sound as independent node in root so it survives projectile deletion.
 			PlaySoundIndependent();
 
-			// Connect signals.
-			BodyEntered += OnBodyEntered;
+			ConnectSignals();
 		}
 
+		// Object main loop: handle movement
 		public override void _PhysicsProcess(double delta)
 		{
 			Position += Direction * Speed.CurrentSpeed * (float)delta;
 		}
+
+		public override void _ExitTree() => DisconnectSignals();
+
+		// ------------------------------ Signal management ----------------------------------
+
+		private void ConnectSignals()
+		{
+			BodyEntered += OnBodyEntered;
+		}
+
+		private void DisconnectSignals()
+		{
+			BodyEntered -= OnBodyEntered;
+		}
+
+		// ------------------------------ Signal handlers ----------------------------------
+
+		// Checks for collisions with damageable entities, applies damage and frees the projectile.
+		private void OnBodyEntered(Node body)
+		{
+			if (body == Source) return; // Ignore collisions with the source (player)
+			if (body is Planet) return; // Ignore planet collision.
+
+			if (body is IDamageable damageable)
+			{
+				damageable.ApplyDamage(Damage);
+				QueueFree();
+			}
+		}
+
+		// Free the projectile when Lifetime Timer ends, timer set by godot editor.
+		private void OnLifetimeTimeout() => QueueFree();
+
+		// ------------------------------ Sound ----------------------------------
 
 		// Spawns a fire-and-forget AudioStreamPlayer2D at the root level.
 		private void PlaySoundIndependent()
@@ -64,21 +98,5 @@ namespace ProtectEarth.Entities.Projectile
 			// Auto-free when the sound finishes.
 			player.Finished += player.QueueFree;
 		}
-
-		// Checks for collisions with damageable entities, applies damage and frees the projectile.
-		private void OnBodyEntered(Node body)
-		{
-			if (body == Source) return; // Ignore collisions with the source (player)
-			if (body is Planet) return; // Ignore planet collision.
-
-			if (body is IDamageable damageable)
-			{
-				damageable.ApplyDamage(Damage);
-				QueueFree();
-			}
-		}
-
-		// Free the projectile when Lifetime Timer ends, timer set by godot editor.
-		private void OnLifetimeTimeout() => QueueFree();
 	}
 }

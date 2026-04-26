@@ -32,10 +32,10 @@ namespace ProtectEarth.Entities
 			Collision ??= GetNodeOrNull<CollisionPolygon2D>("Collision");
 			Marker ??= GetNode<Marker2D>("Marker");
 
-			// Connect signals.
-			Health.Death += OnDeath;
+			ConnectSignals();
 		}
 
+		// Object main loop: handle movement, rotation and actions.
 		public override void _PhysicsProcess(double delta)
 		{
 			if (Health.IsDead) return; // early exit if dead
@@ -49,11 +49,25 @@ namespace ProtectEarth.Entities
 			HandleShooting(delta);
 		}
 
+		public override void _ExitTree() => DisconnectSignals();
+
+		// ------------------------------ Signal management ----------------------------------
+
+		private void ConnectSignals()
+		{
+			Health.Death += OnDeath;
+		}
+
+		private void DisconnectSignals()
+		{
+			Health.Death -= OnDeath;
+		}
+
 		// ------------------------------ Signal handlers ----------------------------------
 
 		private void OnDeath()
 		{
-			return; // Placeholder for death logic.
+			return; // TODO: OnDeath state logic.
 		}
 
 		// ------------------------------ Player actions -----------------------------------

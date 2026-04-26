@@ -31,13 +31,25 @@ namespace ProtectEarth.Levels
 			AsteroidSpawner ??= GetNodeOrNull<Timer>("AsteroidSpawner");
 			Score ??= GetNodeOrNull<Score>("Score");
 
-			// Connect signals.
-			Score.ScoreChanged += OnScoreChanged;
+			ConnectSignals();
 		}
 
+		// Cleaning signal handlers.
 		public override void _ExitTree()
 		{
 			GetTree().NodeAdded -= OnNodeAdded;
+			DisconnectSignals();
+		}
+
+		// ------------------------------ Signal management ----------------------------------
+
+		private void ConnectSignals()
+		{
+			Score.ScoreChanged += OnScoreChanged;
+		}
+
+		private void DisconnectSignals()
+		{
 			Score.ScoreChanged -= OnScoreChanged;
 		}
 
@@ -48,8 +60,10 @@ namespace ProtectEarth.Levels
 		{
 			if (node is Asteroid asteroid)
 			{
-				asteroid.AsteroidDestroyed += OnAsteroidDestroyed;
 				asteroid.AddSpeed(_currentSpeedMultiplier * 10f);
+				asteroid.AsteroidDestroyed += OnAsteroidDestroyed;
+
+				asteroid.TreeExited += () => asteroid.AsteroidDestroyed -= OnAsteroidDestroyed;
 			}
 		}
 
