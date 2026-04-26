@@ -31,4 +31,5 @@ position = Vector2(16, 0)
 MaxHealth = 500
 
 [node name="SpeedComponent" parent="." unique_id=1843988401 instance=ExtResource("4_an6q6")]
-MaxSpeed = 200.0
+CurrentSpeed = 200.0
+MaxSpeed = 400.0

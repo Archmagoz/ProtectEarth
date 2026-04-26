@@ -8,11 +8,19 @@ namespace ProtectEarth.Entities
 {
 	public partial class Asteroid : RigidBody2D, IDamageable
 	{
+		// Signal Handler.
+		[Signal] public delegate void AsteroidDestroyedEventHandler(int scoreValue);
+
 		// Node references (assigned via editor or auto-resolved in _Ready).
 		[Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
 		[Export] public CollisionPolygon2D Collision { get; private set; }
 		[Export] public HealthComponent Health { get; private set; }
 		[Export] public SpeedComponent Speed { get; private set; }
+
+		// Gameplay parameters for scoring and player damage, can be set via editor or code.
+		[Export] public int ScoreBaseValue { get; private set; } = 300;
+		[Export] public int DamageToPlayer { get; private set; } = 20;
+		[Export] public int DificultyLevel { get; private set; } = 1;
 
 		// Internal state for rotation and screen center caching.
 		private float _rotationSpeed;
@@ -20,6 +28,9 @@ namespace ProtectEarth.Entities
 
 		// IDamageable delegate to HealthComponent.
 		public void ApplyDamage(int damage) => Health.ApplyDamage(damage);
+
+		// Delegate AddSpeed to SpeedComponent, used by GameManager to increase asteroid speed on difficulty changes.
+		public void AddSpeed(float additionalSpeed) => Speed.AddSpeed(additionalSpeed);
 
 		public override void _Ready()
 		{
@@ -36,6 +47,8 @@ namespace ProtectEarth.Entities
 			// Connect signals.
 			AnimatedSprite.AnimationFinished += OnAnimationFinished;
 			Health.Death += OnDeath;
+
+			AddToGroup("asteroids");
 		}
 
 		// Object main loop: handle movement and rotation.
@@ -53,6 +66,9 @@ namespace ProtectEarth.Entities
 			LinearVelocity = Vector2.Zero;
 			Collision.SetDeferred("disabled", true);
 			AnimatedSprite.Play("explode");
+
+			// Emit score value to be added to the player's score, factoring in difficulty level.
+			EmitSignal(SignalName.AsteroidDestroyed, ScoreBaseValue * DificultyLevel);
 		}
 
 		// Once the explosion animation finishes, remove the asteroid from the scene.

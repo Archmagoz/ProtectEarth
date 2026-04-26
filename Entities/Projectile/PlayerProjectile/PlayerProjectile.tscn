@@ -78,7 +78,6 @@ script = ExtResource("1_xnvm1")
 AnimatedSprite = NodePath("AnimatedSprite")
 Collision = NodePath("Collision")
 Speed = NodePath("SpeedComponent")
-Damage = 50
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." unique_id=1537548018]
 sprite_frames = SubResource("SpriteFrames_yxxru")
@@ -88,7 +87,8 @@ autoplay = "default"
 shape = SubResource("RectangleShape2D_5tdpk")
 
 [node name="SpeedComponent" parent="." unique_id=1843988401 instance=ExtResource("3_0oruw")]
-MaxSpeed = 500.0
+CurrentSpeed = 500.0
+MaxSpeed = 1000.0
 
 [node name="Lifetime" type="Timer" parent="." unique_id=61208143]
 wait_time = 5.0

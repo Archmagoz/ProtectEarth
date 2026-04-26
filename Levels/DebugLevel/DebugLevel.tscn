@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://dqtc0ug4pbdxk" path="res://Levels/DebugLevel/Background/Background.tscn" id="3_pslde"]
 [ext_resource type="PackedScene" uid="uid://x87glh7ayopp" path="res://Entities/Planet/Planet.tscn" id="4_f70p5"]
 [ext_resource type="PackedScene" uid="uid://dlm5wkqefo240" path="res://Entities/Player/Player.tscn" id="5_vel0m"]
+[ext_resource type="PackedScene" uid="uid://bckk6y7586ej3" path="res://Gameplay/Score/Score.tscn" id="6_pslde"]
+[ext_resource type="PackedScene" uid="uid://ca1ekhb5p7xjh" path="res://Levels/GameManager.tscn" id="7_f70p5"]
 
 [node name="DebugLevel" type="Node2D" unique_id=154008839]
 script = ExtResource("1_vbe3p")
@@ -21,9 +23,18 @@ zoom = Vector2(2, 2)
 position = Vector2(0, 86)
 rotation = -1.5707964
 
-[node name="AsteroidSpawner" type="Timer" parent="." unique_id=905032918]
-autostart = true
+[node name="Score" parent="." unique_id=1953775316 instance=ExtResource("6_pslde")]
+position = Vector2(115, -162)
+scale = Vector2(0.51534736, 0.51534736)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1294692255]
+
+[node name="AsteroidSpawner" type="Timer" parent="." unique_id=905032918]
+wait_time = 2.0
+autostart = true
+
+[node name="GameManager" parent="." unique_id=979172017 node_paths=PackedStringArray("Score", "AsteroidSpawner") instance=ExtResource("7_f70p5")]
+Score = NodePath("../Score")
+AsteroidSpawner = NodePath("../AsteroidSpawner")
 
 [connection signal="timeout" from="AsteroidSpawner" to="." method="OnAsteroidSpawnerTimeout"]

@@ -5,17 +5,11 @@ namespace ProtectEarth.Components
 	[GlobalClass]
 	public partial class SpeedComponent : Node
 	{
+		[Export] public float CurrentSpeed { get; private set; } = 10f;
 		[Export] public float MaxSpeed { get; set; } = 100f;
 
 		[Signal] public delegate void SpeedChangedEventHandler(float current, float max);
 
-		public float CurrentSpeed { get; private set; }
-
-		public override void _Ready()
-		{
-			float speed = MaxSpeed;
-			CurrentSpeed = speed;
-		}
 
 		// Internal method to update speed safely.
 		private void UpdateSpeed(float value)
