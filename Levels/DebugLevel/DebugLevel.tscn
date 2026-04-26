@@ -22,7 +22,10 @@ position = Vector2(0, 86)
 rotation = -1.5707964
 
 [node name="Score" parent="." unique_id=1953775316 instance=ExtResource("6_pslde")]
-position = Vector2(110.00001, -157.00002)
+offset_left = 110.00001
+offset_top = -157.00002
+offset_right = 110.00001
+offset_bottom = -157.00002
 scale = Vector2(0.51534736, 0.51534736)
 
 [node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="." unique_id=1294692255]
