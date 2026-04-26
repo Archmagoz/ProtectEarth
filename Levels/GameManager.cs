@@ -27,6 +27,11 @@ namespace ProtectEarth.Levels
 
 		public override void _Ready()
 		{
+			// Fallback to find nodes if not set via editor.
+			AsteroidSpawner ??= GetNodeOrNull<Timer>("AsteroidSpawner");
+			Score ??= GetNodeOrNull<Score>("Score");
+
+			// Connect signals.
 			Score.ScoreChanged += OnScoreChanged;
 		}
 
