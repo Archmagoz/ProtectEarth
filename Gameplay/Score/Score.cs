@@ -10,7 +10,7 @@ namespace ProtectEarth.Gameplay.Score
 		[Signal] public delegate void ScoreResetEventHandler();
 
 		// Node reference for the score display label, assigned via editor or auto-resolved in _Ready.
-		[Export] RichTextLabel ScoreLabel;
+		[Export] public RichTextLabel ScoreLabel { get; private set; }
 
 		// Internal state for the current score.
 		public int CurrentScore { get; private set; } = 0;
