@@ -12,6 +12,7 @@ namespace ProtectEarth.Entities.Projectile
 		[Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
 		[Export] public CollisionShape2D Collision { get; private set; }
 		[Export] public SpeedComponent Speed { get; private set; }
+		[Export] public Timer LifetimeTimer { get; private set; }
 
 		// Sound effect stream to play on spawn, auto-freed when finished.
 		[Export] public AudioStream SoundEffectStream { get; private set; }
@@ -31,6 +32,7 @@ namespace ProtectEarth.Entities.Projectile
 			AnimatedSprite ??= GetNodeOrNull<AnimatedSprite2D>("Sprite");
 			Collision ??= GetNodeOrNull<CollisionShape2D>("Collision");
 			Speed ??= GetNodeOrNull<SpeedComponent>("SpeedComponent");
+			LifetimeTimer ??= GetNodeOrNull<Timer>("Lifetime");
 
 			// Play sound as independent node in root so it survives projectile deletion.
 			PlaySoundIndependent();
@@ -51,11 +53,13 @@ namespace ProtectEarth.Entities.Projectile
 		private void ConnectSignals()
 		{
 			BodyEntered += OnBodyEntered;
+			LifetimeTimer.Timeout += OnLifetimeTimeout;
 		}
 
 		private void DisconnectSignals()
 		{
 			BodyEntered -= OnBodyEntered;
+			LifetimeTimer.Timeout -= OnLifetimeTimeout;
 		}
 
 		// ------------------------------ Signal handlers ----------------------------------
@@ -73,7 +77,7 @@ namespace ProtectEarth.Entities.Projectile
 			}
 		}
 
-		// Free the projectile when Lifetime Timer ends, timer set by godot editor.
+		// Free the projectile when Lifetime Timer ends.
 		private void OnLifetimeTimeout() => QueueFree();
 
 		// ------------------------------ Sound ----------------------------------

@@ -2,11 +2,14 @@
 
 [ext_resource type="Script" uid="uid://ibko6ngrctyf" path="res://Gameplay/Score/Score.cs" id="1_vm1fr"]
 
-[node name="Score" type="Node2D" unique_id=1031136094 node_paths=PackedStringArray("ScoreLabel")]
+[node name="Score" type="Control" unique_id=1664168667 node_paths=PackedStringArray("ScoreLabel")]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_vm1fr")
 ScoreLabel = NodePath("ScoreLabel")
 
 [node name="ScoreLabel" type="RichTextLabel" parent="." unique_id=403152852]
+layout_mode = 0
 offset_right = 317.0
 offset_bottom = 63.0
 theme_override_colors/default_color = Color(1, 1, 1, 1)

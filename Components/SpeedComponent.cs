@@ -10,6 +10,13 @@ namespace ProtectEarth.Components
 
 		[Signal] public delegate void SpeedChangedEventHandler(float current, float max);
 
+		private float _default_speed;
+
+		public override void _Ready()
+		{
+			_default_speed = CurrentSpeed;
+		}
+
 
 		// Internal method to update speed safely.
 		private void UpdateSpeed(float value)
@@ -24,7 +31,7 @@ namespace ProtectEarth.Components
 		// Public API
 		public void Reset()
 		{
-			UpdateSpeed(MaxSpeed);
+			UpdateSpeed(_default_speed);
 		}
 
 		public void SetSpeed(float value)

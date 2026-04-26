@@ -3,7 +3,7 @@ using Godot;
 namespace ProtectEarth.Gameplay
 {
 	[GlobalClass]
-	public partial class Score : Node2D
+	public partial class Score : Control
 	{
 		// Signals must be the only the only way to notify score changes to other parts of the game, such as UI or game manager.
 		[Signal] public delegate void ScoreChangedEventHandler(int newScore);
