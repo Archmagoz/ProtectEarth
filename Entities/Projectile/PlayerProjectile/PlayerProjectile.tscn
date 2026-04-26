@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cu130fdrbt4d5" path="res://Entities/Projectile/PlayerProjectile/PlayerProjectile.cs" id="1_xnvm1"]
 [ext_resource type="Texture2D" uid="uid://byn2rawfpaare" path="res://Entities/Projectile/PlayerProjectile/Assets/NormalBullet.png" id="2_bhtoi"]
 [ext_resource type="PackedScene" uid="uid://dguuymw41wnjp" path="res://Components/SpeedComponent.tscn" id="3_0oruw"]
+[ext_resource type="AudioStream" uid="uid://bf604rr7we6q6" path="res://Entities/Projectile/PlayerProjectile/Assets/SoundEffect.ogg" id="4_bhtoi"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_w7mae"]
 atlas = ExtResource("2_bhtoi")
@@ -78,6 +79,7 @@ script = ExtResource("1_xnvm1")
 AnimatedSprite = NodePath("AnimatedSprite")
 Collision = NodePath("Collision")
 Speed = NodePath("SpeedComponent")
+SoundEffectStream = ExtResource("4_bhtoi")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." unique_id=1537548018]
 sprite_frames = SubResource("SpriteFrames_yxxru")
