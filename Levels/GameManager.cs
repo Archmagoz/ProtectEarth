@@ -49,7 +49,6 @@ namespace ProtectEarth.Levels
 		}
 
 		private void OnAsteroidDestroyed(int value) => Score.IncreaseScore(value);
-
 		private void OnScoreChanged(int newScore) => IncreaseDifficulty(newScore);
 
 		// ------------------------------ Difficulty scaling ----------------------------------
@@ -57,14 +56,14 @@ namespace ProtectEarth.Levels
 		// One tier is gained for every PointsPerDifficultyTier points, capped at MaxDifficultyTier.
 		private void IncreaseDifficulty(int score)
 		{
-			int currentTier = Mathf.Min(score / PointsPerDifficultyTier, MaxDifficultyTier);
+			var currentTier = Mathf.Min(score / PointsPerDifficultyTier, MaxDifficultyTier);
 
 			if (currentTier <= _lastDifficultyTier) return; // early exit if tier hasn't changed
 
 			_lastDifficultyTier = currentTier;
 
-			float spawnRateMultiplier = 1f + SpawnRateIncreasePerTier * currentTier;
-			float speedMultiplier = 1f + SpeedIncreasePerTier * currentTier;
+			var spawnRateMultiplier = 1f + SpawnRateIncreasePerTier * currentTier;
+			var speedMultiplier = 1f + SpeedIncreasePerTier * currentTier;
 
 			ApplyDifficulty(spawnRateMultiplier, speedMultiplier);
 		}
