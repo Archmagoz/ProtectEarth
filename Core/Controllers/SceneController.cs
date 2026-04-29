@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 
-namespace ProtectEarth.Core.Managers
+namespace ProtectEarth.Core.Controllers
 {
 	public enum SceneType
 	{
@@ -9,9 +9,9 @@ namespace ProtectEarth.Core.Managers
 		MainMenu,
 	}
 
-	public partial class SceneManager : Node
+	public partial class SceneController : Node
 	{
-		public static SceneManager Instance { get; private set; }
+		public static SceneController Instance { get; private set; }
 
 		// Preloaded scenes (fast access, no runtime load).
 		private readonly Dictionary<SceneType, PackedScene> _preloaded = new()
