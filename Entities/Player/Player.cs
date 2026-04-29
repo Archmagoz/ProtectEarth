@@ -30,10 +30,10 @@ namespace ProtectEarth.Entities
 
 		public override void _Ready()
 		{
-			Health ??= GetNodeOrNull<HealthComponent>("HealthComponent");
-			Speed ??= GetNodeOrNull<SpeedComponent>("SpeedComponent");
 			Collision ??= GetNodeOrNull<CollisionPolygon2D>("Collision");
 			Marker ??= GetNode<Marker2D>("Marker");
+			Health ??= GetNodeOrNull<HealthComponent>("HealthComponent");
+			Speed ??= GetNodeOrNull<SpeedComponent>("SpeedComponent");
 
 			ConnectSignals();
 		}
