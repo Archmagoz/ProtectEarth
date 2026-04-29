@@ -11,8 +11,8 @@ script = ExtResource("1_ww0jn")
 Health = NodePath("HealthComponent")
 Speed = NodePath("SpeedComponent")
 Collision = NodePath("CollisionPolygon")
-ProjectileScene = ExtResource("2_an6q6")
 Marker = NodePath("Marker")
+ProjectileScene = ExtResource("2_an6q6")
 ShootBufferTime = 0.1
 FireRate = 0.2
 

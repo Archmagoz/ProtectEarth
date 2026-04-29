@@ -72,13 +72,14 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5tdpk"]
 size = Vector2(6, 32)
 
-[node name="PlayerProjectile" type="Area2D" unique_id=1845231924 node_paths=PackedStringArray("AnimatedSprite", "Collision", "Speed")]
+[node name="PlayerProjectile" type="Area2D" unique_id=1845231924 node_paths=PackedStringArray("AnimatedSprite", "Collision", "Speed", "LifetimeTimer")]
 rotation = 1.5707964
 scale = Vector2(0.48000002, 0.48000002)
 script = ExtResource("1_xnvm1")
 AnimatedSprite = NodePath("AnimatedSprite")
 Collision = NodePath("Collision")
 Speed = NodePath("SpeedComponent")
+LifetimeTimer = NodePath("Lifetime")
 SoundEffectStream = ExtResource("4_bhtoi")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." unique_id=1537548018]

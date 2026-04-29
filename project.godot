@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="uid://sa3doju53476"
 config/windows_native_icon="res://_icons/icon.ico"
 
+[autoload]
+
+SceneManager="*uid://ct5tblp5l2oia"
+
 [display]
 
 window/size/resizable=false

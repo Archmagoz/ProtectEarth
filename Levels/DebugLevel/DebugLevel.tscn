@@ -21,13 +21,6 @@ _asteroidScene = ExtResource("2_vel0m")
 position = Vector2(0, 86)
 rotation = -1.5707964
 
-[node name="Score" parent="." unique_id=1953775316 instance=ExtResource("6_pslde")]
-offset_left = 110.00001
-offset_top = -157.00002
-offset_right = 110.00001
-offset_bottom = -157.00002
-scale = Vector2(0.51534736, 0.51534736)
-
 [node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="." unique_id=1294692255]
 stream = ExtResource("7_dutg6")
 autoplay = true
@@ -43,5 +36,12 @@ autostart = true
 [node name="GameManager" parent="." unique_id=979172017 node_paths=PackedStringArray("AsteroidSpawner", "Score") instance=ExtResource("7_f70p5")]
 AsteroidSpawner = NodePath("../AsteroidSpawner")
 Score = NodePath("../Score")
+
+[node name="Score" parent="." unique_id=1953775316 instance=ExtResource("6_pslde")]
+offset_left = 110.00001
+offset_top = -157.00002
+offset_right = 110.00001
+offset_bottom = -157.00002
+scale = Vector2(0.51534736, 0.51534736)
 
 [connection signal="timeout" from="AsteroidSpawner" to="." method="OnAsteroidSpawnerTimeout"]

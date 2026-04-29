@@ -5,46 +5,27 @@ namespace ProtectEarth.Components
 	[GlobalClass]
 	public partial class HealthComponent : Node
 	{
-		[Export] public int MaxHealth { get; set; } = 100;
-
 		[Signal] public delegate void HealthChangedEventHandler(int current, int max);
 		[Signal] public delegate void DeathEventHandler();
+
+		[Export] public int MaxHealth { get; set; } = 100;
 
 		public bool IsDead { get; private set; }
 		public int CurrentHealth { get; private set; }
 
-		public override void _Ready()
-		{
-			CurrentHealth = MaxHealth;
-		}
+		// ------------------------------ Godot overrides ----------------------------------
 
-		// Internal method to update health safely.
-		private void UpdateHealth(int value)
-		{
-			int oldHealth = CurrentHealth;
-			CurrentHealth = Mathf.Clamp(value, 0, MaxHealth);
+		public override void _Ready() => CurrentHealth = MaxHealth;
 
-			if (CurrentHealth != oldHealth)
-				EmitSignal(SignalName.HealthChanged, CurrentHealth, MaxHealth);
+		// ------------------------------ Public API ----------------------------------
 
-			if (CurrentHealth == 0 && !IsDead)
-			{
-				IsDead = true;
-				EmitSignal(SignalName.Death);
-			}
-		}
-
-		// Public API
 		public void Reset()
 		{
 			IsDead = false;
 			UpdateHealth(MaxHealth);
 		}
 
-		public void SetHealth(int value)
-		{
-			UpdateHealth(value);
-		}
+		public void SetHealth(int value) => UpdateHealth(value);
 
 		public void ApplyDamage(int damage)
 		{
@@ -56,6 +37,23 @@ namespace ProtectEarth.Components
 		{
 			if (IsDead) return;
 			UpdateHealth(CurrentHealth + amount);
+		}
+
+		// ------------------------------ Helpers ----------------------------------
+
+		private void UpdateHealth(int value)
+		{
+			var oldHealth = CurrentHealth;
+			CurrentHealth = Mathf.Clamp(value, 0, MaxHealth);
+
+			if (CurrentHealth != oldHealth)
+				EmitSignal(SignalName.HealthChanged, CurrentHealth, MaxHealth);
+
+			if (CurrentHealth == 0 && !IsDead)
+			{
+				IsDead = true;
+				EmitSignal(SignalName.Death);
+			}
 		}
 	}
 }

@@ -9,24 +9,28 @@ namespace ProtectEarth.Entities
 	public partial class Player : CharacterBody2D, IDamageable
 	{
 		// Node references (assigned via editor or auto-resolved in _Ready).
+		[ExportGroup("Components")]
 		[Export] public HealthComponent Health { get; private set; }
 		[Export] public SpeedComponent Speed { get; private set; }
 		[Export] public CollisionPolygon2D Collision { get; private set; }
-		[Export] public PackedScene ProjectileScene { get; private set; }
 		[Export] public Marker2D Marker { get; private set; }
 
-		// Player firing control.
+		[ExportGroup("Gameplay")]
+		[Export] public PackedScene ProjectileScene { get; private set; }
 		[Export] public float ShootBufferTime = 0.15f;
 		[Export] public float FireRate = 0.3f;
+
+		// Internal state for shooting cooldowns and buffers.
 		private float _shootCooldown = 0f;
 		private float _shootBuffer = 0f;
 
 		// IDamageable delegate to HealthComponent.
 		public void ApplyDamage(int damage) => Health.ApplyDamage(damage);
 
+		// ------------------------------ Godot overrides ----------------------------------
+
 		public override void _Ready()
 		{
-			// Fallback to find nodes if not set via editor.
 			Health ??= GetNodeOrNull<HealthComponent>("HealthComponent");
 			Speed ??= GetNodeOrNull<SpeedComponent>("SpeedComponent");
 			Collision ??= GetNodeOrNull<CollisionPolygon2D>("Collision");
@@ -35,21 +39,23 @@ namespace ProtectEarth.Entities
 			ConnectSignals();
 		}
 
-		// Object main loop: handle movement, rotation and actions.
 		public override void _PhysicsProcess(double delta)
 		{
-			if (Health.IsDead) return; // early exit if dead
+			if (Health.IsDead) return;
 			HandleMovement();
 		}
 
 		public override void _Process(double delta)
 		{
-			if (Health.IsDead) return; // early exit if dead
+			if (Health.IsDead) return;
 			HandleRotation();
 			HandleShooting(delta);
 		}
 
-		public override void _ExitTree() => DisconnectSignals();
+		public override void _ExitTree()
+		{
+			DisconnectSignals();
+		}
 
 		// ------------------------------ Signal management ----------------------------------
 
@@ -67,33 +73,28 @@ namespace ProtectEarth.Entities
 
 		private void OnDeath()
 		{
-			return; // TODO: OnDeath state logic.
+			// TODO: OnDeath state logic.
 		}
 
 		// ------------------------------ Player actions -----------------------------------
 
-		// Handles shooting input, manages cooldowns and buffers, and calls Shoot() when appropriate.
 		private void HandleShooting(double delta)
 		{
-			// Update cooldowns and buffers.
 			var d = (float)delta;
 
 			_shootCooldown -= d;
 			_shootBuffer -= d;
 
-			// Check for shoot input and manage shooting logic.
 			if (Input.IsActionJustPressed("shoot")) _shootBuffer = ShootBufferTime;
 			if (_shootCooldown > 0f) return;
 			if (_shootBuffer <= 0f && !Input.IsActionPressed("shoot")) return;
 
 			Shoot();
 
-			// Reset cooldown and buffer after shooting.
 			_shootCooldown = FireRate;
 			_shootBuffer = 0f;
 		}
 
-		// Instantiates a projectile, sets its direction and source, and adds it to the scene.
 		private void Shoot()
 		{
 			var projectile = ProjectileScene.Instantiate<PlayerProjectile>();
@@ -109,7 +110,6 @@ namespace ProtectEarth.Entities
 
 		// ------------------------------ Movement logic ----------------------------------
 
-		// Handles player movement based on input, normalizes it for consistent speed in all directions.
 		private void HandleMovement()
 		{
 			var input = Vector2.Zero;
@@ -119,18 +119,11 @@ namespace ProtectEarth.Entities
 			if (Input.IsActionPressed("left")) input.X -= 1;
 			if (Input.IsActionPressed("right")) input.X += 1;
 
-			input = input.Normalized();
-
-			Velocity = input * Speed.CurrentSpeed;
+			Velocity = input.Normalized() * Speed.CurrentSpeed;
 
 			MoveAndSlide();
 		}
 
-		// Handles player rotation to always face the mouse cursor.
-		private void HandleRotation()
-		{
-			var mousePos = GetGlobalMousePosition();
-			LookAt(mousePos);
-		}
+		private void HandleRotation() => LookAt(GetGlobalMousePosition());
 	}
 }

@@ -5,26 +5,20 @@ namespace ProtectEarth.Gameplay
 	[GlobalClass]
 	public partial class Score : Control
 	{
-		// Signals must be the only the only way to notify score changes to other parts of the game, such as UI or game manager.
 		[Signal] public delegate void ScoreChangedEventHandler(int newScore);
 		[Signal] public delegate void ScoreResetEventHandler();
 
-		// Node reference for the score display label, assigned via editor or auto-resolved in _Ready.
 		[Export] public RichTextLabel ScoreLabel { get; private set; }
 
-		// Internal state for the current score.
 		public int CurrentScore { get; private set; } = 0;
 
-		public override void _Ready()
-		{
-			// Fallback to find nodes if not set via editor.
+		// ------------------------------ Godot overrides ----------------------------------
+
+		public override void _Ready() =>
 			ScoreLabel ??= GetNodeOrNull<RichTextLabel>("ScoreLabel");
-		}
 
-		// Helper method to update the score label text and emit the ScoreChanged signal.
-		private void UpdateLabel() => ScoreLabel.Text = CurrentScore.ToString();
+		// ------------------------------ Public API ----------------------------------
 
-		// Public API to modify the score.
 		public void IncreaseScore(int value)
 		{
 			CurrentScore += value;
@@ -38,5 +32,9 @@ namespace ProtectEarth.Gameplay
 			UpdateLabel();
 			EmitSignal(SignalName.ScoreReset);
 		}
+
+		// ------------------------------ Helpers ----------------------------------
+
+		private void UpdateLabel() => ScoreLabel.Text = CurrentScore.ToString();
 	}
 }

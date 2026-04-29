@@ -12,12 +12,14 @@ namespace ProtectEarth.Entities
 		[Signal] public delegate void AsteroidDestroyedEventHandler(int scoreValue);
 
 		// Node references (assigned via editor or auto-resolved in _Ready).
+		[ExportGroup("Components")]
 		[Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
 		[Export] public CollisionPolygon2D Collision { get; private set; }
 		[Export] public HealthComponent Health { get; private set; }
 		[Export] public SpeedComponent Speed { get; private set; }
 
-		// Gameplay parameters for scoring and player damage, can be set via editor or code.
+		// Gameplay parameters for scoring and player damage.
+		[ExportGroup("Gameplay")]
 		[Export] public int ScoreBaseValue { get; private set; } = 300;
 		[Export] public int DamageToPlayer { get; private set; } = 20;
 
@@ -28,33 +30,34 @@ namespace ProtectEarth.Entities
 		// IDamageable delegate to HealthComponent.
 		public void ApplyDamage(int damage) => Health.ApplyDamage(damage);
 
-		// Delegate AddSpeed to SpeedComponent, used by GameManager to increase asteroid speed on difficulty changes.
+		// Delegate AddSpeed to SpeedComponent, used by GameManager on difficulty changes.
 		public void AddSpeed(float additionalSpeed) => Speed.AddSpeed(additionalSpeed);
+
+		// ------------------------------ Godot overrides ----------------------------------
 
 		public override void _Ready()
 		{
-			// Fallback to find nodes if not set via editor.
 			AnimatedSprite ??= GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite");
 			Collision ??= GetNodeOrNull<CollisionPolygon2D>("Collision");
 			Health ??= GetNodeOrNull<HealthComponent>("HealthComponent");
 			Speed ??= GetNodeOrNull<SpeedComponent>("SpeedComponent");
 
-			// Cache screen center and randomize rotation speed for variation.
 			_center = ScreenUtils.GetScreenCenter(this);
 			_rotationSpeed = RNG.Range(-0.01f, 0.01f);
 
 			ConnectSignals();
 		}
 
-		// Object main loop: handle movement and rotation.
 		public override void _PhysicsProcess(double delta)
 		{
-			if (Health.IsDead) return; // early exit if dead
+			if (Health.IsDead) return;
 			MoveTowardsCenter();
 		}
 
-		// Cleaning signal handlers.
-		public override void _ExitTree() => DisconnectSignals();
+		public override void _ExitTree()
+		{
+			DisconnectSignals();
+		}
 
 		// ------------------------------ Signal management ----------------------------------
 
@@ -72,18 +75,14 @@ namespace ProtectEarth.Entities
 
 		// ------------------------------ Signal handlers ----------------------------------
 
-		// Handles death: stop movement and play explosion animation.
 		private void OnDeath()
 		{
 			LinearVelocity = Vector2.Zero;
 			Collision.SetDeferred("disabled", true);
 			AnimatedSprite.Play("explode");
-
-			// Emit score value to be added to the player's score, factoring in difficulty level.
 			EmitSignal(SignalName.AsteroidDestroyed, ScoreBaseValue);
 		}
 
-		// Once the explosion animation finishes, remove the asteroid from the scene.
 		private void OnAnimationFinished()
 		{
 			if (AnimatedSprite.Animation != "explode") return;
@@ -92,7 +91,6 @@ namespace ProtectEarth.Entities
 
 		// ------------------------------ Movement logic ----------------------------------
 
-		// Moves the asteroid toward the screen center while applying rotation.
 		private void MoveTowardsCenter()
 		{
 			var direction = (_center - GlobalPosition).Normalized();
