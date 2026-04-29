@@ -5,9 +5,11 @@ namespace ProtectEarth.Gameplay
 	[GlobalClass]
 	public partial class Score : Control
 	{
+		// Signals Handlers.
 		[Signal] public delegate void ScoreChangedEventHandler(int newScore);
 		[Signal] public delegate void ScoreResetEventHandler();
 
+		// Node reference (assigned via editor or auto-resolved in _Ready).
 		[Export] public RichTextLabel ScoreLabel { get; private set; }
 
 		public int CurrentScore { get; private set; } = 0;

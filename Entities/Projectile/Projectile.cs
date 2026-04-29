@@ -3,10 +3,10 @@ using ProtectEarth.Components;
 
 using Godot;
 
-namespace ProtectEarth.Entities.Projectile
+namespace ProtectEarth.Entities
 {
 	[GlobalClass]
-	public partial class PlayerProjectile : Area2D
+	public partial class Projectile : Area2D
 	{
 		// Node references (assigned via editor or auto-resolved in _Ready).
 		[ExportGroup("Components")]

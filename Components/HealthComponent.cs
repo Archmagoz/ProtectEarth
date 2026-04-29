@@ -5,9 +5,11 @@ namespace ProtectEarth.Components
 	[GlobalClass]
 	public partial class HealthComponent : Node
 	{
+		// Signals Handlers.
 		[Signal] public delegate void HealthChangedEventHandler(int current, int max);
 		[Signal] public delegate void DeathEventHandler();
 
+		// Base value (assigned via editor or auto-resolved in _Ready).
 		[Export] public int MaxHealth { get; set; } = 100;
 
 		public bool IsDead { get; private set; }

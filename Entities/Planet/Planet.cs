@@ -19,6 +19,8 @@ namespace ProtectEarth.Entities
 		{
 			Health ??= GetNodeOrNull<HealthComponent>("HealthComponent");
 			Collision ??= GetNodeOrNull<CollisionShape2D>("Collision");
+
+			AddToGroup("ImuneToProjectile");
 		}
 	}
 }
