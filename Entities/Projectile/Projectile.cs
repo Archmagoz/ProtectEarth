@@ -14,7 +14,6 @@ namespace ProtectEarth.Entities
 		[Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
 		[Export] public CollisionShape2D Collision { get; private set; }
 		[Export] public SpeedComponent Speed { get; private set; }
-		[Export] public Timer LifetimeTimer { get; private set; }
 
 		// Gameplay parameters (assigned via editor).
 		[ExportGroup("Gameplay")]
@@ -23,6 +22,9 @@ namespace ProtectEarth.Entities
 
 		// Runtime state — injected by the spawner (Player).
 		public Vector2 Direction { get; set; }
+
+		// Runtime state
+		private float _lifetime = 3f;
 
 		// ------------------------------------- Godot overrides ------------------------------------
 
@@ -36,7 +38,10 @@ namespace ProtectEarth.Entities
 
 		public override void _PhysicsProcess(double delta)
 		{
-			Position += Direction * Speed.CurrentSpeed * (float)delta;
+			_lifetime -= (float)delta;
+			if (_lifetime <= 0f) QueueFree();
+
+			Translate(Direction * Speed.CurrentSpeed * (float)delta);
 		}
 
 		public override void _ExitTree() => DisconnectSignals();
@@ -46,13 +51,11 @@ namespace ProtectEarth.Entities
 		private void ConnectSignals()
 		{
 			AreaEntered += OnAreaEntered;
-			LifetimeTimer.Timeout += OnLifetimeTimeout;
 		}
 
 		private void DisconnectSignals()
 		{
 			AreaEntered -= OnAreaEntered;
-			LifetimeTimer.Timeout -= OnLifetimeTimeout;
 		}
 
 		// ------------------------------------ Signal handlers -------------------------------------
