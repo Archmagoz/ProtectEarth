@@ -9,13 +9,25 @@ namespace ProtectEarth.Levels
 	{
 		// Scene reference (assigned via editor).
 		[Export] private PackedScene _asteroidScene;
+		[Export] private Timer AsteroidSpawner;
 
 		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready()
 		{
 			this.ValidateExports();
+
+			ConnectSignals();
 		}
+
+		public override void _ExitTree() => DisconnectSignals();
+
+		// ------------------------------------ Signal management -----------------------------------
+
+		private void ConnectSignals() => AsteroidSpawner.Timeout += OnAsteroidSpawnerTimeout;
+
+		private void DisconnectSignals() => AsteroidSpawner.Timeout -= OnAsteroidSpawnerTimeout;
+
 
 		// ------------------------------------ Signal handlers -------------------------------------
 

@@ -9,9 +9,10 @@
 [ext_resource type="AudioStream" uid="uid://bxtoo10vaw6fq" path="res://Levels/DebugLevel/Background/Assets/BackgroundMusic.ogg" id="7_dutg6"]
 [ext_resource type="PackedScene" uid="uid://ca1ekhb5p7xjh" path="res://Levels/GameManager.tscn" id="7_f70p5"]
 
-[node name="DebugLevel" type="Node2D" unique_id=154008839]
+[node name="DebugLevel" type="Node2D" unique_id=154008839 node_paths=PackedStringArray("AsteroidSpawner")]
 script = ExtResource("1_vbe3p")
 _asteroidScene = ExtResource("2_vel0m")
+AsteroidSpawner = NodePath("AsteroidSpawner")
 
 [node name="Background" parent="." unique_id=1894191346 instance=ExtResource("3_pslde")]
 
@@ -44,5 +45,3 @@ offset_top = -157.00002
 offset_right = 110.00001
 offset_bottom = -157.00002
 scale = Vector2(0.51534736, 0.51534736)
-
-[connection signal="timeout" from="AsteroidSpawner" to="." method="OnAsteroidSpawnerTimeout"]
