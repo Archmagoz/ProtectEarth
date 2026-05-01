@@ -53,15 +53,14 @@ namespace ProtectEarth.Components
 		private void UpdateHealth(int value)
 		{
 			var oldHealth = CurrentHealth;
+
 			CurrentHealth = Mathf.Clamp(value, 0, MaxHealth);
 
 			if (CurrentHealth != oldHealth)
 				EmitSignal(SignalName.HealthChanged, CurrentHealth, MaxHealth);
 
-			if (CurrentHealth == 0 && !IsDead)
-			{
+			if (CurrentHealth <= 0)
 				Kill();
-			}
 		}
 	}
 }
