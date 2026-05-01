@@ -1,51 +1,70 @@
 using System;
 using System.Reflection;
+using System.Collections.Generic;
+
 using Godot;
 
 namespace ProtectEarth.Core.Utils
 {
 	public static class NodeValidator
 	{
+		// Cache to avoid repeated reflection per type (performance).
+		private static readonly Dictionary<Type, List<MemberInfo>> _cache = new();
+
 		public static void ValidateExports(this Node owner)
 		{
 			var type = owner.GetType();
 			bool hasErrors = false;
 
-			// Fetch ALL members (fields, properties, methods, etc).
-			// We're filtering later, so this is intentionally broad.
-			var members = type.GetMembers(
-				BindingFlags.Instance |
-				BindingFlags.Public |
-				BindingFlags.NonPublic);
+			// Try to reuse cached members for this type.
+			if (!_cache.TryGetValue(type, out var members))
+			{
+				members = new List<MemberInfo>();
 
+				// Get all instance fields (public + private).
+				var fields = type.GetFields(BindingFlags.Instance |
+											BindingFlags.Public |
+											BindingFlags.NonPublic);
+
+				// Get all instance properties (public + private).
+				var properties = type.GetProperties(BindingFlags.Instance |
+													BindingFlags.Public |
+													BindingFlags.NonPublic);
+
+				// Filter only fields marked with [Export].
+				foreach (var field in fields)
+					if (Attribute.IsDefined(field, typeof(ExportAttribute)))
+						members.Add(field);
+
+				// Filter only properties marked with [Export].
+				foreach (var prop in properties)
+					if (Attribute.IsDefined(prop, typeof(ExportAttribute)))
+						members.Add(prop);
+
+				// Store result in cache for future calls.
+				_cache[type] = members;
+			}
+
+			// Validate all cached export members.
 			foreach (var member in members)
 			{
-				// Only care about members explicitly marked with [Export].
-				if (!Attribute.IsDefined(member, typeof(ExportAttribute)))
-					continue;
-
-				// Resolve runtime value depending on member type.
-				// Anything that is not a field/property will fall through as null.
+				// Resolve value depending on member type.
 				object value = member switch
 				{
-					PropertyInfo prop => prop.GetValue(owner),
-					FieldInfo field => field.GetValue(owner),
+					FieldInfo f => f.GetValue(owner),
+					PropertyInfo p => p.GetValue(owner),
 					_ => null
 				};
 
-				// If null, it's either:
-				// - not assigned in inspector
-				// - or not a field/property (false positive from GetMembers)
+				// If null, it's a missing assignment in the editor.
 				if (value == null)
 				{
-					// Simple, readable error — no extra noise.
 					GD.PrintErr($"{member.Name} is not assigned on {type.Name}");
 					hasErrors = true;
 				}
 			}
 
-			// Hard fail-fast: stops execution immediately if anything is missing.
-			// Good for catching setup issues early, but kills the whole tree.
+			// Stop the game if any critical export is missing.
 			if (hasErrors) owner.GetTree().Quit();
 		}
 	}
