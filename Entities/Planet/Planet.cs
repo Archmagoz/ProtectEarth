@@ -1,4 +1,3 @@
-using ProtectEarth.Core.Controllers;
 using ProtectEarth.Core.Interfaces;
 using ProtectEarth.Components;
 
@@ -9,6 +8,9 @@ namespace ProtectEarth.Entities
 {
 	public partial class Planet : StaticBody2D, IDamageable
 	{
+		// Signal Handler.
+		[Signal] public delegate void PlanetDestroyedEventHandler();
+
 		// Node references (assigned via editor).
 		[ExportGroup("Components")]
 		[Export] public CollisionShape2D Collision { get; private set; }
@@ -56,7 +58,7 @@ namespace ProtectEarth.Entities
 
 		private void OnDeath()
 		{
-			SceneController.Instance.ChangeScene(SceneType.MainMenu);
+			EmitSignal(SignalName.PlanetDestroyed);
 		}
 	}
 }

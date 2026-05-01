@@ -1,3 +1,4 @@
+using ProtectEarth.Core.Controllers;
 using ProtectEarth.Gameplay;
 using ProtectEarth.Entities;
 
@@ -12,6 +13,9 @@ namespace ProtectEarth.Levels
 		[ExportGroup("Components")]
 		[Export] public Timer AsteroidSpawner { get; private set; }
 		[Export] public Score Score { get; private set; }
+
+		[ExportGroup("Gameplay")]
+		[Export] public Planet Planet { get; private set; }
 
 		// Difficulty scaling constants — tweak to balance the game.
 		private const float BaseSpawnInterval = 2.0f;
@@ -34,6 +38,8 @@ namespace ProtectEarth.Levels
 		{
 			// Hard validation — these nodes are required for the GameManager to function.
 			// Throws in all build configurations, ensuring misconfigured scenes are caught early.
+			if (Planet == null)
+				throw new InvalidOperationException("Planet is not assigned on GameManager.");
 			if (AsteroidSpawner == null)
 				throw new InvalidOperationException("AsteroidSpawner is not assigned on GameManager.");
 			if (Score == null)
@@ -53,11 +59,13 @@ namespace ProtectEarth.Levels
 		private void ConnectSignals()
 		{
 			Score.ScoreChanged += OnScoreChanged;
+			Planet.PlanetDestroyed += OnPlanetDestroyed;
 		}
 
 		private void DisconnectSignals()
 		{
 			Score.ScoreChanged -= OnScoreChanged;
+			Planet.PlanetDestroyed -= OnPlanetDestroyed;
 		}
 
 		// ------------------------------ Signal handlers ----------------------------------
@@ -74,6 +82,8 @@ namespace ProtectEarth.Levels
 		private void OnAsteroidDestroyed(int value) => Score.IncreaseScore(value);
 
 		private void OnScoreChanged(int newScore) => IncreaseDifficulty(newScore);
+
+		private void OnPlanetDestroyed() => Gameover();
 
 		// ------------------------------ Difficulty scaling ----------------------------------
 
@@ -96,5 +106,9 @@ namespace ProtectEarth.Levels
 			_currentSpeedMultiplier = speedMultiplier;
 			AsteroidSpawner.WaitTime = BaseSpawnInterval / spawnRateMultiplier;
 		}
+
+		// ---------------------------------- Game flow --------------------------------------
+
+		private static void Gameover() => SceneController.Instance.ChangeScene(SceneType.Gameover);
 	}
 }

@@ -33,9 +33,10 @@ zoom = Vector2(2, 2)
 wait_time = 2.0
 autostart = true
 
-[node name="GameManager" parent="." unique_id=979172017 node_paths=PackedStringArray("AsteroidSpawner", "Score") instance=ExtResource("7_f70p5")]
+[node name="GameManager" parent="." unique_id=979172017 node_paths=PackedStringArray("AsteroidSpawner", "Score", "Planet") instance=ExtResource("7_f70p5")]
 AsteroidSpawner = NodePath("../AsteroidSpawner")
 Score = NodePath("../Score")
+Planet = NodePath("../Planet")
 
 [node name="Score" parent="." unique_id=1953775316 instance=ExtResource("6_pslde")]
 offset_left = 110.00001

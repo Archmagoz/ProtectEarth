@@ -8,6 +8,7 @@ namespace ProtectEarth.Core.Controllers
 	{
 		DebugLevel,
 		MainMenu,
+		Gameover,
 	}
 
 	public partial class SceneController : Node
@@ -20,10 +21,11 @@ namespace ProtectEarth.Core.Controllers
 			{ SceneType.MainMenu, GD.Load<PackedScene>("res://UI/MainMenu/MainMenu.tscn") },
 		};
 
-		// Lazy-loaded scenes (loaded only when needed).
+		// Lazy-loaded scenes (loaded only when needed, cached after first load).
 		private readonly Dictionary<SceneType, string> _paths = new()
 		{
 			{ SceneType.DebugLevel, "res://Levels/DebugLevel/DebugLevel.tscn" },
+			{ SceneType.Gameover,   "res://UI/Gameover/Gameover.tscn" },
 		};
 
 		private Node _currentScene;
@@ -57,6 +59,9 @@ namespace ProtectEarth.Core.Controllers
 			if (_paths.TryGetValue(type, out var path))
 			{
 				scene = GD.Load<PackedScene>(path);
+
+				// Cache after first load so subsequent calls skip the disk read.
+				_preloaded[type] = scene;
 				return true;
 			}
 
