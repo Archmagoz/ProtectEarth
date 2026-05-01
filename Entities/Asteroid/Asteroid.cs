@@ -38,27 +38,11 @@ namespace ProtectEarth.Entities
 		// External hook — used by difficulty scaling systems.
 		public void AddSpeed(float additionalSpeed) => Speed.AddSpeed(additionalSpeed);
 
-		// --------------------------------------- Validation ---------------------------------------
-
-		private bool ValidateNodes()
-		{
-			bool valid = true;
-			valid &= NodeValidator.Require(AnimatedSprite, nameof(AnimatedSprite), nameof(Asteroid));
-			valid &= NodeValidator.Require(Collision, nameof(Collision), nameof(Asteroid));
-			valid &= NodeValidator.Require(Health, nameof(Health), nameof(Asteroid));
-			valid &= NodeValidator.Require(Speed, nameof(Speed), nameof(Asteroid));
-			return valid;
-		}
-
 		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready()
 		{
-			if (!ValidateNodes())
-			{
-				GetTree().Quit();
-				return;
-			}
+			this.ValidateExports();
 
 			_center = ScreenUtils.GetScreenCenter(this);
 			_rotationSpeed = RNG.Range(-0.01f, 0.01f);

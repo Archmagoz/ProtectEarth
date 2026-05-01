@@ -24,27 +24,11 @@ namespace ProtectEarth.Entities
 		// Runtime state — injected by the spawner (Player).
 		public Vector2 Direction { get; set; }
 
-		// --------------------------------------- Validation ---------------------------------------
-
-		private bool ValidateNodes()
-		{
-			bool valid = true;
-			valid &= NodeValidator.Require(AnimatedSprite, nameof(AnimatedSprite), nameof(Projectile));
-			valid &= NodeValidator.Require(Collision, nameof(Collision), nameof(Projectile));
-			valid &= NodeValidator.Require(Speed, nameof(Speed), nameof(Projectile));
-			valid &= NodeValidator.Require(LifetimeTimer, nameof(LifetimeTimer), nameof(Projectile));
-			return valid;
-		}
-
 		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready()
 		{
-			if (!ValidateNodes())
-			{
-				GetTree().Quit();
-				return;
-			}
+			this.ValidateExports();
 
 			PlaySoundIndependent();
 			ConnectSignals();

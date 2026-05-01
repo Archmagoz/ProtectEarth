@@ -17,24 +17,11 @@ namespace ProtectEarth.Gameplay
 		// Runtime state — current accumulated score value.
 		public int CurrentScore { get; private set; } = 0;
 
-		// --------------------------------------- Validation ---------------------------------------
-
-		private bool ValidateNodes()
-		{
-			bool valid = true;
-			valid &= NodeValidator.Require(ScoreLabel, nameof(ScoreLabel), nameof(Score));
-			return valid;
-		}
-
 		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready()
 		{
-			if (!ValidateNodes())
-			{
-				GetTree().Quit();
-				return;
-			}
+			this.ValidateExports();
 		}
 
 		// ---------------------------------------- Public API --------------------------------------

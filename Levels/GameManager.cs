@@ -1,3 +1,4 @@
+
 using ProtectEarth.Core.Controllers;
 using ProtectEarth.Core.Utils;
 using ProtectEarth.Gameplay;
@@ -29,17 +30,6 @@ namespace ProtectEarth.Levels
 		private int _lastDifficultyTier = 0;
 		private float _currentSpeedMultiplier = 0;
 
-		// --------------------------------------- Validation ---------------------------------------
-
-		private bool ValidateNodes()
-		{
-			bool valid = true;
-			valid &= NodeValidator.Require(Planet, nameof(Planet), nameof(GameManager));
-			valid &= NodeValidator.Require(AsteroidSpawner, nameof(AsteroidSpawner), nameof(GameManager));
-			valid &= NodeValidator.Require(Score, nameof(Score), nameof(GameManager));
-			return valid;
-		}
-
 		// ------------------------------------- Godot overrides ------------------------------------
 
 		// Registered in _EnterTree so no asteroid spawned before _Ready is missed.
@@ -47,11 +37,7 @@ namespace ProtectEarth.Levels
 
 		public override void _Ready()
 		{
-			if (!ValidateNodes())
-			{
-				GetTree().Quit();
-				return;
-			}
+			this.ValidateExports();
 
 			ConnectSignals();
 		}

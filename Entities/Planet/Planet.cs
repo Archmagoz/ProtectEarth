@@ -22,25 +22,11 @@ namespace ProtectEarth.Entities
 		// IDamageable — delegated to HealthComponent.
 		public void ApplyDamage(int damage) => Health.ApplyDamage(damage);
 
-		// --------------------------------------- Validation ---------------------------------------
-
-		private bool ValidateNodes()
-		{
-			bool valid = true;
-			valid &= NodeValidator.Require(Collision, nameof(Collision), nameof(Planet));
-			valid &= NodeValidator.Require(Health, nameof(Health), nameof(Planet));
-			return valid;
-		}
-
 		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready()
 		{
-			if (!ValidateNodes())
-			{
-				GetTree().Quit();
-				return;
-			}
+			this.ValidateExports();
 
 			// Prevents projectile interactions while still allowing damage via other systems.
 			AddToGroup("ProjectileImmune");

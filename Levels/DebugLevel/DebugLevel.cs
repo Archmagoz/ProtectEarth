@@ -10,24 +10,11 @@ namespace ProtectEarth.Levels
 		// Scene reference (assigned via editor).
 		[Export] private PackedScene _asteroidScene;
 
-		// --------------------------------------- Validation ---------------------------------------
-
-		private bool ValidateNodes()
-		{
-			bool valid = true;
-			valid &= NodeValidator.Require(_asteroidScene, nameof(_asteroidScene), nameof(DebugLevel));
-			return valid;
-		}
-
 		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready()
 		{
-			if (!ValidateNodes())
-			{
-				GetTree().Quit();
-				return;
-			}
+			this.ValidateExports();
 		}
 
 		// ------------------------------------ Signal handlers -------------------------------------

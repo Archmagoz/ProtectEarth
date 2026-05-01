@@ -31,28 +31,11 @@ namespace ProtectEarth.Entities
 		// IDamageable — delegated to HealthComponent.
 		public void ApplyDamage(int damage) => Health.ApplyDamage(damage);
 
-		// --------------------------------------- Validation ---------------------------------------
-
-		private bool ValidateNodes()
-		{
-			bool valid = true;
-			valid &= NodeValidator.Require(Collision, nameof(Collision), nameof(Player));
-			valid &= NodeValidator.Require(Marker, nameof(Marker), nameof(Player));
-			valid &= NodeValidator.Require(Health, nameof(Health), nameof(Player));
-			valid &= NodeValidator.Require(Speed, nameof(Speed), nameof(Player));
-			valid &= NodeValidator.Require(ProjectileScene, nameof(ProjectileScene), nameof(Player));
-			return valid;
-		}
-
 		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready()
 		{
-			if (!ValidateNodes())
-			{
-				GetTree().Quit();
-				return;
-			}
+			this.ValidateExports();
 
 			AddToGroup("ProjectileImmune");
 			ConnectSignals();
