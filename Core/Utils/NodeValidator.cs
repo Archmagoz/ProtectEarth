@@ -11,52 +11,41 @@ namespace ProtectEarth.Core.Utils
 			var type = owner.GetType();
 			bool hasErrors = false;
 
-			// PROPERTIES
-			var properties = type.GetProperties(
+			// Fetch ALL members (fields, properties, methods, etc).
+			// We're filtering later, so this is intentionally broad.
+			var members = type.GetMembers(
 				BindingFlags.Instance |
 				BindingFlags.Public |
 				BindingFlags.NonPublic);
 
-			foreach (var prop in properties)
+			foreach (var member in members)
 			{
-				if (!Attribute.IsDefined(prop, typeof(ExportAttribute)))
+				// Only care about members explicitly marked with [Export].
+				if (!Attribute.IsDefined(member, typeof(ExportAttribute)))
 					continue;
 
-				if (!typeof(Node).IsAssignableFrom(prop.PropertyType))
-					continue;
+				// Resolve runtime value depending on member type.
+				// Anything that is not a field/property will fall through as null.
+				object value = member switch
+				{
+					PropertyInfo prop => prop.GetValue(owner),
+					FieldInfo field => field.GetValue(owner),
+					_ => null
+				};
 
-				var value = prop.GetValue(owner);
-
+				// If null, it's either:
+				// - not assigned in inspector
+				// - or not a field/property (false positive from GetMembers)
 				if (value == null)
 				{
-					GD.PrintErr($"{prop.Name} is not assigned on {type.Name}.");
+					// Simple, readable error — no extra noise.
+					GD.PrintErr($"{member.Name} is not assigned on {type.Name}");
 					hasErrors = true;
 				}
 			}
 
-			// FIELDS
-			var fields = type.GetFields(
-				BindingFlags.Instance |
-				BindingFlags.Public |
-				BindingFlags.NonPublic);
-
-			foreach (var field in fields)
-			{
-				if (!Attribute.IsDefined(field, typeof(ExportAttribute)))
-					continue;
-
-				if (!typeof(Node).IsAssignableFrom(field.FieldType))
-					continue;
-
-				var value = field.GetValue(owner);
-
-				if (value == null)
-				{
-					GD.PrintErr($"{field.Name} is not assigned on {type.Name}.");
-					hasErrors = true;
-				}
-			}
-
+			// Hard fail-fast: stops execution immediately if anything is missing.
+			// Good for catching setup issues early, but kills the whole tree.
 			if (hasErrors) owner.GetTree().Quit();
 		}
 	}
