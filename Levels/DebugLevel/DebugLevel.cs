@@ -15,8 +15,6 @@ namespace ProtectEarth.Levels
 
 		public override void _Ready()
 		{
-			this.ValidateExports();
-
 			ConnectSignals();
 		}
 

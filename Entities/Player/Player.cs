@@ -1,5 +1,4 @@
 using ProtectEarth.Core.Interfaces;
-using ProtectEarth.Core.Utils;
 using ProtectEarth.Components;
 
 using Godot;
@@ -35,8 +34,6 @@ namespace ProtectEarth.Entities
 
 		public override void _Ready()
 		{
-			this.ValidateExports();
-
 			AddToGroup("ProjectileImmune");
 			ConnectSignals();
 		}

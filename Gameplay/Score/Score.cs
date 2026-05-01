@@ -1,5 +1,3 @@
-using ProtectEarth.Core.Utils;
-
 using Godot;
 
 namespace ProtectEarth.Gameplay
@@ -16,13 +14,6 @@ namespace ProtectEarth.Gameplay
 
 		// Runtime state — current accumulated score value.
 		public int CurrentScore { get; private set; } = 0;
-
-		// ------------------------------------- Godot overrides ------------------------------------
-
-		public override void _Ready()
-		{
-			this.ValidateExports();
-		}
 
 		// ---------------------------------------- Public API --------------------------------------
 

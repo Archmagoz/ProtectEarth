@@ -1,5 +1,4 @@
 using ProtectEarth.Core.Controllers;
-using ProtectEarth.Core.Utils;
 using ProtectEarth.Gameplay;
 using ProtectEarth.Entities;
 
@@ -36,8 +35,6 @@ namespace ProtectEarth.Levels
 
 		public override void _Ready()
 		{
-			this.ValidateExports();
-
 			ConnectSignals();
 		}
 

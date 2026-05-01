@@ -42,8 +42,6 @@ namespace ProtectEarth.Entities
 
 		public override void _Ready()
 		{
-			this.ValidateExports();
-
 			_center = ScreenUtils.GetScreenCenter(this);
 			_rotationSpeed = RNG.Range(-0.01f, 0.01f);
 
