@@ -13,6 +13,7 @@ namespace ProtectEarth.Core.Utils
 
 		public static void ValidateExports(this Node owner)
 		{
+#if DEBUG
 			var type = owner.GetType();
 			bool hasErrors = false;
 
@@ -66,6 +67,8 @@ namespace ProtectEarth.Core.Utils
 
 			// Stop the game if any critical export is missing.
 			if (hasErrors) owner.GetTree().Quit();
+#endif
+			return;
 		}
 	}
 }
