@@ -19,6 +19,7 @@ namespace ProtectEarth.Levels
 		private const float SpawnRateIncreasePerTier = 0.15f;
 		private const float SpeedIncreasePerTier = 1f;
 		private const int MaxDifficultyTier = 10;
+		private const float SpeedIncreaseScale = 10f;
 
 		// Internal state for difficulty tracking.
 		private int _lastDifficultyTier = 0;
@@ -65,9 +66,9 @@ namespace ProtectEarth.Levels
 		{
 			if (node is not Asteroid asteroid) return;
 
-			asteroid.AddSpeed(_currentSpeedMultiplier * 10f);
+			asteroid.AddSpeed(_currentSpeedMultiplier * SpeedIncreaseScale);
 			asteroid.AsteroidDestroyed += OnAsteroidDestroyed;
-			asteroid.TreeExited += () => asteroid.AsteroidDestroyed -= OnAsteroidDestroyed;
+			asteroid.TreeExiting += () => asteroid.AsteroidDestroyed -= OnAsteroidDestroyed;
 		}
 
 		private void OnAsteroidDestroyed(int value) => Score.IncreaseScore(value);
