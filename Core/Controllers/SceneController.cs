@@ -38,8 +38,7 @@ namespace ProtectEarth.Core.Controllers
 
 		public void ChangeScene(SceneType type)
 		{
-			if (!TryGetScene(type, out var scene))
-				return;
+			if (!TryGetScene(type, out var scene)) return;
 
 			_currentScene = GetTree().CurrentScene;
 			_currentScene?.QueueFree();
