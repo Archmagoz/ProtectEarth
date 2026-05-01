@@ -33,10 +33,7 @@ namespace ProtectEarth.Levels
 		// Registered in _EnterTree so no asteroid spawned before _Ready is missed.
 		public override void _EnterTree() => GetTree().NodeAdded += OnNodeAdded;
 
-		public override void _Ready()
-		{
-			ConnectSignals();
-		}
+		public override void _Ready() => ConnectSignals();
 
 		public override void _ExitTree()
 		{

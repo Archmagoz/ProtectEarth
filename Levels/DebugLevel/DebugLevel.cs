@@ -13,10 +13,7 @@ namespace ProtectEarth.Levels
 
 		// ------------------------------------- Godot overrides ------------------------------------
 
-		public override void _Ready()
-		{
-			ConnectSignals();
-		}
+		public override void _Ready() => ConnectSignals();
 
 		public override void _ExitTree() => DisconnectSignals();
 
@@ -55,9 +52,9 @@ namespace ProtectEarth.Levels
 
 			return RNG.Range(0, 4) switch
 			{
-				0 => new Vector2(RNG.Range(left, right), top - margin), // top
+				0 => new Vector2(RNG.Range(left, right), top - margin),    // top
 				1 => new Vector2(RNG.Range(left, right), bottom + margin), // bottom
-				2 => new Vector2(left - margin, RNG.Range(top, bottom)),  // left
+				2 => new Vector2(left - margin, RNG.Range(top, bottom)),   // left
 				3 => new Vector2(right + margin, RNG.Range(top, bottom)),  // right
 				_ => new Vector2(left - margin, top - margin)
 			};
