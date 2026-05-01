@@ -19,7 +19,7 @@ namespace ProtectEarth.Levels
 		// Difficulty scaling constants — tweak to balance the game.
 		private const float BaseSpawnInterval = 2.0f;
 		private const int PointsPerDifficultyTier = 1000;
-		private const float SpawnRateIncreasePerTier = 0.15f;
+		private const float SpawnRateIncreasePerTier = 0.25f;
 		private const float SpeedIncreasePerTier = 1f;
 		private const int MaxDifficultyTier = 10;
 		private const float SpeedIncreaseScale = 10f;
