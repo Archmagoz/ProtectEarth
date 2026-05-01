@@ -8,7 +8,7 @@ namespace ProtectEarth.Components
 		// Signal Handler.
 		[Signal] public delegate void SpeedChangedEventHandler(float current, float max);
 
-		// Base values (assigned via editor or auto-resolved in _Ready).
+		// Base values (assigned via editor).
 		[Export] public float CurrentSpeed { get; private set; } = 10f;
 		[Export] public float MaxSpeed { get; private set; } = 100f;
 

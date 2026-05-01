@@ -2,18 +2,20 @@ using ProtectEarth.Core.Interfaces;
 using ProtectEarth.Components;
 
 using Godot;
+using System;
 
 namespace ProtectEarth.Entities
 {
 	public partial class Player : CharacterBody2D, IDamageable
 	{
-		// Node references (assigned via editor or auto-resolved in _Ready).
+		// Node references (assigned via editor).
 		[ExportGroup("Components")]
 		[Export] public CollisionPolygon2D Collision { get; private set; }
 		[Export] public Marker2D Marker { get; private set; }
 		[Export] public HealthComponent Health { get; private set; }
 		[Export] public SpeedComponent Speed { get; private set; }
 
+		// Gameplay parameters for shooting behaviour (assigned via editor).
 		[ExportGroup("Gameplay")]
 		[Export] public PackedScene ProjectileScene { get; private set; }
 		[Export] public float ShootBufferTime = 0.15f;
@@ -23,6 +25,9 @@ namespace ProtectEarth.Entities
 		private float _shootCooldown = 0f;
 		private float _shootBuffer = 0f;
 
+		// Convenience proxy — always reflects the current HealthComponent state.
+		private bool IsDead => Health.IsDead;
+
 		// IDamageable delegate to HealthComponent.
 		public void ApplyDamage(int damage) => Health.ApplyDamage(damage);
 
@@ -30,23 +35,32 @@ namespace ProtectEarth.Entities
 
 		public override void _Ready()
 		{
-			Collision ??= GetNodeOrNull<CollisionPolygon2D>("Collision");
-			Marker ??= GetNode<Marker2D>("Marker");
-			Health ??= GetNodeOrNull<HealthComponent>("HealthComponent");
-			Speed ??= GetNodeOrNull<SpeedComponent>("SpeedComponent");
+			// Hard validation — these components are required for the Player to function.
+			// Throws in all build configurations, ensuring misconfigured scenes are caught early.
+			if (Collision == null)
+				throw new InvalidOperationException("Collision is not assigned on Player.");
+			if (Marker == null)
+				throw new InvalidOperationException("Marker is not assigned on Player.");
+			if (Health == null)
+				throw new InvalidOperationException("HealthComponent is not assigned on Player.");
+			if (Speed == null)
+				throw new InvalidOperationException("SpeedComponent is not assigned on Player.");
+			if (ProjectileScene == null)
+				throw new InvalidOperationException("ProjectileScene is not assigned on Player.");
 
+			AddToGroup("ProjectileImmune");
 			ConnectSignals();
 		}
 
 		public override void _PhysicsProcess(double delta)
 		{
-			if (Health.IsDead) return;
+			if (IsDead) return;
 			HandleMovement();
 		}
 
 		public override void _Process(double delta)
 		{
-			if (Health.IsDead) return;
+			if (IsDead) return;
 			HandleRotation();
 			HandleShooting(delta);
 		}
@@ -102,7 +116,6 @@ namespace ProtectEarth.Entities
 			projectile.Rotation = direction.Angle() + Mathf.Pi / 2f;
 			projectile.GlobalPosition = Marker.GlobalPosition;
 			projectile.Direction = direction;
-			projectile.Source = this;
 
 			GetParent().AddChild(projectile);
 		}

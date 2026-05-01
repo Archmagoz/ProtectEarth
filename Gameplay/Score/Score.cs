@@ -1,23 +1,29 @@
 using Godot;
+using System;
 
 namespace ProtectEarth.Gameplay
 {
 	[GlobalClass]
 	public partial class Score : Control
 	{
-		// Signals Handlers.
+		// Signal Handlers.
 		[Signal] public delegate void ScoreChangedEventHandler(int newScore);
 		[Signal] public delegate void ScoreResetEventHandler();
 
-		// Node reference (assigned via editor or auto-resolved in _Ready).
+		// Node reference (assigned via editor).
 		[Export] public RichTextLabel ScoreLabel { get; private set; }
 
 		public int CurrentScore { get; private set; } = 0;
 
 		// ------------------------------ Godot overrides ----------------------------------
 
-		public override void _Ready() =>
-			ScoreLabel ??= GetNodeOrNull<RichTextLabel>("ScoreLabel");
+		public override void _Ready()
+		{
+			// Hard validation — ScoreLabel is required for the Score to function.
+			// Throws in all build configurations, ensuring misconfigured scenes are caught early.
+			if (ScoreLabel == null)
+				throw new InvalidOperationException("ScoreLabel is not assigned on Score.");
+		}
 
 		// ------------------------------ Public API ----------------------------------
 

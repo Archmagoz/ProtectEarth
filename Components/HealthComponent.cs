@@ -9,7 +9,7 @@ namespace ProtectEarth.Components
 		[Signal] public delegate void HealthChangedEventHandler(int current, int max);
 		[Signal] public delegate void DeathEventHandler();
 
-		// Base value (assigned via editor or auto-resolved in _Ready).
+		// Base value (assigned via editor).
 		[Export] public int MaxHealth { get; set; } = 100;
 
 		public bool IsDead { get; private set; }
@@ -41,6 +41,13 @@ namespace ProtectEarth.Components
 			UpdateHealth(CurrentHealth + amount);
 		}
 
+		public void Kill()
+		{
+			if (IsDead) return;
+			IsDead = true;
+			EmitSignal(SignalName.Death);
+		}
+
 		// ------------------------------ Helpers ----------------------------------
 
 		private void UpdateHealth(int value)
@@ -53,8 +60,7 @@ namespace ProtectEarth.Components
 
 			if (CurrentHealth == 0 && !IsDead)
 			{
-				IsDead = true;
-				EmitSignal(SignalName.Death);
+				Kill();
 			}
 		}
 	}

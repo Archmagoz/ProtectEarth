@@ -75,8 +75,7 @@ animations = [{
 "speed": 14.0
 }]
 
-[node name="Asteroid" type="RigidBody2D" unique_id=92040212 node_paths=PackedStringArray("AnimatedSprite", "Collision", "Health", "Speed")]
-gravity_scale = 0.0
+[node name="Asteroid" type="Area2D" unique_id=999220009 node_paths=PackedStringArray("AnimatedSprite", "Collision", "Health", "Speed")]
 script = ExtResource("1_mna7d")
 AnimatedSprite = NodePath("AnimatedSprite")
 Collision = NodePath("Collision")

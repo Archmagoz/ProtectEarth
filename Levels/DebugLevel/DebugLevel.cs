@@ -2,17 +2,24 @@ using ProtectEarth.Core.Utils;
 using ProtectEarth.Entities;
 
 using Godot;
+using System;
 
 namespace ProtectEarth.Levels
 {
 	public partial class DebugLevel : Node2D
 	{
+		// Scene reference (assigned via editor).
 		[Export] private PackedScene _asteroidScene;
 
 		// ------------------------------ Godot overrides ----------------------------------
 
-		public override void _Ready() =>
-			_asteroidScene ??= GD.Load<PackedScene>("res://Entities/Asteroid/Asteroid.tscn");
+		public override void _Ready()
+		{
+			// Hard validation — _asteroidScene is required for the DebugLevel to function.
+			// Throws in all build configurations, ensuring misconfigured scenes are caught early.
+			if (_asteroidScene == null)
+				throw new InvalidOperationException("AsteroidScene is not assigned on DebugLevel.");
+		}
 
 		// ------------------------------ Signal handlers ----------------------------------
 

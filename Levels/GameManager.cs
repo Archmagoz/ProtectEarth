@@ -2,12 +2,13 @@ using ProtectEarth.Gameplay;
 using ProtectEarth.Entities;
 
 using Godot;
+using System;
 
 namespace ProtectEarth.Levels
 {
 	public partial class GameManager : Node
 	{
-		// Node references (assigned via editor or auto-resolved in _Ready).
+		// Node references (assigned via editor).
 		[ExportGroup("Components")]
 		[Export] public Timer AsteroidSpawner { get; private set; }
 		[Export] public Score Score { get; private set; }
@@ -25,13 +26,17 @@ namespace ProtectEarth.Levels
 
 		// ------------------------------ Godot overrides ----------------------------------
 
-		// Register NodeAdded in _EnterTree so no asteroid is missed before _Ready runs.
+		// Registered in _EnterTree so no asteroid spawned before _Ready is missed.
 		public override void _EnterTree() => GetTree().NodeAdded += OnNodeAdded;
 
 		public override void _Ready()
 		{
-			AsteroidSpawner ??= GetNodeOrNull<Timer>("AsteroidSpawner");
-			Score ??= GetNodeOrNull<Score>("Score");
+			// Hard validation — these nodes are required for the GameManager to function.
+			// Throws in all build configurations, ensuring misconfigured scenes are caught early.
+			if (AsteroidSpawner == null)
+				throw new InvalidOperationException("AsteroidSpawner is not assigned on GameManager.");
+			if (Score == null)
+				throw new InvalidOperationException("Score is not assigned on GameManager.");
 
 			ConnectSignals();
 		}
