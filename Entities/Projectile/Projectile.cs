@@ -23,7 +23,7 @@ namespace ProtectEarth.Entities
 		// Runtime state — injected by the spawner (Player).
 		public Vector2 Direction { get; set; }
 
-		// Runtime state
+		// Runtime state (internal)
 		private float _lifetime = 3f;
 
 		// ------------------------------------- Godot overrides ------------------------------------
