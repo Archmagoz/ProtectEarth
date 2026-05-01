@@ -28,8 +28,6 @@ namespace ProtectEarth.Core.Controllers
 			{ SceneType.Gameover,   "res://UI/Gameover/Gameover.tscn" },
 		};
 
-		private Node _currentScene;
-
 		// ------------------------------ Godot overrides ----------------------------------
 
 		public override void _Ready() => Instance = this;
@@ -40,8 +38,8 @@ namespace ProtectEarth.Core.Controllers
 		{
 			if (!TryGetScene(type, out var scene)) return;
 
-			_currentScene = GetTree().CurrentScene;
-			_currentScene?.QueueFree();
+			var currentScene = GetTree().CurrentScene;
+			currentScene?.QueueFree();
 
 			var newScene = scene.Instantiate();
 			GetTree().Root.AddChild(newScene);
