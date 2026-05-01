@@ -3,7 +3,6 @@ using ProtectEarth.Core.Utils;
 using ProtectEarth.Components;
 
 using Godot;
-using System;
 
 namespace ProtectEarth.Entities
 {
@@ -19,13 +18,13 @@ namespace ProtectEarth.Entities
 		[Export] public HealthComponent Health { get; private set; }
 		[Export] public SpeedComponent Speed { get; private set; }
 
-		// Gameplay parameters for scoring and player damage (assigned via editor).
+		// Gameplay parameters for scoring and collision damage (assigned via editor).
 		[ExportGroup("Gameplay")]
 		[Export] public int ScoreBaseValue { get; private set; } = 300;
 		[Export] public int DamageToPlayer { get; private set; } = 20;
 		[Export] public int DamageToPlanet { get; private set; } = 10;
 
-		// Internal state for rotation and screen center caching.
+		// Internal state for movement behavior.
 		private float _rotationSpeed;
 		private Vector2 _center;
 
@@ -33,26 +32,33 @@ namespace ProtectEarth.Entities
 		private bool IsDead => Health.IsDead;
 		private void ForceKill() => Health.Kill();
 
-		// IDamageable delegate to HealthComponent.
+		// IDamageable — delegated to HealthComponent.
 		public void ApplyDamage(int damage) => Health.ApplyDamage(damage);
 
-		// Delegate AddSpeed to SpeedComponent, used by GameManager on difficulty changes.
+		// External hook — used by difficulty scaling systems.
 		public void AddSpeed(float additionalSpeed) => Speed.AddSpeed(additionalSpeed);
 
-		// ------------------------------ Godot overrides ----------------------------------
+		// --------------------------------------- Validation ---------------------------------------
+
+		private bool ValidateNodes()
+		{
+			bool valid = true;
+			valid &= NodeValidator.Require(AnimatedSprite, nameof(AnimatedSprite), nameof(Asteroid));
+			valid &= NodeValidator.Require(Collision, nameof(Collision), nameof(Asteroid));
+			valid &= NodeValidator.Require(Health, nameof(Health), nameof(Asteroid));
+			valid &= NodeValidator.Require(Speed, nameof(Speed), nameof(Asteroid));
+			return valid;
+		}
+
+		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready()
 		{
-			// Hard validation — these components are required for the Asteroid to function.
-			// Throws in all build configurations, ensuring misconfigured scenes are caught early.
-			if (AnimatedSprite == null)
-				throw new InvalidOperationException("AnimatedSprite is not assigned on Asteroid.");
-			if (Collision == null)
-				throw new InvalidOperationException("Collision is not assigned on Asteroid.");
-			if (Health == null)
-				throw new InvalidOperationException("HealthComponent is not assigned on Asteroid.");
-			if (Speed == null)
-				throw new InvalidOperationException("SpeedComponent is not assigned on Asteroid.");
+			if (!ValidateNodes())
+			{
+				GetTree().Quit();
+				return;
+			}
 
 			_center = ScreenUtils.GetScreenCenter(this);
 			_rotationSpeed = RNG.Range(-0.01f, 0.01f);
@@ -67,12 +73,9 @@ namespace ProtectEarth.Entities
 			MoveTowardsCenter(delta);
 		}
 
-		public override void _ExitTree()
-		{
-			DisconnectSignals();
-		}
+		public override void _ExitTree() => DisconnectSignals();
 
-		// ------------------------------ Signal management ----------------------------------
+		// ------------------------------------ Signal management -----------------------------------
 
 		private void ConnectSignals()
 		{
@@ -90,10 +93,11 @@ namespace ProtectEarth.Entities
 			Health.Death -= OnDeath;
 		}
 
-		// ------------------------------ Signal handlers ----------------------------------
+		// ------------------------------------ Signal handlers -------------------------------------
 
 		private void OnBodyEntered(Node2D entity)
 		{
+			// Handles collisions with physics bodies (e.g., player).
 			if (entity is IDamageable damageable)
 				damageable.ApplyDamage(DamageToPlayer);
 
@@ -102,8 +106,10 @@ namespace ProtectEarth.Entities
 
 		private void OnAreaEntered(Area2D entity)
 		{
+			// Ignore other asteroids to prevent chain-reaction collisions.
 			if (entity.IsInGroup("Asteroid")) return;
 
+			// Handles interactions with non-body entities (e.g., planet hitboxes).
 			if (entity is IDamageable damageable)
 				damageable.ApplyDamage(DamageToPlanet);
 
@@ -112,21 +118,26 @@ namespace ProtectEarth.Entities
 
 		private void OnDeath()
 		{
+			// Disable collision immediately to prevent further interactions during death animation.
 			Collision.SetDeferred("disabled", true);
+
+			// Trigger explosion animation and notify scoring systems.
 			AnimatedSprite.Play("explode");
 			EmitSignal(SignalName.AsteroidDestroyed, ScoreBaseValue);
 		}
 
 		private void OnAnimationFinished()
 		{
+			// Cleanup only after explosion animation completes.
 			if (AnimatedSprite.Animation != "explode") return;
 			QueueFree();
 		}
 
-		// ------------------------------ Movement logic ----------------------------------
+		// ------------------------------------ Movement logic --------------------------------------
 
 		private void MoveTowardsCenter(double delta)
 		{
+			// Moves asteroid towards screen center with slight rotational drift.
 			var direction = (_center - GlobalPosition).Normalized();
 			GlobalPosition += direction * Speed.CurrentSpeed * (float)delta;
 			Rotation += _rotationSpeed;

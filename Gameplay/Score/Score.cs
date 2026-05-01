@@ -1,5 +1,6 @@
+using ProtectEarth.Core.Utils;
+
 using Godot;
-using System;
 
 namespace ProtectEarth.Gameplay
 {
@@ -13,22 +14,34 @@ namespace ProtectEarth.Gameplay
 		// Node reference (assigned via editor).
 		[Export] public RichTextLabel ScoreLabel { get; private set; }
 
+		// Runtime state — current accumulated score value.
 		public int CurrentScore { get; private set; } = 0;
 
-		// ------------------------------ Godot overrides ----------------------------------
+		// --------------------------------------- Validation ---------------------------------------
+
+		private bool ValidateNodes()
+		{
+			bool valid = true;
+			valid &= NodeValidator.Require(ScoreLabel, nameof(ScoreLabel), nameof(Score));
+			return valid;
+		}
+
+		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready()
 		{
-			// Hard validation — ScoreLabel is required for the Score to function.
-			// Throws in all build configurations, ensuring misconfigured scenes are caught early.
-			if (ScoreLabel == null)
-				throw new InvalidOperationException("ScoreLabel is not assigned on Score.");
+			if (!ValidateNodes())
+			{
+				GetTree().Quit();
+				return;
+			}
 		}
 
-		// ------------------------------ Public API ----------------------------------
+		// ---------------------------------------- Public API --------------------------------------
 
 		public void IncreaseScore(int value)
 		{
+			// Accumulates score and notifies listeners about the updated value.
 			CurrentScore += value;
 			UpdateLabel();
 			EmitSignal(SignalName.ScoreChanged, CurrentScore);
@@ -36,13 +49,18 @@ namespace ProtectEarth.Gameplay
 
 		public void ResetScore()
 		{
+			// Resets score state and informs dependent systems.
 			CurrentScore = 0;
 			UpdateLabel();
 			EmitSignal(SignalName.ScoreReset);
 		}
 
-		// ------------------------------ Helpers ----------------------------------
+		// ----------------------------------------- Helpers ----------------------------------------
 
-		private void UpdateLabel() => ScoreLabel.Text = CurrentScore.ToString();
+		private void UpdateLabel()
+		{
+			// Synchronizes UI representation with internal score state.
+			ScoreLabel.Text = CurrentScore.ToString();
+		}
 	}
 }

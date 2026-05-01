@@ -1,8 +1,8 @@
 using ProtectEarth.Core.Interfaces;
+using ProtectEarth.Core.Utils;
 using ProtectEarth.Components;
 
 using Godot;
-using System;
 
 namespace ProtectEarth.Entities
 {
@@ -19,30 +19,38 @@ namespace ProtectEarth.Entities
 		// Convenience proxy — always reflects the current HealthComponent state.
 		private bool IsDead => Health.IsDead;
 
-		// IDamageable delegate to HealthComponent.
+		// IDamageable — delegated to HealthComponent.
 		public void ApplyDamage(int damage) => Health.ApplyDamage(damage);
 
-		// ------------------------------ Godot overrides ----------------------------------
+		// --------------------------------------- Validation ---------------------------------------
+
+		private bool ValidateNodes()
+		{
+			bool valid = true;
+			valid &= NodeValidator.Require(Collision, nameof(Collision), nameof(Planet));
+			valid &= NodeValidator.Require(Health, nameof(Health), nameof(Planet));
+			return valid;
+		}
+
+		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready()
 		{
-			// Hard validation — these components are required for the Planet to function.
-			// Throws in all build configurations, ensuring misconfigured scenes are caught early.
-			if (Collision == null)
-				throw new InvalidOperationException("Collision is not assigned on Planet.");
-			if (Health == null)
-				throw new InvalidOperationException("HealthComponent is not assigned on Planet.");
+			if (!ValidateNodes())
+			{
+				GetTree().Quit();
+				return;
+			}
 
+			// Prevents projectile interactions while still allowing damage via other systems.
 			AddToGroup("ProjectileImmune");
+
 			ConnectSignals();
 		}
 
-		public override void _ExitTree()
-		{
-			DisconnectSignals();
-		}
+		public override void _ExitTree() => DisconnectSignals();
 
-		// ------------------------------ Signal management ----------------------------------
+		// ------------------------------------ Signal management -----------------------------------
 
 		private void ConnectSignals()
 		{
@@ -54,10 +62,11 @@ namespace ProtectEarth.Entities
 			Health.Death -= OnDeath;
 		}
 
-		// ------------------------------ Signal handlers ----------------------------------
+		// ------------------------------------ Signal handlers -------------------------------------
 
 		private void OnDeath()
 		{
+			// Emits destruction event for game state systems (e.g., game over).
 			EmitSignal(SignalName.PlanetDestroyed);
 		}
 	}

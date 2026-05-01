@@ -2,7 +2,6 @@ using ProtectEarth.Core.Utils;
 using ProtectEarth.Entities;
 
 using Godot;
-using System;
 
 namespace ProtectEarth.Levels
 {
@@ -11,17 +10,27 @@ namespace ProtectEarth.Levels
 		// Scene reference (assigned via editor).
 		[Export] private PackedScene _asteroidScene;
 
-		// ------------------------------ Godot overrides ----------------------------------
+		// --------------------------------------- Validation ---------------------------------------
+
+		private bool ValidateNodes()
+		{
+			bool valid = true;
+			valid &= NodeValidator.Require(_asteroidScene, nameof(_asteroidScene), nameof(DebugLevel));
+			return valid;
+		}
+
+		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready()
 		{
-			// Hard validation — _asteroidScene is required for the DebugLevel to function.
-			// Throws in all build configurations, ensuring misconfigured scenes are caught early.
-			if (_asteroidScene == null)
-				throw new InvalidOperationException("AsteroidScene is not assigned on DebugLevel.");
+			if (!ValidateNodes())
+			{
+				GetTree().Quit();
+				return;
+			}
 		}
 
-		// ------------------------------ Signal handlers ----------------------------------
+		// ------------------------------------ Signal handlers -------------------------------------
 
 		public void OnAsteroidSpawnerTimeout()
 		{
@@ -30,18 +39,18 @@ namespace ProtectEarth.Levels
 			AddChild(asteroid);
 		}
 
-		// ------------------------------ Helpers ----------------------------------
+		// ---------------------------------------- Helpers ----------------------------------------
 
+		// Picks a spawn position just outside the visible viewport on a random edge.
 		private Vector2 GetSpawnPosition(float margin = 50f)
 		{
 			var camera = GetViewport().GetCamera2D();
-
 			if (camera == null) return Vector2.Zero;
 
 			var screenSize = GetViewport().GetVisibleRect().Size;
-			var zoom = camera.Zoom;
-			var halfSize = screenSize * 0.5f / zoom;
+			var halfSize = screenSize * 0.5f / camera.Zoom;
 			var center = camera.GlobalPosition;
+
 			var left = center.X - halfSize.X;
 			var right = center.X + halfSize.X;
 			var top = center.Y - halfSize.Y;
@@ -49,10 +58,10 @@ namespace ProtectEarth.Levels
 
 			return RNG.Range(0, 4) switch
 			{
-				0 => new Vector2(RNG.Range(left, right), top - margin),    // Upper
-				1 => new Vector2(RNG.Range(left, right), bottom + margin), // Bottom
-				2 => new Vector2(left - margin, RNG.Range(top, bottom)),   // Left
-				3 => new Vector2(right + margin, RNG.Range(top, bottom)),  // Right
+				0 => new Vector2(RNG.Range(left, right), top - margin), // top
+				1 => new Vector2(RNG.Range(left, right), bottom + margin), // bottom
+				2 => new Vector2(left - margin, RNG.Range(top, bottom)),  // left
+				3 => new Vector2(right + margin, RNG.Range(top, bottom)),  // right
 				_ => new Vector2(left - margin, top - margin)
 			};
 		}

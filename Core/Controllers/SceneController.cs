@@ -15,39 +15,40 @@ namespace ProtectEarth.Core.Controllers
 	{
 		public static SceneController Instance { get; private set; }
 
-		// Preloaded scenes (fast access, no runtime load).
+		// Preloaded scenes — instantiated immediately, no runtime disk reads.
 		private readonly Dictionary<SceneType, PackedScene> _preloaded = new()
 		{
 			{ SceneType.MainMenu, GD.Load<PackedScene>("res://UI/MainMenu/MainMenu.tscn") },
 		};
 
-		// Lazy-loaded scenes (loaded only when needed, cached after first load).
+		// Lazy-loaded scenes — resolved on first request, then promoted to _preloaded.
 		private readonly Dictionary<SceneType, string> _paths = new()
 		{
 			{ SceneType.DebugLevel, "res://Levels/DebugLevel/DebugLevel.tscn" },
 			{ SceneType.Gameover,   "res://UI/Gameover/Gameover.tscn" },
 		};
 
-		// ------------------------------ Godot overrides ----------------------------------
+		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready() => Instance = this;
 
-		// ------------------------------ Public API ----------------------------------
+		// --------------------------------------- Public API ---------------------------------------
 
+		// Swaps the current scene for the requested type; no-ops silently if type is unregistered.
 		public void ChangeScene(SceneType type)
 		{
 			if (!TryGetScene(type, out var scene)) return;
 
-			var currentScene = GetTree().CurrentScene;
-			currentScene?.QueueFree();
+			GetTree().CurrentScene?.QueueFree();
 
 			var newScene = scene.Instantiate();
 			GetTree().Root.AddChild(newScene);
 			GetTree().CurrentScene = newScene;
 		}
 
-		// ------------------------------ Helpers ----------------------------------
+		// ---------------------------------------- Helpers ----------------------------------------
 
+		// Resolves a SceneType to a PackedScene, lazy-loading and caching if necessary.
 		private bool TryGetScene(SceneType type, out PackedScene scene)
 		{
 			if (_preloaded.TryGetValue(type, out scene))
@@ -56,9 +57,7 @@ namespace ProtectEarth.Core.Controllers
 			if (_paths.TryGetValue(type, out var path))
 			{
 				scene = GD.Load<PackedScene>(path);
-
-				// Cache after first load so subsequent calls skip the disk read.
-				_preloaded[type] = scene;
+				_preloaded[type] = scene; // promote to preloaded — skips disk on subsequent calls.
 				return true;
 			}
 

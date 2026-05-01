@@ -12,27 +12,50 @@ namespace ProtectEarth.Components
 		[Export] public float CurrentSpeed { get; private set; } = 10f;
 		[Export] public float MaxSpeed { get; private set; } = 100f;
 
+		// Runtime state — cached initial speed for reset operations.
 		private float _defaultSpeed;
 
-		// ------------------------------ Godot overrides ----------------------------------
+		// ------------------------------------- Godot overrides ------------------------------------
 
-		public override void _Ready() => _defaultSpeed = CurrentSpeed;
+		public override void _Ready()
+		{
+			// Captures initial speed as baseline for future resets.
+			_defaultSpeed = CurrentSpeed;
+		}
 
-		// ------------------------------ Public API ----------------------------------
+		// ---------------------------------------- Public API --------------------------------------
 
-		public void Reset() => UpdateSpeed(_defaultSpeed);
+		public void Reset()
+		{
+			// Restores speed to its initial configured value.
+			UpdateSpeed(_defaultSpeed);
+		}
 
-		public void SetSpeed(float value) => UpdateSpeed(value);
+		public void SetSpeed(float value)
+		{
+			// Directly overrides current speed (clamped internally).
+			UpdateSpeed(value);
+		}
 
-		public void AddSpeed(float amount) => UpdateSpeed(CurrentSpeed + amount);
+		public void AddSpeed(float amount)
+		{
+			// Increases speed relative to current value.
+			UpdateSpeed(CurrentSpeed + amount);
+		}
 
-		public void ReduceSpeed(float amount) => UpdateSpeed(CurrentSpeed - amount);
+		public void ReduceSpeed(float amount)
+		{
+			// Decreases speed relative to current value.
+			UpdateSpeed(CurrentSpeed - amount);
+		}
 
-		// ------------------------------ Helpers ----------------------------------
+		// ----------------------------------------- Helpers ----------------------------------------
 
 		private void UpdateSpeed(float value)
 		{
+			// Centralized speed mutation logic with clamping and change detection.
 			var oldSpeed = CurrentSpeed;
+
 			CurrentSpeed = Mathf.Clamp(value, 0, MaxSpeed);
 
 			if (!Mathf.IsEqualApprox(CurrentSpeed, oldSpeed))

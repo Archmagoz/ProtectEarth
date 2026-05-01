@@ -1,8 +1,8 @@
 using ProtectEarth.Core.Interfaces;
+using ProtectEarth.Core.Utils;
 using ProtectEarth.Components;
 
 using Godot;
-using System;
 
 namespace ProtectEarth.Entities
 {
@@ -15,38 +15,44 @@ namespace ProtectEarth.Entities
 		[Export] public HealthComponent Health { get; private set; }
 		[Export] public SpeedComponent Speed { get; private set; }
 
-		// Gameplay parameters for shooting behaviour (assigned via editor).
+		// Shooting behaviour parameters (assigned via editor).
 		[ExportGroup("Gameplay")]
 		[Export] public PackedScene ProjectileScene { get; private set; }
 		[Export] public float ShootBufferTime = 0.15f;
 		[Export] public float FireRate = 0.3f;
 
-		// Internal state for shooting cooldowns and buffers.
+		// Internal state for shooting cooldown and input buffering.
 		private float _shootCooldown = 0f;
 		private float _shootBuffer = 0f;
 
 		// Convenience proxy — always reflects the current HealthComponent state.
 		private bool IsDead => Health.IsDead;
 
-		// IDamageable delegate to HealthComponent.
+		// IDamageable — delegated to HealthComponent.
 		public void ApplyDamage(int damage) => Health.ApplyDamage(damage);
 
-		// ------------------------------ Godot overrides ----------------------------------
+		// --------------------------------------- Validation ---------------------------------------
+
+		private bool ValidateNodes()
+		{
+			bool valid = true;
+			valid &= NodeValidator.Require(Collision, nameof(Collision), nameof(Player));
+			valid &= NodeValidator.Require(Marker, nameof(Marker), nameof(Player));
+			valid &= NodeValidator.Require(Health, nameof(Health), nameof(Player));
+			valid &= NodeValidator.Require(Speed, nameof(Speed), nameof(Player));
+			valid &= NodeValidator.Require(ProjectileScene, nameof(ProjectileScene), nameof(Player));
+			return valid;
+		}
+
+		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready()
 		{
-			// Hard validation — these components are required for the Player to function.
-			// Throws in all build configurations, ensuring misconfigured scenes are caught early.
-			if (Collision == null)
-				throw new InvalidOperationException("Collision is not assigned on Player.");
-			if (Marker == null)
-				throw new InvalidOperationException("Marker is not assigned on Player.");
-			if (Health == null)
-				throw new InvalidOperationException("HealthComponent is not assigned on Player.");
-			if (Speed == null)
-				throw new InvalidOperationException("SpeedComponent is not assigned on Player.");
-			if (ProjectileScene == null)
-				throw new InvalidOperationException("ProjectileScene is not assigned on Player.");
+			if (!ValidateNodes())
+			{
+				GetTree().Quit();
+				return;
+			}
 
 			AddToGroup("ProjectileImmune");
 			ConnectSignals();
@@ -65,31 +71,22 @@ namespace ProtectEarth.Entities
 			HandleShooting(delta);
 		}
 
-		public override void _ExitTree()
-		{
-			DisconnectSignals();
-		}
+		public override void _ExitTree() => DisconnectSignals();
 
-		// ------------------------------ Signal management ----------------------------------
+		// ------------------------------------ Signal management -----------------------------------
 
-		private void ConnectSignals()
-		{
-			Health.Death += OnDeath;
-		}
+		private void ConnectSignals() => Health.Death += OnDeath;
 
-		private void DisconnectSignals()
-		{
-			Health.Death -= OnDeath;
-		}
+		private void DisconnectSignals() => Health.Death -= OnDeath;
 
-		// ------------------------------ Signal handlers ----------------------------------
+		// ------------------------------------ Signal handlers -------------------------------------
 
 		private void OnDeath()
 		{
-			// TODO: OnDeath state logic.
+			// TODO: death state logic.
 		}
 
-		// ------------------------------ Player actions -----------------------------------
+		// ------------------------------------- Player actions -------------------------------------
 
 		private void HandleShooting(double delta)
 		{
@@ -120,7 +117,7 @@ namespace ProtectEarth.Entities
 			GetParent().AddChild(projectile);
 		}
 
-		// ------------------------------ Movement logic ----------------------------------
+		// ------------------------------------ Movement logic --------------------------------------
 
 		private void HandleMovement()
 		{
@@ -132,7 +129,6 @@ namespace ProtectEarth.Entities
 			if (Input.IsActionPressed("right")) input.X += 1;
 
 			Velocity = input.Normalized() * Speed.CurrentSpeed;
-
 			MoveAndSlide();
 		}
 

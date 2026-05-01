@@ -1,8 +1,8 @@
 using ProtectEarth.Core.Interfaces;
+using ProtectEarth.Core.Utils;
 using ProtectEarth.Components;
 
 using Godot;
-using System;
 
 namespace ProtectEarth.Entities
 {
@@ -21,39 +21,43 @@ namespace ProtectEarth.Entities
 		[Export] public AudioStream SoundEffectStream { get; private set; }
 		[Export] public int Damage { get; set; } = 100;
 
-		// Set by the Player when instantiating this projectile.
+		// Runtime state — injected by the spawner (Player).
 		public Vector2 Direction { get; set; }
 
-		// ------------------------------ Godot overrides ----------------------------------
+		// --------------------------------------- Validation ---------------------------------------
+
+		private bool ValidateNodes()
+		{
+			bool valid = true;
+			valid &= NodeValidator.Require(AnimatedSprite, nameof(AnimatedSprite), nameof(Projectile));
+			valid &= NodeValidator.Require(Collision, nameof(Collision), nameof(Projectile));
+			valid &= NodeValidator.Require(Speed, nameof(Speed), nameof(Projectile));
+			valid &= NodeValidator.Require(LifetimeTimer, nameof(LifetimeTimer), nameof(Projectile));
+			return valid;
+		}
+
+		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready()
 		{
-			// Hard validation — these components are required for the Projectile to function.
-			// Throws in all build configurations, ensuring misconfigured scenes are caught early.
-			if (AnimatedSprite == null)
-				throw new InvalidOperationException("AnimatedSprite is not assigned on Projectile.");
-			if (Collision == null)
-				throw new InvalidOperationException("Collision is not assigned on Projectile.");
-			if (Speed == null)
-				throw new InvalidOperationException("SpeedComponent is not assigned on Projectile.");
-			if (LifetimeTimer == null)
-				throw new InvalidOperationException("LifetimeTimer is not assigned on Projectile.");
+			if (!ValidateNodes())
+			{
+				GetTree().Quit();
+				return;
+			}
 
-			// SoundEffectStream is optional — PlaySoundIndependent handles the null case.
 			PlaySoundIndependent();
-
 			ConnectSignals();
 		}
 
-		public override void _PhysicsProcess(double delta) =>
-			Position += Direction * Speed.CurrentSpeed * (float)delta;
-
-		public override void _ExitTree()
+		public override void _PhysicsProcess(double delta)
 		{
-			DisconnectSignals();
+			Position += Direction * Speed.CurrentSpeed * (float)delta;
 		}
 
-		// ------------------------------ Signal management ----------------------------------
+		public override void _ExitTree() => DisconnectSignals();
+
+		// ------------------------------------ Signal management -----------------------------------
 
 		private void ConnectSignals()
 		{
@@ -67,12 +71,14 @@ namespace ProtectEarth.Entities
 			LifetimeTimer.Timeout -= OnLifetimeTimeout;
 		}
 
-		// ------------------------------ Signal handlers ----------------------------------
+		// ------------------------------------ Signal handlers -------------------------------------
 
 		private void OnAreaEntered(Area2D entity)
 		{
+			// Ignore entities explicitly marked as immune to projectile interactions.
 			if (entity.IsInGroup("ProjectileImmune")) return;
 
+			// Apply damage only to entities that implement the damage contract.
 			if (entity is IDamageable damageable)
 			{
 				damageable.ApplyDamage(Damage);
@@ -82,9 +88,9 @@ namespace ProtectEarth.Entities
 
 		private void OnLifetimeTimeout() => QueueFree();
 
-		// ------------------------------ Sound ----------------------------------
+		// ---------------------------------------- Audio -------------------------------------------
 
-		// Spawns a fire-and-forget AudioStreamPlayer2D at root level so it survives projectile deletion.
+		// Spawns a detached AudioStreamPlayer2D at root level so playback persists after projectile destruction.
 		private void PlaySoundIndependent()
 		{
 			if (SoundEffectStream == null) return;

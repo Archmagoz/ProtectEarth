@@ -1,9 +1,9 @@
 using ProtectEarth.Core.Controllers;
+using ProtectEarth.Core.Utils;
 using ProtectEarth.Gameplay;
 using ProtectEarth.Entities;
 
 using Godot;
-using System;
 
 namespace ProtectEarth.Levels
 {
@@ -29,21 +29,29 @@ namespace ProtectEarth.Levels
 		private int _lastDifficultyTier = 0;
 		private float _currentSpeedMultiplier = 0;
 
-		// ------------------------------ Godot overrides ----------------------------------
+		// --------------------------------------- Validation ---------------------------------------
+
+		private bool ValidateNodes()
+		{
+			bool valid = true;
+			valid &= NodeValidator.Require(Planet, nameof(Planet), nameof(GameManager));
+			valid &= NodeValidator.Require(AsteroidSpawner, nameof(AsteroidSpawner), nameof(GameManager));
+			valid &= NodeValidator.Require(Score, nameof(Score), nameof(GameManager));
+			return valid;
+		}
+
+		// ------------------------------------- Godot overrides ------------------------------------
 
 		// Registered in _EnterTree so no asteroid spawned before _Ready is missed.
 		public override void _EnterTree() => GetTree().NodeAdded += OnNodeAdded;
 
 		public override void _Ready()
 		{
-			// Hard validation — these nodes are required for the GameManager to function.
-			// Throws in all build configurations, ensuring misconfigured scenes are caught early.
-			if (Planet == null)
-				throw new InvalidOperationException("Planet is not assigned on GameManager.");
-			if (AsteroidSpawner == null)
-				throw new InvalidOperationException("AsteroidSpawner is not assigned on GameManager.");
-			if (Score == null)
-				throw new InvalidOperationException("Score is not assigned on GameManager.");
+			if (!ValidateNodes())
+			{
+				GetTree().Quit();
+				return;
+			}
 
 			ConnectSignals();
 		}
@@ -54,7 +62,7 @@ namespace ProtectEarth.Levels
 			DisconnectSignals();
 		}
 
-		// ------------------------------ Signal management ----------------------------------
+		// ------------------------------------ Signal management -----------------------------------
 
 		private void ConnectSignals()
 		{
@@ -68,7 +76,7 @@ namespace ProtectEarth.Levels
 			Planet.PlanetDestroyed -= OnPlanetDestroyed;
 		}
 
-		// ------------------------------ Signal handlers ----------------------------------
+		// ------------------------------------ Signal handlers -------------------------------------
 
 		private void OnNodeAdded(Node node)
 		{
@@ -85,7 +93,7 @@ namespace ProtectEarth.Levels
 
 		private void OnPlanetDestroyed() => Gameover();
 
-		// ------------------------------ Difficulty scaling ----------------------------------
+		// ----------------------------------- Difficulty scaling -----------------------------------
 
 		private void IncreaseDifficulty(int score)
 		{
@@ -107,7 +115,7 @@ namespace ProtectEarth.Levels
 			AsteroidSpawner.WaitTime = BaseSpawnInterval / spawnRateMultiplier;
 		}
 
-		// ---------------------------------- Game flow --------------------------------------
+		// --------------------------------------- Game flow ----------------------------------------
 
 		private static void Gameover() => SceneController.Instance.ChangeScene(SceneType.Gameover);
 	}

@@ -4,22 +4,22 @@ namespace ProtectEarth.Core.Utils
 {
     public static class RNG
     {
-        // Centralized random number generator for consistent randomness across the game.
+        // Shared random number generator instance — ensures consistent randomness across systems.
         private static readonly RandomNumberGenerator _rng = new();
 
-        // Static constructor to initialize the random number generator.
+        // Static initialization — seeds the generator once at application startup.
         static RNG()
         {
             _rng.Randomize();
         }
 
-        // Generates a random float between min (inclusive) and max (exclusive).
+        // Generates a floating-point value within the specified range [min, max].
         public static float Range(float min, float max)
         {
             return _rng.RandfRange(min, max);
         }
 
-        // Generates a random integer between min (inclusive) and max (inclusive).
+        // Generates an integer value within the specified range [min, max].
         public static int Range(int min, int max)
         {
             return _rng.RandiRange(min, max);
