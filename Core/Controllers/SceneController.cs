@@ -25,7 +25,7 @@ namespace ProtectEarth.Core.Controllers
 		private readonly Dictionary<SceneType, string> _paths = new()
 		{
 			{ SceneType.DebugLevel, "res://Levels/DebugLevel/DebugLevel.tscn" },
-			{ SceneType.Gameover,   "res://UI/Gameover/Gameover.tscn" },
+			{ SceneType.Gameover, "res://UI/Gameover/Gameover.tscn" },
 		};
 
 		// ------------------------------------- Godot overrides ------------------------------------
