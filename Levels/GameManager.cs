@@ -10,23 +10,22 @@ namespace ProtectEarth.Levels
 	{
 		// Node references (assigned via editor).
 		[ExportGroup("Components")]
-		[Export] public Timer AsteroidSpawner { get; private set; }
-		[Export] public Score Score { get; private set; }
-
-		[ExportGroup("Gameplay")]
-		[Export] public Planet Planet { get; private set; }
-
-		// Difficulty scaling constants — tweak to balance the game.
-		private const float BaseSpawnInterval = 2.0f;
-		private const int PointsPerDifficultyTier = 1000;
-		private const float SpawnRateIncreasePerTier = 0.25f;
-		private const float SpeedIncreasePerTier = 1f;
-		private const int MaxDifficultyTier = 10;
-		private const float SpeedIncreaseScale = 10f;
+		[Export] private Timer _asteroidSpawner;
+		[Export] private Planet _planet;
+		[Export] private Score _score;
+		[Export] private Player _player;
 
 		// Internal state for difficulty tracking.
-		private int _lastDifficultyTier = 0;
 		private float _currentSpeedMultiplier = 0;
+		private int _lastDifficultyTier = 0;
+
+		// Difficulty scaling constants — tweak to balance the game.
+		private const int PointsPerDifficultyTier = 1000;
+		private const int MaxDifficultyTier = 10;
+		private const float BaseSpawnInterval = 2.0f;
+		private const float SpawnRateIncreasePerTier = 0.25f;
+		private const float SpeedIncreasePerTier = 1f;
+		private const float SpeedIncreaseScale = 10f;
 
 		// ------------------------------------- Godot overrides ------------------------------------
 
@@ -45,17 +44,17 @@ namespace ProtectEarth.Levels
 
 		private void ConnectSignals()
 		{
-			Score.ScoreChanged += OnScoreChanged;
-			Planet.PlanetDestroyed += OnPlanetDestroyed;
+			_score.ScoreChanged += OnScoreChanged;
+			_planet.PlanetDestroyed += Gameover;
+			_player.PlayerDied += Gameover;
 		}
 
 		private void DisconnectSignals()
 		{
-			Score.ScoreChanged -= OnScoreChanged;
-			Planet.PlanetDestroyed -= OnPlanetDestroyed;
+			_score.ScoreChanged -= OnScoreChanged;
+			_planet.PlanetDestroyed -= Gameover;
+			_player.PlayerDied -= Gameover;
 		}
-
-		// ------------------------------------ Signal handlers -------------------------------------
 
 		private void OnNodeAdded(Node node)
 		{
@@ -66,11 +65,9 @@ namespace ProtectEarth.Levels
 			asteroid.TreeExiting += () => asteroid.AsteroidDestroyed -= OnAsteroidDestroyed;
 		}
 
-		private void OnAsteroidDestroyed(int value) => Score.IncreaseScore(value);
+		private void OnAsteroidDestroyed(int value) => _score.IncreaseScore(value);
 
 		private void OnScoreChanged(int newScore) => IncreaseDifficulty(newScore);
-
-		private void OnPlanetDestroyed() => Gameover();
 
 		// ----------------------------------- Difficulty scaling -----------------------------------
 
@@ -91,7 +88,7 @@ namespace ProtectEarth.Levels
 		private void ApplyDifficulty(float spawnRateMultiplier, float speedMultiplier)
 		{
 			_currentSpeedMultiplier = speedMultiplier;
-			AsteroidSpawner.WaitTime = BaseSpawnInterval / spawnRateMultiplier;
+			_asteroidSpawner.WaitTime = BaseSpawnInterval / spawnRateMultiplier;
 		}
 
 		// --------------------------------------- Game flow ----------------------------------------

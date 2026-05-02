@@ -10,7 +10,7 @@ namespace ProtectEarth.Gameplay
 		[Signal] public delegate void ScoreResetEventHandler();
 
 		// Node reference (assigned via editor).
-		[Export] public RichTextLabel ScoreLabel { get; private set; }
+		[Export] private RichTextLabel _scoreLabel;
 
 		// Runtime state — current accumulated score value.
 		public int CurrentScore { get; private set; } = 0;
@@ -38,7 +38,7 @@ namespace ProtectEarth.Gameplay
 		private void UpdateLabel()
 		{
 			// Synchronizes UI representation with internal score state.
-			ScoreLabel.Text = CurrentScore.ToString();
+			_scoreLabel.Text = CurrentScore.ToString();
 		}
 	}
 }

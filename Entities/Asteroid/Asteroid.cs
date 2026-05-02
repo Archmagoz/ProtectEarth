@@ -13,30 +13,30 @@ namespace ProtectEarth.Entities
 
 		// Node references (assigned via editor).
 		[ExportGroup("Components")]
-		[Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
-		[Export] public CollisionPolygon2D Collision { get; private set; }
-		[Export] public HealthComponent Health { get; private set; }
-		[Export] public SpeedComponent Speed { get; private set; }
+		[Export] private AnimatedSprite2D _animatedSprite;
+		[Export] private CollisionPolygon2D _collision;
+		[Export] private HealthComponent _health;
+		[Export] private SpeedComponent _speed;
 
 		// Gameplay parameters for scoring and collision damage (assigned via editor).
 		[ExportGroup("Gameplay")]
-		[Export] public int ScoreBaseValue { get; private set; } = 300;
-		[Export] public int DamageToPlayer { get; private set; } = 20;
-		[Export] public int DamageToPlanet { get; private set; } = 10;
+		[Export] private int _scoreBaseValue = 300;
+		[Export] private int _damageToPlayer = 20;
+		[Export] private int _damageToPlanet = 10;
 
 		// Internal state for movement behavior.
 		private float _rotationSpeed;
 		private Vector2 _center;
 
 		// Convenience proxy — always reflects the current HealthComponent state.
-		private bool IsDead => Health.IsDead;
-		private void ForceKill() => Health.Kill();
+		private bool IsDead => _health.IsDead;
+		private void ForceKill() => _health.Kill();
 
 		// IDamageable — delegated to HealthComponent.
-		public void ApplyDamage(int damage) => Health.ApplyDamage(damage);
+		public void ApplyDamage(int damage) => _health.ApplyDamage(damage);
 
 		// External hook — used by difficulty scaling systems.
-		public void AddSpeed(float additionalSpeed) => Speed.AddSpeed(additionalSpeed);
+		public void AddSpeed(float additionalSpeed) => _speed.AddSpeed(additionalSpeed);
 
 		// ------------------------------------- Godot overrides ------------------------------------
 
@@ -61,27 +61,25 @@ namespace ProtectEarth.Entities
 
 		private void ConnectSignals()
 		{
-			AnimatedSprite.AnimationFinished += OnAnimationFinished;
+			_animatedSprite.AnimationFinished += OnAnimationFinished;
+			_health.Death += OnDeath;
 			BodyEntered += OnBodyEntered;
 			AreaEntered += OnAreaEntered;
-			Health.Death += OnDeath;
 		}
 
 		private void DisconnectSignals()
 		{
-			AnimatedSprite.AnimationFinished -= OnAnimationFinished;
+			_animatedSprite.AnimationFinished -= OnAnimationFinished;
+			_health.Death -= OnDeath;
 			BodyEntered -= OnBodyEntered;
 			AreaEntered -= OnAreaEntered;
-			Health.Death -= OnDeath;
 		}
-
-		// ------------------------------------ Signal handlers -------------------------------------
 
 		private void OnBodyEntered(Node2D entity)
 		{
 			// Handles collisions with physics bodies (e.g., player).
 			if (entity is IDamageable damageable)
-				damageable.ApplyDamage(DamageToPlayer);
+				damageable.ApplyDamage(_damageToPlayer);
 
 			ForceKill();
 		}
@@ -93,7 +91,7 @@ namespace ProtectEarth.Entities
 
 			// Handles interactions with non-body entities (e.g., planet hitboxes).
 			if (entity is IDamageable damageable)
-				damageable.ApplyDamage(DamageToPlanet);
+				damageable.ApplyDamage(_damageToPlanet);
 
 			ForceKill();
 		}
@@ -101,17 +99,17 @@ namespace ProtectEarth.Entities
 		private void OnDeath()
 		{
 			// Disable collision immediately to prevent further interactions during death animation.
-			Collision.SetDeferred("disabled", true);
+			_collision.SetDeferred("disabled", true);
 
 			// Trigger explosion animation and notify scoring systems.
-			AnimatedSprite.Play("explode");
-			EmitSignal(SignalName.AsteroidDestroyed, ScoreBaseValue);
+			_animatedSprite.Play("explode");
+			EmitSignal(SignalName.AsteroidDestroyed, _scoreBaseValue);
 		}
 
 		private void OnAnimationFinished()
 		{
 			// Cleanup only after explosion animation completes.
-			if (AnimatedSprite.Animation != "explode") return;
+			if (_animatedSprite.Animation != "explode") return;
 			QueueFree();
 		}
 
@@ -121,7 +119,7 @@ namespace ProtectEarth.Entities
 		{
 			// Moves asteroid towards screen center with slight rotational drift.
 			var direction = (_center - GlobalPosition).Normalized();
-			GlobalPosition += direction * Speed.CurrentSpeed * (float)delta;
+			GlobalPosition += direction * _speed.CurrentSpeed * (float)delta;
 			Rotation += _rotationSpeed;
 		}
 	}

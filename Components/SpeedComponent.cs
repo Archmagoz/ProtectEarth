@@ -9,18 +9,22 @@ namespace ProtectEarth.Components
 		[Signal] public delegate void SpeedChangedEventHandler(float current, float max);
 
 		// Base values (assigned via editor).
-		[Export] public float CurrentSpeed { get; private set; } = 10f;
-		[Export] public float MaxSpeed { get; private set; } = 100f;
+		[Export] private float _currentSpeed = 10f;
+		[Export] private float _maxSpeed = 100f;
 
 		// Runtime state — cached initial speed for reset operations.
 		private float _defaultSpeed;
+
+		// Public read-only fields for external access to current speed state.
+		public float CurrentSpeed => _currentSpeed;
+		public float MaxSpeed => _maxSpeed;
 
 		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready()
 		{
 			// Captures initial speed as baseline for future resets.
-			_defaultSpeed = CurrentSpeed;
+			_defaultSpeed = _currentSpeed;
 		}
 
 		// ---------------------------------------- Public API --------------------------------------
@@ -40,13 +44,13 @@ namespace ProtectEarth.Components
 		public void AddSpeed(float amount)
 		{
 			// Increases speed relative to current value.
-			UpdateSpeed(CurrentSpeed + amount);
+			UpdateSpeed(_currentSpeed + amount);
 		}
 
 		public void ReduceSpeed(float amount)
 		{
 			// Decreases speed relative to current value.
-			UpdateSpeed(CurrentSpeed - amount);
+			UpdateSpeed(_currentSpeed - amount);
 		}
 
 		// ----------------------------------------- Helpers ----------------------------------------
@@ -54,12 +58,12 @@ namespace ProtectEarth.Components
 		private void UpdateSpeed(float value)
 		{
 			// Centralized speed mutation logic with clamping and change detection.
-			var oldSpeed = CurrentSpeed;
+			var oldSpeed = _currentSpeed;
 
-			CurrentSpeed = Mathf.Clamp(value, 0, MaxSpeed);
+			_currentSpeed = Mathf.Clamp(value, 0, _maxSpeed);
 
-			if (!Mathf.IsEqualApprox(CurrentSpeed, oldSpeed))
-				EmitSignal(SignalName.SpeedChanged, CurrentSpeed, MaxSpeed);
+			if (!Mathf.IsEqualApprox(_currentSpeed, oldSpeed))
+				EmitSignal(SignalName.SpeedChanged, _currentSpeed, _maxSpeed);
 		}
 	}
 }

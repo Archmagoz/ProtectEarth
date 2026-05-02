@@ -10,17 +10,17 @@ namespace ProtectEarth.Entities
 	{
 		// Node references (assigned via editor).
 		[ExportGroup("Components")]
-		[Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
-		[Export] public CollisionShape2D Collision { get; private set; }
-		[Export] public SpeedComponent Speed { get; private set; }
+		[Export] private AnimatedSprite2D _animatedSprite;
+		[Export] private CollisionShape2D _collision;
+		[Export] private SpeedComponent _speed;
 
 		// Gameplay parameters (assigned via editor).
 		[ExportGroup("Gameplay")]
-		[Export] public AudioStream SoundEffectStream { get; private set; }
-		[Export] public int Damage { get; set; } = 100;
+		[Export] private AudioStream _soundEffectStream;
+		[Export] private int _damage = 100;
 
 		// Runtime state — injected by the spawner (Player).
-		public Vector2 Direction { get; set; }
+		public Vector2 Direction;
 
 		// Runtime state (internal)
 		private float _lifetime = 3f;
@@ -38,7 +38,7 @@ namespace ProtectEarth.Entities
 			_lifetime -= (float)delta;
 			if (_lifetime <= 0f) QueueFree();
 
-			Translate(Direction * Speed.CurrentSpeed * (float)delta);
+			Translate(Direction * _speed.CurrentSpeed * (float)delta);
 		}
 
 		public override void _ExitTree() => DisconnectSignals();
@@ -55,8 +55,6 @@ namespace ProtectEarth.Entities
 			AreaEntered -= OnAreaEntered;
 		}
 
-		// ------------------------------------ Signal handlers -------------------------------------
-
 		private void OnAreaEntered(Area2D entity)
 		{
 			// Ignore entities explicitly marked as immune to projectile interactions.
@@ -65,7 +63,7 @@ namespace ProtectEarth.Entities
 			// Apply damage only to entities that implement the damage contract.
 			if (entity is IDamageable damageable)
 			{
-				damageable.ApplyDamage(Damage);
+				damageable.ApplyDamage(_damage);
 				QueueFree();
 			}
 		}
@@ -77,11 +75,11 @@ namespace ProtectEarth.Entities
 		// Spawns a detached AudioStreamPlayer2D at root level so playback persists after projectile destruction.
 		private void PlaySoundIndependent()
 		{
-			if (SoundEffectStream == null) return;
+			if (_soundEffectStream == null) return;
 
 			var player = new AudioStreamPlayer2D()
 			{
-				Stream = SoundEffectStream,
+				Stream = _soundEffectStream,
 				PitchScale = 2.0f,
 				VolumeDb = -5.0f,
 				GlobalPosition = GlobalPosition,

@@ -6,15 +6,15 @@
 [ext_resource type="PackedScene" uid="uid://dv4bi7ckkhxak" path="res://Components/HealthComponent.tscn" id="3_1des2"]
 [ext_resource type="PackedScene" uid="uid://dguuymw41wnjp" path="res://Components/SpeedComponent.tscn" id="4_an6q6"]
 
-[node name="Player" type="CharacterBody2D" unique_id=1835500830 node_paths=PackedStringArray("Collision", "Marker", "Health", "Speed")]
+[node name="Player" type="CharacterBody2D" unique_id=1835500830 node_paths=PackedStringArray("_collision", "_marker", "_health", "_speed")]
 script = ExtResource("1_ww0jn")
-Collision = NodePath("Collision")
-Marker = NodePath("Marker")
-Health = NodePath("HealthComponent")
-Speed = NodePath("SpeedComponent")
-ProjectileScene = ExtResource("2_an6q6")
-ShootBufferTime = 0.1
-FireRate = 0.2
+_collision = NodePath("Collision")
+_marker = NodePath("Marker")
+_health = NodePath("HealthComponent")
+_speed = NodePath("SpeedComponent")
+_projectileScene = ExtResource("2_an6q6")
+_shootBufferTime = 0.1
+_fireRate = 0.2
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=2070086595]
 rotation = 1.5707964
@@ -28,8 +28,8 @@ polygon = PackedVector2Array(15, 11, 14, 6, 0, -12, -14, 6, -15, 11)
 position = Vector2(16, 0)
 
 [node name="HealthComponent" parent="." unique_id=1829535144 instance=ExtResource("3_1des2")]
-MaxHealth = 500
+_maxHealth = 500
 
 [node name="SpeedComponent" parent="." unique_id=1843988401 instance=ExtResource("4_an6q6")]
-CurrentSpeed = 200.0
-MaxSpeed = 400.0
+_currentSpeed = 200.0
+_maxSpeed = 1000.0

@@ -7,28 +7,31 @@ namespace ProtectEarth.Entities
 {
 	public partial class Player : CharacterBody2D, IDamageable
 	{
+		// Signal Handler.
+		[Signal] public delegate void PlayerDiedEventHandler();
+
 		// Node references (assigned via editor).
 		[ExportGroup("Components")]
-		[Export] public CollisionPolygon2D Collision { get; private set; }
-		[Export] public Marker2D Marker { get; private set; }
-		[Export] public HealthComponent Health { get; private set; }
-		[Export] public SpeedComponent Speed { get; private set; }
+		[Export] private CollisionPolygon2D _collision;
+		[Export] private Marker2D _marker;
+		[Export] private HealthComponent _health;
+		[Export] private SpeedComponent _speed;
 
 		// Shooting behaviour parameters (assigned via editor).
 		[ExportGroup("Gameplay")]
-		[Export] public PackedScene ProjectileScene { get; private set; }
-		[Export] public float ShootBufferTime = 0.15f;
-		[Export] public float FireRate = 0.3f;
+		[Export] private PackedScene _projectileScene;
+		[Export] private float _shootBufferTime = 0.15f;
+		[Export] private float _fireRate = 0.3f;
 
 		// Internal state for shooting cooldown and input buffering.
 		private float _shootCooldown = 0f;
 		private float _shootBuffer = 0f;
 
 		// Convenience proxy — always reflects the current HealthComponent state.
-		private bool IsDead => Health.IsDead;
+		private bool IsDead => _health.IsDead;
 
 		// IDamageable — delegated to HealthComponent.
-		public void ApplyDamage(int damage) => Health.ApplyDamage(damage);
+		public void ApplyDamage(int damage) => _health.ApplyDamage(damage);
 
 		// ------------------------------------- Godot overrides ------------------------------------
 
@@ -42,12 +45,12 @@ namespace ProtectEarth.Entities
 		{
 			if (IsDead) return;
 			HandleMovement();
+			HandleRotation();
 		}
 
 		public override void _Process(double delta)
 		{
 			if (IsDead) return;
-			HandleRotation();
 			HandleShooting(delta);
 		}
 
@@ -55,15 +58,16 @@ namespace ProtectEarth.Entities
 
 		// ------------------------------------ Signal management -----------------------------------
 
-		private void ConnectSignals() => Health.Death += OnDeath;
+		private void ConnectSignals() => _health.Death += OnDeath;
 
-		private void DisconnectSignals() => Health.Death -= OnDeath;
+		private void DisconnectSignals() => _health.Death -= OnDeath;
 
-		// ------------------------------------ Signal handlers -------------------------------------
+		private void OnDeath() => CallDeferred(nameof(HandleDeath));
 
-		private void OnDeath()
+		private void HandleDeath()
 		{
-			// TODO: death state logic.
+			_collision.Disabled = true;
+			EmitSignal(SignalName.PlayerDied);
 		}
 
 		// ------------------------------------- Player actions -------------------------------------
@@ -75,29 +79,27 @@ namespace ProtectEarth.Entities
 			_shootCooldown -= d;
 			_shootBuffer -= d;
 
-			if (Input.IsActionJustPressed("shoot")) _shootBuffer = ShootBufferTime;
+			if (Input.IsActionJustPressed("shoot")) _shootBuffer = _shootBufferTime;
 			if (_shootCooldown > 0f) return;
 			if (_shootBuffer <= 0f && !Input.IsActionPressed("shoot")) return;
 
 			Shoot();
 
-			_shootCooldown = FireRate;
+			_shootCooldown = _fireRate;
 			_shootBuffer = 0f;
 		}
 
 		private void Shoot()
 		{
-			var projectile = ProjectileScene.Instantiate<Projectile>();
+			var projectile = _projectileScene.Instantiate<Projectile>();
 			var direction = (GetGlobalMousePosition() - GlobalPosition).Normalized();
 
 			projectile.Rotation = direction.Angle() + Mathf.Pi / 2f;
-			projectile.GlobalPosition = Marker.GlobalPosition;
+			projectile.GlobalPosition = _marker.GlobalPosition;
 			projectile.Direction = direction;
 
 			GetParent().AddChild(projectile);
 		}
-
-		// ------------------------------------ Movement logic --------------------------------------
 
 		private void HandleMovement()
 		{
@@ -108,7 +110,7 @@ namespace ProtectEarth.Entities
 			if (Input.IsActionPressed("left")) input.X -= 1;
 			if (Input.IsActionPressed("right")) input.X += 1;
 
-			Velocity = input.Normalized() * Speed.CurrentSpeed;
+			Velocity = input.Normalized() * _speed.CurrentSpeed;
 			MoveAndSlide();
 		}
 

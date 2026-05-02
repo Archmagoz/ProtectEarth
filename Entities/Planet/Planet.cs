@@ -12,14 +12,14 @@ namespace ProtectEarth.Entities
 
 		// Node references (assigned via editor).
 		[ExportGroup("Components")]
-		[Export] public CollisionShape2D Collision { get; private set; }
-		[Export] public HealthComponent Health { get; private set; }
+		[Export] private CollisionShape2D _collision;
+		[Export] private HealthComponent _health;
 
 		// Convenience proxy — always reflects the current HealthComponent state.
-		private bool IsDead => Health.IsDead;
+		private bool IsDead => _health.IsDead;
 
 		// IDamageable — delegated to HealthComponent.
-		public void ApplyDamage(int damage) => Health.ApplyDamage(damage);
+		public void ApplyDamage(int damage) => _health.ApplyDamage(damage);
 
 		// ------------------------------------- Godot overrides ------------------------------------
 
@@ -37,12 +37,12 @@ namespace ProtectEarth.Entities
 
 		private void ConnectSignals()
 		{
-			Health.Death += OnDeath;
+			_health.Death += OnDeath;
 		}
 
 		private void DisconnectSignals()
 		{
-			Health.Death -= OnDeath;
+			_health.Death -= OnDeath;
 		}
 
 		// ------------------------------------ Signal handlers -------------------------------------

@@ -554,10 +554,10 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_sotaw"]
 radius = 29.068884
 
-[node name="Planet" type="StaticBody2D" unique_id=726908285 node_paths=PackedStringArray("Collision", "Health")]
+[node name="Planet" type="StaticBody2D" unique_id=726908285 node_paths=PackedStringArray("_collision", "_health")]
 script = ExtResource("1_vqrwm")
-Collision = NodePath("Collision")
-Health = NodePath("HealthComponent")
+_collision = NodePath("Collision")
+_health = NodePath("HealthComponent")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." unique_id=1496320711]
 sprite_frames = SubResource("SpriteFrames_w53q4")
@@ -569,4 +569,4 @@ debug_color = Color(2.7915835e-06, 0.64673054, 0.23743263, 0.41960785)
 
 [node name="HealthComponent" type="Node" parent="." unique_id=2076969682]
 script = ExtResource("3_spxru")
-MaxHealth = 100000000
+_maxHealth = 1000

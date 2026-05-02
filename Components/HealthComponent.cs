@@ -10,18 +10,22 @@ namespace ProtectEarth.Components
 		[Signal] public delegate void DeathEventHandler();
 
 		// Base value (assigned via editor).
-		[Export] public int MaxHealth { get; set; } = 100;
+		[Export] private int _maxHealth = 100;
 
 		// Runtime state — managed internally by the component.
-		public bool IsDead { get; private set; }
-		public int CurrentHealth { get; private set; }
+		private int _currentHealth;
+
+		// Public read-only fields for external access to current speed state.
+		public int MaxHealth => _maxHealth;
+		public int CurrentHealth => _currentHealth;
+		public bool IsDead => _currentHealth <= 0;
 
 		// ------------------------------------- Godot overrides ------------------------------------
 
 		public override void _Ready()
 		{
 			// Initializes health state to its maximum value on spawn.
-			CurrentHealth = MaxHealth;
+			_currentHealth = _maxHealth;
 		}
 
 		// ---------------------------------------- Public API --------------------------------------
@@ -29,8 +33,7 @@ namespace ProtectEarth.Components
 		public void Reset()
 		{
 			// Restores entity to a fully alive state.
-			IsDead = false;
-			UpdateHealth(MaxHealth);
+			UpdateHealth(_maxHealth);
 		}
 
 		public void SetHealth(int value)
@@ -43,38 +46,43 @@ namespace ProtectEarth.Components
 		{
 			// Applies damage only if the entity is still alive.
 			if (IsDead) return;
-			UpdateHealth(CurrentHealth - damage);
+			UpdateHealth(_currentHealth - damage);
 		}
 
 		public void Heal(int amount)
 		{
 			// Applies healing only if the entity is still alive.
 			if (IsDead) return;
-			UpdateHealth(CurrentHealth + amount);
+			UpdateHealth(_currentHealth + amount);
 		}
 
 		public void Kill()
 		{
 			// Forces death state and emits termination signal once.
 			if (IsDead) return;
-			IsDead = true;
-			EmitSignal(SignalName.Death);
+			UpdateHealth(0);
 		}
 
 		// ----------------------------------------- Helpers ----------------------------------------
 
 		private void UpdateHealth(int value)
 		{
-			// Centralized health mutation logic with clamping and event dispatching.
-			var oldHealth = CurrentHealth;
+			var oldHealth = _currentHealth;
 
-			CurrentHealth = Mathf.Clamp(value, 0, MaxHealth);
+			_currentHealth = Mathf.Clamp(value, 0, _maxHealth);
 
-			if (CurrentHealth != oldHealth)
-				EmitSignal(SignalName.HealthChanged, CurrentHealth, MaxHealth);
+			if (_currentHealth == oldHealth)
+				return;
 
-			if (CurrentHealth <= 0)
-				Kill();
+			EmitSignal(SignalName.HealthChanged, _currentHealth, _maxHealth);
+
+			if (_currentHealth == 0 && oldHealth > 0)
+				OnDeath();
+		}
+
+		private void OnDeath()
+		{
+			EmitSignal(SignalName.Death);
 		}
 	}
 }

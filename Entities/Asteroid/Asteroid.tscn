@@ -75,12 +75,14 @@ animations = [{
 "speed": 14.0
 }]
 
-[node name="Asteroid" type="Area2D" unique_id=999220009 node_paths=PackedStringArray("AnimatedSprite", "Collision", "Health", "Speed")]
+[node name="Asteroid" type="Area2D" unique_id=999220009 node_paths=PackedStringArray("_animatedSprite", "_collision", "_health", "_speed")]
 script = ExtResource("1_mna7d")
-AnimatedSprite = NodePath("AnimatedSprite")
-Collision = NodePath("Collision")
-Health = NodePath("HealthComponent")
-Speed = NodePath("SpeedComponent")
+_animatedSprite = NodePath("AnimatedSprite")
+_collision = NodePath("Collision")
+_health = NodePath("HealthComponent")
+_speed = NodePath("SpeedComponent")
+_damageToPlayer = 100
+_damageToPlanet = 50
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." unique_id=1867766852]
 sprite_frames = SubResource("SpriteFrames_0yndq")
@@ -95,5 +97,5 @@ script = ExtResource("4_m11kh")
 
 [node name="SpeedComponent" type="Node" parent="." unique_id=173428464]
 script = ExtResource("5_tuyl4")
-CurrentSpeed = 40.0
-MaxSpeed = 300.0
+_currentSpeed = 50.0
+_maxSpeed = 300.0
