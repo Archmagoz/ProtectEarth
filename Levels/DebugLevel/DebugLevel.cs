@@ -8,6 +8,7 @@ namespace ProtectEarth.Levels
 	public partial class DebugLevel : Node2D
 	{
 		// Scene reference (assigned via editor).
+		[ExportGroup("Components")]
 		[Export] private PackedScene _asteroidScene;
 		[Export] private Timer _asteroidSpawner;
 
