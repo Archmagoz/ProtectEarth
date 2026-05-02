@@ -15,7 +15,7 @@ namespace ProtectEarth.Components
 		// Runtime state — managed internally by the component.
 		private int _currentHealth;
 
-		// Public read-only fields for external access to current speed state.
+		// Public read-only properties for external access to health state.
 		public int MaxHealth => _maxHealth;
 		public int CurrentHealth => _currentHealth;
 		public bool IsDead => _currentHealth <= 0;
