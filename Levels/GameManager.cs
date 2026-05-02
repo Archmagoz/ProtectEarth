@@ -11,9 +11,9 @@ namespace ProtectEarth.Levels
 		// Node references (assigned via editor).
 		[ExportGroup("Components")]
 		[Export] private Timer _asteroidSpawner;
+		[Export] private Player _player;
 		[Export] private Planet _planet;
 		[Export] private Score _score;
-		[Export] private Player _player;
 
 		// Internal state for difficulty tracking.
 		private float _currentSpeedMultiplier = 0;
