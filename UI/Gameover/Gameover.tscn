@@ -1,6 +1,43 @@
 [gd_scene format=3 uid="uid://bn3fumjiaqv55"]
 
-[node name="Gameover" type="Node2D" unique_id=135118210]
+[ext_resource type="PackedScene" uid="uid://dqtc0ug4pbdxk" path="res://Levels/DebugLevel/Background/Background.tscn" id="1_lqpvl"]
+[ext_resource type="Script" uid="uid://q2651tom4fbd" path="res://UI/Gameover/Gameover.cs" id="1_ssnn4"]
+[ext_resource type="Texture2D" uid="uid://dp6grplrjveyi" path="res://UI/Assets/Gameover.png" id="2_2l14j"]
+[ext_resource type="Texture2D" uid="uid://bolwi2wiwxp3s" path="res://UI/Assets/RetryButton.png" id="3_swww2"]
+[ext_resource type="Texture2D" uid="uid://dkoovlshobbnm" path="res://UI/Assets/QuitButton.png" id="4_w2tib"]
+[ext_resource type="AudioStream" uid="uid://3n40irvsqlu2" path="res://UI/Gameover/Assets/SadTrombone.ogg" id="6_7ysg1"]
+
+[node name="Gameover" type="Node2D" unique_id=135118210 node_paths=PackedStringArray("_retryButton", "_quitButton")]
+script = ExtResource("1_ssnn4")
+_retryButton = NodePath("RetryButton")
+_quitButton = NodePath("QuitButton")
+
+[node name="Background" parent="." unique_id=1894191346 instance=ExtResource("1_lqpvl")]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=475092251]
+position = Vector2(99, -71)
+texture = ExtResource("2_2l14j")
+offset = Vector2(-99, -20)
+
+[node name="RetryButton" type="TextureButton" parent="." unique_id=40126183]
+offset_left = -148.0
+offset_top = 31.000002
+offset_right = 352.0
+offset_bottom = 331.0
+scale = Vector2(0.28000122, 0.28000122)
+texture_normal = ExtResource("3_swww2")
+
+[node name="QuitButton" type="TextureButton" parent="." unique_id=1861176861]
+offset_left = 14.999999
+offset_top = 31.000002
+offset_right = 515.0
+offset_bottom = 331.0
+scale = Vector2(0.27999938, 0.27999938)
+texture_normal = ExtResource("4_w2tib")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2115838868]
 zoom = Vector2(2, 2)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer2D" parent="." unique_id=744565405]
+stream = ExtResource("6_7ysg1")
+autoplay = true

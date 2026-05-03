@@ -1,3 +1,32 @@
 [gd_scene format=3 uid="uid://c6ntehe8lrbaw"]
 
-[node name="MainMenu" type="Node2D" unique_id=1083026709]
+[ext_resource type="PackedScene" uid="uid://dqtc0ug4pbdxk" path="res://Levels/DebugLevel/Background/Background.tscn" id="1_8fkdr"]
+[ext_resource type="Script" uid="uid://d1ksb16y5hd4s" path="res://UI/MainMenu/MainMenu.cs" id="1_nahvw"]
+[ext_resource type="Texture2D" uid="uid://bxfy0afat0v0r" path="res://UI/Assets/StartButton.png" id="2_fw0vt"]
+[ext_resource type="Texture2D" uid="uid://dkoovlshobbnm" path="res://UI/Assets/QuitButton.png" id="3_8x0bb"]
+
+[node name="MainMenu" type="Node2D" unique_id=1083026709 node_paths=PackedStringArray("_startButton", "_quitButton")]
+script = ExtResource("1_nahvw")
+_startButton = NodePath("StartButton")
+_quitButton = NodePath("QuitButton")
+
+[node name="Background" parent="." unique_id=1894191346 instance=ExtResource("1_8fkdr")]
+
+[node name="StartButton" type="TextureButton" parent="." unique_id=2042454558]
+offset_left = 120.0
+offset_top = -75.0
+offset_right = 620.0
+offset_bottom = 225.0
+scale = Vector2(0.28000122, 0.28000122)
+texture_normal = ExtResource("2_fw0vt")
+
+[node name="QuitButton" type="TextureButton" parent="." unique_id=2043181913]
+offset_left = 108.00001
+offset_top = -4.000001
+offset_right = 608.0
+offset_bottom = 296.0
+scale = Vector2(0.27999938, 0.27999938)
+texture_normal = ExtResource("3_8x0bb")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2087826821]
+zoom = Vector2(2, 2)
