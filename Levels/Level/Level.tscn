@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://bfx0d8wfnkv0a"]
+
+[ext_resource type="Script" uid="uid://daxod3xbg6uf2" path="res://Levels/Level/Level.cs" id="1_jd1ef"]
+[ext_resource type="PackedScene" uid="uid://wckpu25srpss" path="res://Entities/Asteroid/Asteroid.tscn" id="2_ctpir"]
+[ext_resource type="PackedScene" uid="uid://dqtc0ug4pbdxk" path="res://Levels/Level/Background/Background.tscn" id="3_8cdyl"]
+[ext_resource type="PackedScene" uid="uid://x87glh7ayopp" path="res://Entities/Planet/Planet.tscn" id="4_kyxcb"]
+[ext_resource type="PackedScene" uid="uid://dlm5wkqefo240" path="res://Entities/Player/Player.tscn" id="5_i7s4p"]
+[ext_resource type="AudioStream" uid="uid://bxtoo10vaw6fq" path="res://Levels/Level/Background/Assets/BackgroundMusic.ogg" id="6_73k0w"]
+[ext_resource type="PackedScene" uid="uid://ca1ekhb5p7xjh" path="res://Levels/GameManager.tscn" id="7_w1tpy"]
+[ext_resource type="PackedScene" uid="uid://bckk6y7586ej3" path="res://Gameplay/Score/Score.tscn" id="8_7i3x2"]
+
+[node name="DebugLevel" type="Node2D" unique_id=154008839 node_paths=PackedStringArray("_asteroidSpawner")]
+script = ExtResource("1_jd1ef")
+_asteroidScene = ExtResource("2_ctpir")
+_asteroidSpawner = NodePath("AsteroidSpawner")
+
+[node name="Background" parent="." unique_id=1894191346 instance=ExtResource("3_8cdyl")]
+
+[node name="Planet" parent="." unique_id=1252755180 instance=ExtResource("4_kyxcb")]
+
+[node name="Player" parent="." unique_id=1835500830 instance=ExtResource("5_i7s4p")]
+position = Vector2(0, 86)
+rotation = -1.5707964
+
+[node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="." unique_id=1294692255]
+stream = ExtResource("6_73k0w")
+autoplay = true
+parameters/looping = true
+
+[node name="Camera" type="Camera2D" parent="." unique_id=76599704]
+zoom = Vector2(2, 2)
+
+[node name="AsteroidSpawner" type="Timer" parent="." unique_id=905032918]
+wait_time = 2.0
+autostart = true
+
+[node name="GameManager" parent="." unique_id=979172017 node_paths=PackedStringArray("_asteroidSpawner", "_player", "_planet", "_score") instance=ExtResource("7_w1tpy")]
+_asteroidSpawner = NodePath("../AsteroidSpawner")
+_player = NodePath("../Player")
+_planet = NodePath("../Planet")
+_score = NodePath("../Score")
+
+[node name="Score" parent="." unique_id=1953775316 instance=ExtResource("8_7i3x2")]
+offset_left = 110.00001
+offset_top = -157.00002
+offset_right = 110.00001
+offset_bottom = -157.00002
+scale = Vector2(0.51534736, 0.51534736)

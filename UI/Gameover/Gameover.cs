@@ -17,7 +17,7 @@ namespace ProtectEarth.UI
 			_quitButton.Pressed += OnQuitPressed;
 		}
 
-		private void OnRetryPressed() => SceneController.Instance.ChangeScene(SceneType.DebugLevel);
+		private void OnRetryPressed() => SceneController.Instance.ChangeScene(SceneType.Level);
 		private void OnQuitPressed() => GetTree().Quit();
 	}
 }

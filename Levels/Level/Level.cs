@@ -5,7 +5,7 @@ using Godot;
 
 namespace ProtectEarth.Levels
 {
-	public partial class DebugLevel : Node2D
+	public partial class Level : Node2D
 	{
 		// Scene reference (assigned via editor).
 		[ExportGroup("Components")]

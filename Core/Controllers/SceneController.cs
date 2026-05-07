@@ -6,7 +6,7 @@ namespace ProtectEarth.Core.Controllers
 {
 	public enum SceneType
 	{
-		DebugLevel,
+		Level,
 		MainMenu,
 		Gameover,
 	}
@@ -24,7 +24,7 @@ namespace ProtectEarth.Core.Controllers
 		// Lazy-loaded scenes — resolved on first request, then promoted to _preloaded.
 		private readonly Dictionary<SceneType, string> _paths = new()
 		{
-			{ SceneType.DebugLevel, "res://Levels/DebugLevel/DebugLevel.tscn" },
+			{ SceneType.Level, "res://Levels/Level/Level.tscn" },
 			{ SceneType.Gameover, "res://UI/Gameover/Gameover.tscn" },
 		};
 

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bn3fumjiaqv55"]
 
-[ext_resource type="PackedScene" uid="uid://dqtc0ug4pbdxk" path="res://Levels/DebugLevel/Background/Background.tscn" id="1_lqpvl"]
+[ext_resource type="PackedScene" uid="uid://dqtc0ug4pbdxk" path="res://Levels/Level/Background/Background.tscn" id="1_lqpvl"]
 [ext_resource type="Script" uid="uid://q2651tom4fbd" path="res://UI/Gameover/Gameover.cs" id="1_ssnn4"]
 [ext_resource type="Texture2D" uid="uid://dp6grplrjveyi" path="res://UI/Assets/Gameover.png" id="2_2l14j"]
 [ext_resource type="Texture2D" uid="uid://bolwi2wiwxp3s" path="res://UI/Assets/RetryButton.png" id="3_swww2"]
