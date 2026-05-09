@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://c6ntehe8lrbaw"]
 
 [ext_resource type="PackedScene" uid="uid://dqtc0ug4pbdxk" path="res://Levels/Level/Background/Background.tscn" id="1_8fkdr"]
-[ext_resource type="Script" uid="uid://d1ksb16y5hd4s" path="res://UI/MainMenu/MainMenu.cs" id="1_nahvw"]
-[ext_resource type="Texture2D" uid="uid://bxfy0afat0v0r" path="res://UI/Assets/StartButton.png" id="2_fw0vt"]
-[ext_resource type="Texture2D" uid="uid://dkoovlshobbnm" path="res://UI/Assets/QuitButton.png" id="3_8x0bb"]
+[ext_resource type="Script" uid="uid://cpfydrsv84qnr" path="res://UI/MainMenu/MainMenu.cs" id="1_nahvw"]
+[ext_resource type="Texture2D" uid="uid://csvw1vebmhxfq" path="res://UI/Assets/StartButton.png" id="2_fw0vt"]
+[ext_resource type="Texture2D" uid="uid://cmyy02g0pydps" path="res://UI/Assets/QuitButton.png" id="3_8x0bb"]
 
 [node name="MainMenu" type="Node2D" unique_id=1083026709 node_paths=PackedStringArray("_startButton", "_quitButton")]
 script = ExtResource("1_nahvw")

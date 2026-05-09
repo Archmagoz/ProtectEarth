@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://wckpu25srpss"]
 
 [ext_resource type="Texture2D" uid="uid://brswc3a3qvedb" path="res://Entities/Asteroid/Assets/AsteroidBase.png" id="1_0yndq"]
-[ext_resource type="Script" uid="uid://c2vic66j4qe8y" path="res://Entities/Asteroid/Asteroid.cs" id="1_mna7d"]
+[ext_resource type="Script" uid="uid://dthm05npigqag" path="res://Entities/Asteroid/Asteroid.cs" id="1_mna7d"]
 [ext_resource type="Texture2D" uid="uid://byb3s52t67ngk" path="res://Entities/Asteroid/Assets/AsteroidExplode.png" id="2_k3kuu"]
-[ext_resource type="Script" uid="uid://duoyv5qwnxi3b" path="res://Components/HealthComponent.cs" id="4_m11kh"]
-[ext_resource type="Script" uid="uid://bw0w2uoowghu8" path="res://Components/SpeedComponent.cs" id="5_tuyl4"]
+[ext_resource type="Script" uid="uid://blho3cmopjkl4" path="res://Components/HealthComponent.cs" id="4_m11kh"]
+[ext_resource type="Script" uid="uid://bxdk2uicwd02p" path="res://Components/SpeedComponent.cs" id="5_tuyl4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_etoru"]
 atlas = ExtResource("1_0yndq")

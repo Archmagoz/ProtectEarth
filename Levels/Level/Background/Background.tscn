@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dqtc0ug4pbdxk"]
 
-[ext_resource type="Texture2D" uid="uid://b6ecdg1ogvlbt" path="res://Levels/Level/Background/Assets/BackgroundLayer01.png" id="1_bdfwu"]
-[ext_resource type="Texture2D" uid="uid://ue2lxfge41xj" path="res://Levels/Level/Background/Assets/BackgroundLayer02.png" id="2_15uav"]
-[ext_resource type="Texture2D" uid="uid://1oqlfuv0iuqc" path="res://Levels/Level/Background/Assets/BackgroundLayer03.png" id="3_4f27n"]
+[ext_resource type="Texture2D" uid="uid://olxus6akbrhf" path="res://Levels/Level/Background/Assets/BackgroundLayer01.png" id="1_bdfwu"]
+[ext_resource type="Texture2D" uid="uid://b1f7v0ywhkjdc" path="res://Levels/Level/Background/Assets/BackgroundLayer02.png" id="2_15uav"]
+[ext_resource type="Texture2D" uid="uid://4lp5735by5dc" path="res://Levels/Level/Background/Assets/BackgroundLayer03.png" id="3_4f27n"]
 
 [node name="Background" type="Node2D" unique_id=1894191346]
 

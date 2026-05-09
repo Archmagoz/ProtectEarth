@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://x87glh7ayopp"]
 
 [ext_resource type="Texture2D" uid="uid://tnn6rejrhyxd" path="res://Entities/Planet/Assets/Planet.png" id="1_sotaw"]
-[ext_resource type="Script" uid="uid://dckexuervubc3" path="res://Entities/Planet/Planet.cs" id="1_vqrwm"]
-[ext_resource type="Script" uid="uid://duoyv5qwnxi3b" path="res://Components/HealthComponent.cs" id="3_spxru"]
+[ext_resource type="Script" uid="uid://bv4b0g7hvbglj" path="res://Entities/Planet/Planet.cs" id="1_vqrwm"]
+[ext_resource type="Script" uid="uid://blho3cmopjkl4" path="res://Components/HealthComponent.cs" id="3_spxru"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vqrwm"]
 atlas = ExtResource("1_sotaw")

@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://bfx0d8wfnkv0a"]
 
-[ext_resource type="Script" uid="uid://daxod3xbg6uf2" path="res://Levels/Level/Level.cs" id="1_jd1ef"]
+[ext_resource type="Script" uid="uid://b7m3uhlpgatql" path="res://Levels/Level/Level.cs" id="1_jd1ef"]
 [ext_resource type="PackedScene" uid="uid://wckpu25srpss" path="res://Entities/Asteroid/Asteroid.tscn" id="2_ctpir"]
 [ext_resource type="PackedScene" uid="uid://dqtc0ug4pbdxk" path="res://Levels/Level/Background/Background.tscn" id="3_8cdyl"]
 [ext_resource type="PackedScene" uid="uid://x87glh7ayopp" path="res://Entities/Planet/Planet.tscn" id="4_kyxcb"]
 [ext_resource type="PackedScene" uid="uid://dlm5wkqefo240" path="res://Entities/Player/Player.tscn" id="5_i7s4p"]
-[ext_resource type="AudioStream" uid="uid://bxtoo10vaw6fq" path="res://Levels/Level/Background/Assets/BackgroundMusic.ogg" id="6_73k0w"]
+[ext_resource type="AudioStream" uid="uid://dyhwsq8m0gkko" path="res://Levels/Level/Background/Assets/BackgroundMusic.ogg" id="6_73k0w"]
 [ext_resource type="PackedScene" uid="uid://ca1ekhb5p7xjh" path="res://Levels/GameManager.tscn" id="7_w1tpy"]
 [ext_resource type="PackedScene" uid="uid://bckk6y7586ej3" path="res://Gameplay/Score/Score.tscn" id="8_7i3x2"]
 

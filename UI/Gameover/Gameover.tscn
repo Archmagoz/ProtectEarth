@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://bn3fumjiaqv55"]
 
 [ext_resource type="PackedScene" uid="uid://dqtc0ug4pbdxk" path="res://Levels/Level/Background/Background.tscn" id="1_lqpvl"]
-[ext_resource type="Script" uid="uid://q2651tom4fbd" path="res://UI/Gameover/Gameover.cs" id="1_ssnn4"]
-[ext_resource type="Texture2D" uid="uid://dp6grplrjveyi" path="res://UI/Assets/Gameover.png" id="2_2l14j"]
-[ext_resource type="Texture2D" uid="uid://bolwi2wiwxp3s" path="res://UI/Assets/RetryButton.png" id="3_swww2"]
-[ext_resource type="Texture2D" uid="uid://dkoovlshobbnm" path="res://UI/Assets/QuitButton.png" id="4_w2tib"]
-[ext_resource type="AudioStream" uid="uid://3n40irvsqlu2" path="res://UI/Gameover/Assets/SadTrombone.ogg" id="6_7ysg1"]
+[ext_resource type="Script" uid="uid://dmpjws1m3f682" path="res://UI/Gameover/Gameover.cs" id="1_ssnn4"]
+[ext_resource type="Texture2D" uid="uid://cfl5msc2keupx" path="res://UI/Assets/Gameover.png" id="2_2l14j"]
+[ext_resource type="Texture2D" uid="uid://ctkwayrrdc5wg" path="res://UI/Assets/RetryButton.png" id="3_swww2"]
+[ext_resource type="Texture2D" uid="uid://cmyy02g0pydps" path="res://UI/Assets/QuitButton.png" id="4_w2tib"]
+[ext_resource type="AudioStream" uid="uid://5w2t5doq5xpm" path="res://UI/Gameover/Assets/SadTrombone.ogg" id="6_7ysg1"]
 
 [node name="Gameover" type="Node2D" unique_id=135118210 node_paths=PackedStringArray("_retryButton", "_quitButton")]
 script = ExtResource("1_ssnn4")
